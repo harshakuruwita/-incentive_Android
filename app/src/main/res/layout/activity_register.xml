@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/splash_gradiant"
+            tools:context=".register.RegisterActivity">
+
+        <TextView
+                android:id="@+id/lblregister_header"
+                android:text="@string/register_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+
+                android:layout_gravity="center_horizontal"/>
+
+
+        <include
+                android:id="@+id/layout_email"
+                layout="@layout/component_register_feild"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        <include
+                android:id="@+id/layout_firstname"
+                layout="@layout/component_register_feild"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        <include
+                android:id="@+id/layout_lastname"
+                layout="@layout/component_register_feild"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <com.fitscorp.sl.apps.common.ProgressAyubo
+                android:id="@+id/progressBar"
+                style="@style/Widget.AppCompat.ProgressBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center" />
+
+
+        <include
+                android:id="@+id/layout_mobilenumber"
+                layout="@layout/component_register_mobilefild"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+       <LinearLayout android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:weightSum="2"
+                     android:layout_marginLeft="20dp"
+                     android:layout_marginRight="20dp"
+                     android:orientation="horizontal">
+
+
+           <LinearLayout android:layout_width="0dp"
+                         android:layout_weight="1"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="20dp"
+                         android:background="@drawable/edittext_background"
+                         android:orientation="horizontal">
+               <Spinner
+                       android:id="@+id/edt_title_user_spinner"
+                       android:layout_width="wrap_content"
+                       android:layout_height="46dp"
+                       android:fontFamily="sans-serif-normal"
+                       android:entries="@array/cameras"
+                       android:padding="5dp"
+
+                       android:spinnerMode="dialog"
+                       android:prompt="@string/user_type_select"
+                       android:imeOptions="actionNext"
+                       android:maxLines="1"
+               />
+               <ImageView
+                       android:layout_width="10dp"
+                       android:layout_height="10dp"
+                       android:background="@drawable/down_arrow"
+               />
+           </LinearLayout>
+
+           <LinearLayout
+                   android:id="@+id/spinner_view"
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:textAlignment="center"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="20dp"
+                   android:layout_marginLeft="5dp"
+                   android:background="@drawable/edittext_background"
+                   android:orientation="horizontal">
+
+
+               <Spinner
+                   android:id="@+id/edt_title_user_spinner2"
+                   android:layout_width="fill_parent"
+                   android:layout_height="40dp"
+                   android:layout_marginLeft="10dp"
+                   android:layout_marginTop="3dp"
+                   android:entries="@array/cameras"
+                   android:fontFamily="sans-serif-normal"
+                   android:imeOptions="actionNext"
+                   android:maxLines="1"
+                   android:padding="0dp"
+                   android:prompt="@string/user_store_select"
+                   android:spinnerMode="dialog" />
+               <ImageView
+                       android:layout_width="10dp"
+                       android:layout_height="10dp"
+                       android:background="@drawable/down_arrow"
+               />
+           </LinearLayout>
+       </LinearLayout>
+
+
+
+
+
+        <include
+                android:id="@+id/layout_saleid"
+                layout="@layout/component_register_feild_prymeysalesid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <include
+            android:id="@+id/layout_saleid_tag"
+            layout="@layout/component_register_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+
+
+        <Button
+                android:id="@+id/btn_register"
+                android:text="@string/register"
+                android:layout_width="250dp"
+                android:layout_height="45dp"
+                android:background="@drawable/leaderbord_cell_background"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center_horizontal"
+        />
+
+
+
+    </LinearLayout>
+
+
+</ScrollView>

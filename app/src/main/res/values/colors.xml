@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2ca8df</color>
+    <color name="colorPrimaryDark">#208EBE</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimaryButton">#9BD6D1</color>
+    <color name="colorPrimaryDarkBlack">#C4C4C4</color>
+    <color name="colorTabBarPrimary">#0ea7de</color>
+    <color name="colorTabBarNavigation">#2c97eb</color>
+    <color name="colorBluePrimary">#0ea6dd</color>
+    <color name="colorLeaderBordCellPrimary">#a7d3d7</color>
+    <color name="black">#000000</color>
+    <color name="grey">#D8D6D6</color>
+    <color name="white">#ffffff</color>
+    <color name="green">#4CAF50</color>
+    <color name="orange">#EB900C</color>
+    <color name="homepage_bottom_menu_textcolor_selected">#424041</color>
+    <color name="dark">#64656F</color>
+    <color name="orange_dark">#dddfed</color>
+</resources>

@@ -1,0 +1,199 @@
+{
+  "project_info": {
+    "project_number": "327274188108",
+    "firebase_url": "https://bluebloodtemp.firebaseio.com",
+    "project_id": "bluebloodtemp",
+    "storage_bucket": "bluebloodtemp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327274188108:android:6942189cfa2157628a93e9",
+        "android_client_info": {
+          "package_name": "com.fitscorp.bluebloods.degree"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWYuNbAlrTOs4_lIDUlkorwtR2R334ric"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "327274188108-dl3djuebgt7b1ord876k1ho23qgmeil9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.titanit.bluebloods"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327274188108:android:d9a148e8f042dd828a93e9",
+        "android_client_info": {
+          "package_name": "com.fitscorp.bluebloods.degreeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWYuNbAlrTOs4_lIDUlkorwtR2R334ric"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "327274188108-dl3djuebgt7b1ord876k1ho23qgmeil9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.titanit.bluebloods"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327274188108:android:f0329756c2d1d26c8a93e9",
+        "android_client_info": {
+          "package_name": "com.fitscorp.bluebloods.degreeapps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWYuNbAlrTOs4_lIDUlkorwtR2R334ric"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "327274188108-dl3djuebgt7b1ord876k1ho23qgmeil9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.titanit.bluebloods"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327274188108:android:7ea9275bf7a21b568a93e9",
+        "android_client_info": {
+          "package_name": "com.fitscorp.sl.apps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWYuNbAlrTOs4_lIDUlkorwtR2R334ric"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "327274188108-dl3djuebgt7b1ord876k1ho23qgmeil9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.titanit.bluebloods"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327274188108:android:f716e22306a3f6a88a93e9",
+        "android_client_info": {
+          "package_name": "com.titanit.bluebloods.Bluebloods.say"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327274188108-166e161rseuag6qco6qia9ni7oot3ikf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.titanit.bluebloods.Bluebloods.say",
+            "certificate_hash": "d42fb4f9c8093c3f1a45c3fffe2667feb85a4ef1"
+          }
+        },
+        {
+          "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWYuNbAlrTOs4_lIDUlkorwtR2R334ric"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "327274188108-dl3djuebgt7b1ord876k1ho23qgmeil9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.titanit.bluebloods"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

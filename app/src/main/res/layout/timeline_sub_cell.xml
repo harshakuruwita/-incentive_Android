@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+                                                   android:layout_height="wrap_content"
+                                                   android:background="@color/white"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+            android:id="@+id/txt_title4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingTop="6dp"
+            android:paddingLeft="16dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingBottom="6dp"
+            android:text="test"
+            android:textColor="@color/grey" />
+
+    <TextView
+            android:id="@+id/txt_dsc4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingBottom="2dp"
+            android:paddingRight="4dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_title4"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Your Points"
+            android:textColor="@color/black" />
+
+    <TextView
+            android:id="@+id/txt_dsc_persentage4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp"
+            android:text="38%"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_dsc4"
+            app:layout_constraintLeft_toRightOf="@+id/txt_dsc4"
+            app:layout_constraintTop_toTopOf="@+id/txt_dsc4" />
+
+
+    <LinearLayout
+        android:id="@+id/progress_content"
+        android:layout_width="328dp"
+        android:layout_height="25dp"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        app:layout_constraintTop_toBottomOf="@+id/txt_dsc4">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="90"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/txt_dsc4">
+
+            <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                android:id="@+id/progress_bar4"
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="1dp"
+                android:progressDrawable="@drawable/curved_progress_bar"
+                app:rcBackgroundColor="@color/white"
+                app:rcBackgroundPadding="0dp"
+                app:rcProgressColor="@color/white"
+                app:rcRadius="20dp"
+                app:rcReverse="false"
+                app:rcSecondaryProgressColor="@color/white" />
+
+
+            <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                android:id="@+id/progress_bar24"
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:layout_marginLeft="16dp"
+                android:progressDrawable="@drawable/curved_progress_bar"
+                app:rcBackgroundColor="@color/white"
+                app:rcBackgroundPadding="0dp"
+                app:rcProgressColor="@color/white"
+                app:rcRadius="20dp"
+                app:rcReverse="false"
+                app:rcSecondaryProgressColor="@color/white" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/bottom_bar_lay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingLeft="16dp"
+
+            app:layout_constraintTop_toBottomOf="@+id/progress_content"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/txt_descbellow4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_title"
+                android:textSize="16sp"
+                android:text="Leaders's Point"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+        <TextView
+                android:id="@+id/txt_dsc_persentage34"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="38%"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+
+                app:layout_constraintBottom_toBottomOf="@+id/txt_descbellow4"
+                app:layout_constraintLeft_toRightOf="@+id/txt_descbellow4"
+                app:layout_constraintTop_toTopOf="@+id/txt_descbellow4"/>
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/bottom_bar_lay"
+        android:text=""/>
+    <View android:layout_width="match_parent" android:layout_height="1dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          android:layout_marginTop="10dp"
+          android:paddingTop="16dp"
+          android:background="@color/grey">
+
+    </View>
+
+    <TextView
+        android:id="@+id/txt_main_persentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="35dp"
+        android:paddingRight="30dp"
+        android:text="35"
+        android:textColor="@color/colorPrimary"
+
+        android:textSize="35dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="34dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

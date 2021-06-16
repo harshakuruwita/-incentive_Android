@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Bluebloods</string>
+
+    <string name="service_loading_fail"></string>
+    <string name="service_loading_fail_invaliduser">Invalid username or password</string>
+    <string name="login_fail">Login Failed</string>
+    <string name="sign_in_with_your_existing_account">Sign in with your existing account</string>
+    <string name="passwordreset">Reset your password with email</string>
+    <string name="email_address">Email address</string>
+    <string name="forgot_your_password">Forgot your password ?</string>
+    <string name="sign_up_now">Sign up Now</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="reset_pw">Reset</string>
+    <string name="register">Create User</string>
+    <string name="contacts_us">Contacts us</string>
+    <string name="register_header">Please provide the following details</string>
+    <string name="user_type_select">Pleas select user type</string>
+    <string name="user_store_select">Pleas select store</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
