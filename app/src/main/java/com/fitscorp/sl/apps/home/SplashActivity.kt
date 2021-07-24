@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.fitscorp.sl.apps.App
 import com.fitscorp.sl.apps.R
+import com.fitscorp.sl.apps.common.MERCHANT_ID
 import com.fitscorp.sl.apps.common.getStoreImage
 import com.fitscorp.sl.apps.di.BaseActivity
 import com.fitscorp.sl.apps.home.model.FCMModel
@@ -60,12 +61,11 @@ class SplashActivity : BaseActivity() {
         setContentView(R.layout.activity_splash)
 
         App.getInstance().appComponent.inject(this)
-        getStoreImages("33")
+        getStoreImages(MERCHANT_ID)
 
           val image = spalshVM.sharedPref.getStoreImage()
         Glide.with(this).load(image).into(img_background)
-     //   Log.d("---908---",image)
-        ////
+
 
 
 

@@ -10,7 +10,10 @@ import android.view.View
 import android.widget.Toast
 import com.fitscorp.sl.apps.App
 import com.fitscorp.sl.apps.R
+import com.fitscorp.sl.apps.Resend_Code
 import com.fitscorp.sl.apps.di.BaseActivity
+import com.fitscorp.sl.apps.home.HomeMainResponse
+import com.fitscorp.sl.apps.home.HomeVM
 import com.fitscorp.sl.apps.home.MainActivity
 import com.fitscorp.sl.apps.home.model.UserAuthModel
 import com.fitscorp.sl.apps.register.RegisterActivity
@@ -30,6 +33,8 @@ class LoginActivity : BaseActivity() {
 
     @Inject
     lateinit var loginVM: LoginActivityVM
+    @Inject
+    lateinit var homeVM: HomeVM
 
     companion object {
         fun startActivity(context: Activity) {
@@ -60,6 +65,10 @@ class LoginActivity : BaseActivity() {
            FrogotPassword.startActivity(this)
         }
 
+        txt_donthve_resend_code.setOnClickListener {
+            Resend_Code.startActivity(this)
+        }
+
     }
 
     fun isEmailValid(email: String): Boolean {
@@ -70,13 +79,13 @@ class LoginActivity : BaseActivity() {
 
         if(txt_email.text.isEmpty() && txt_email.text.isEmpty())
         {
-            showAlert("E-mail and password required!")
+            showAlert("email and password required!")
 
             return
         }
         else  if(!isEmailValid(txt_email.text.toString()))
         {
-            showAlert("Invalid E-mail!")
+            showAlert("Invalid email!")
 
             return
         }
@@ -117,7 +126,7 @@ class LoginActivity : BaseActivity() {
 
                 } else {
                     if(it.message == "400") {
-                        showAlert("Wrong e-mail or password!")
+                        showAlert("Wrong email or password!")
 
                     }else{
                         showAlert("internal server error.")
@@ -161,25 +170,17 @@ class LoginActivity : BaseActivity() {
                 if (it.isSuccess) {
 //
                    val data= loginVM.loginUserMainResponse
-                    if(data!!.response.data.user.userRole.equals("SALES_REP")){
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra("fromActivity", "splash")
-                        startActivity(intent)
-                        finish()
-                    }else if(data!!.response.data.user.userRole.equals("STORE_MANAGER")){
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra("fromActivity", "splash")
-                        startActivity(intent)
-                        finish()
-                    }
+                    if(data!!.response.data.user.userRole.equals("SALES_REP")||data!!.response.data.user.userRole.equals("STORE_MANAGER")||data!!.response.data.user.userRole.equals("EXECUTIVE")||data!!.response.data.user.userRole.equals("HEAD_OFFICE")){
 
-                    else {
+                        getAppFilters(data!!.response.data.user.userRole);
+
+
+                    }else {
                         val resError=   it.message.toString()
-
+                      //  getAppFilters(data!!.response.data.user.userRole);
                         showAlert("User doesn't have permission to login!")
                     }
-                  //  MainActivity.startActivity(this@LoginActivity)
-//                    RegisterActivity.startActivity(this@LoginActivity)
+
 
                 } else {
 
@@ -196,11 +197,67 @@ class LoginActivity : BaseActivity() {
             }, {
                 Log.d("====1======", it.stackTrace.toString())
                 progressBar.visibility = View.GONE
-              //  showMessage(R.string.service_loading_fail)
+
             })
 
         )
 //
+    }
+
+    private fun getAppFilters( userRole:String) {
+
+        subscription.add(homeVM.getAppFilters().subscribeOn(
+            Schedulers.io()
+        )
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { progressBar.visibility = View.VISIBLE }
+            .doOnTerminate { progressBar.visibility = View.GONE }
+            .doOnError { progressBar.visibility = View.GONE }
+            .subscribe({
+                if (it.isSuccess) {
+                    if(userRole.equals("HEAD_OFFICE")){
+                        Log.d("9800","ABX")
+                        getExecutiveFilters();
+                    }else{
+
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.putExtra("fromActivity", "splash")
+                        startActivity(intent)
+                        finish()
+                    }
+
+                } else { showAlert("No incentive to show for this user!")}
+            }, {
+
+                progressBar.visibility = View.GONE
+
+            })
+        )
+    }
+
+    private fun getExecutiveFilters() {
+
+        subscription.add(homeVM.getExecutiveFilter().subscribeOn(
+            Schedulers.io()
+        )
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { progressBar.visibility = View.VISIBLE }
+            .doOnTerminate { progressBar.visibility = View.GONE }
+            .doOnError { progressBar.visibility = View.GONE }
+            .subscribe({
+                if (it.isSuccess) {
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("fromActivity", "splash")
+                    startActivity(intent)
+                    finish()
+                } else { showAlert("Error updating executive region!")}
+            }, {
+
+                progressBar.visibility = View.GONE
+
+            })
+        )
     }
 
 

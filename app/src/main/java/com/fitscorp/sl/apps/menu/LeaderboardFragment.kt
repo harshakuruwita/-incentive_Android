@@ -12,9 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fitscorp.sl.apps.App
 import android.util.Log
 import com.fitscorp.sl.apps.R
+import com.fitscorp.sl.apps.home.model.ExecutiveLeaderBordResponse
+import com.fitscorp.sl.apps.home.model.RegionData
+import com.fitscorp.sl.apps.home.model.SalesData
+import com.fitscorp.sl.apps.home.model.StoreData
 import com.fitscorp.sl.apps.login.LoginUserMainResponse
 import com.fitscorp.sl.apps.login.User
 import com.fitscorp.sl.apps.menu.adapter.LeaderboardAapter
+import com.fitscorp.sl.apps.menu.adapter.LeaderboardExecutiveAapter
 import com.fitscorp.sl.apps.menu.adapter.TimelineAdapter
 import com.fitscorp.sl.apps.menu.data.Leaderboard
 import com.fitscorp.sl.apps.menu.data.LeaderboardData
@@ -77,7 +82,12 @@ class LeaderboardFragment : Fragment() {
     lateinit var moduleType:String
     var tableDisplay:Boolean = true
     var isLoadFromCash:Boolean = false
+    var selectedTab: Int?=0
     lateinit var contxt:Context
+
+    var region: RegionData?=null
+    var store: StoreData?=null
+    var sales: SalesData?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,7 +113,6 @@ class LeaderboardFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
 
         if(userRole=="STORE_MANAGER") {
@@ -134,45 +143,50 @@ class LeaderboardFragment : Fragment() {
                 leaderboard_recycler.smoothScrollToPosition(scrolableIndex);
 
         }
-
-
-
-        if(loadLocalData()){
-            if(isLoadFromCash){
-                callTimelineFromCash_REP()
-            }else{
-                registerUser_STORE_MANAGER(view)
-                registerUser_SALES(view)
-
-                getTimelineData_MANAGER(view)
-                getTimelineData_SALES(view)
-            }
+        if(userRole=="HEAD_OFFICE") {
+            jumptostore.visibility=View.GONE
+            getExecutiveData(view)
         }else{
             registerUser_STORE_MANAGER(view)
             registerUser_SALES(view)
-
             getTimelineData_MANAGER(view)
             getTimelineData_SALES(view)
         }
-/*
-       //if(loadLocalData()){
-           if(isLoadFromCash){
-               callTimelineFromCash_REP()
-           }else{
-              // if(userRole=="STORE_MANAGER"){
-                   registerUser_STORE_MANAGER(view)
-             //  }else{
-                   registerUser_SALES(view)
-              // }
-           }
-       /*}else{
-          // if(userRole=="STORE_MANAGER"){
-               registerUser_STORE_MANAGER(view)
-          // }else{
-               registerUser_SALES(view)
-         //  }
-       }*/
-*/
+
+
+//        if(loadLocalData()){
+//            Log.d("0004323","HEAD_OFFICE")
+//            if(isLoadFromCash){
+//                Log.d("0004327","HEAD_OFFICE")
+//                callTimelineFromCash_REP()
+//            }else{
+//                if(userRole=="HEAD_OFFICE") {
+//                    Log.d("6788","HEAD_OFFICE")
+//                    getExecutiveData(view)
+//                }else{
+//                    registerUser_STORE_MANAGER(view)
+//                    registerUser_SALES(view)
+//                    getTimelineData_MANAGER(view)
+//                    getTimelineData_SALES(view)
+//                }
+//            }
+//        }else{
+//            Log.d("0004324","HEAD_OFFICE")
+//            if(userRole=="HEAD_OFFICE") {
+//                Log.d("6788","HEAD_OFFICE")
+//                getExecutiveData(view)
+//            }else{
+//                registerUser_STORE_MANAGER(view)
+//                registerUser_SALES(view)
+//                getTimelineData_MANAGER(view)
+//                getTimelineData_SALES(view)
+//            }
+//
+//
+//
+//
+//        }
+
 
     }
 
@@ -462,6 +476,394 @@ var loopVal = 0;
 
         )
     }
+
+    private fun getExecutiveData(view:View) {
+
+
+        if(region == null && store == null && sales == null){
+
+            if(selectedTab == 0){
+                subscription.add(leaderboardVM.getLeaderBoardAllRegion(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay).subscribeOn(
+                    Schedulers.io()
+                )
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                    .doOnTerminate { view.progressBar.visibility = View.GONE }
+                    .doOnError { view.progressBar.visibility = View.GONE }
+                    .subscribe({
+                        if (it.isSuccess) {
+
+
+                            val  dataObj=leaderboardVM.executiveDataObj
+
+                            val  firstPlace_colour = leaderboardVM.firstPlace_colour
+                            val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
+                            if(dataObj!!.isNotEmpty()) {
+                                img_nodataimg.visibility=View.GONE
+                                val mlayoutManager = LinearLayoutManager(context)
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+
+
+
+
+
+                                leaderboard_recycler.apply {
+                                    layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                    adapter = timelineAapter
+                                }
+
+
+                            }else{
+                                img_nodataimg.visibility=View.VISIBLE
+                            }}else{
+                            img_nodataimg.visibility=View.VISIBLE
+                        }
+                    }, {
+
+                        view.progressBar.visibility = View.GONE
+
+                    })
+
+                )
+            }else if(selectedTab == 3){
+                subscription.add(leaderboardVM.getLeaderBoardAllUser(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay).subscribeOn(
+                    Schedulers.io()
+                )
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                    .doOnTerminate { view.progressBar.visibility = View.GONE }
+                    .doOnError { view.progressBar.visibility = View.GONE }
+                    .subscribe({
+                        if (it.isSuccess) {
+
+
+                            val  dataObj=leaderboardVM.executiveDataObj
+
+                            val  firstPlace_colour = leaderboardVM.firstPlace_colour
+                            val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
+                            if(dataObj!!.isNotEmpty()) {
+                                img_nodataimg.visibility=View.GONE
+                                val mlayoutManager = LinearLayoutManager(context)
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+
+
+
+
+
+                                leaderboard_recycler.apply {
+                                    layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                    adapter = timelineAapter
+                                }
+
+
+                            }else{
+                                img_nodataimg.visibility=View.VISIBLE
+                            }}else{
+                            img_nodataimg.visibility=View.VISIBLE
+                        }
+                    }, {
+
+                        view.progressBar.visibility = View.GONE
+
+                    })
+
+                )
+            }
+
+
+
+
+
+        }else if(region != null && store == null && sales == null ){
+
+            if(selectedTab == 1){
+
+                subscription.add(leaderboardVM.getLeaderBoardOnlyRegion(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,region!!.regionId).subscribeOn(
+                    Schedulers.io()
+                )
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                    .doOnTerminate { view.progressBar.visibility = View.GONE }
+                    .doOnError { view.progressBar.visibility = View.GONE }
+                    .subscribe({
+                        if (it.isSuccess) {
+
+
+                            val  dataObj=leaderboardVM.executiveDataObj
+                            val  firstPlace_colour = leaderboardVM.firstPlace_colour
+                            val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
+                            if(dataObj!!.isNotEmpty()) {
+                                img_nodataimg.visibility=View.GONE
+                                val mlayoutManager = LinearLayoutManager(context)
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+
+
+
+
+
+                                leaderboard_recycler.apply {
+                                    layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                    adapter = timelineAapter
+                                }
+
+
+                            }else{
+                                img_nodataimg.visibility=View.VISIBLE
+                            }}else{
+                            Log.d("3344","Byregion data not success");
+                            img_nodataimg.visibility=View.VISIBLE
+                        }
+                    }, {
+
+                        view.progressBar.visibility = View.GONE
+
+                    })
+
+                )
+
+
+            }else if(selectedTab == 3){
+
+
+                subscription.add(leaderboardVM.getLeaderBoardByRegionAllUser(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,region!!.regionId).subscribeOn(
+                    Schedulers.io()
+                )
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                    .doOnTerminate { view.progressBar.visibility = View.GONE }
+                    .doOnError { view.progressBar.visibility = View.GONE }
+                    .subscribe({
+                        if (it.isSuccess) {
+
+
+                            val  dataObj=leaderboardVM.executiveDataObj
+                            val  firstPlace_colour = leaderboardVM.firstPlace_colour
+                            val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
+                            if(dataObj!!.isNotEmpty()) {
+                                img_nodataimg.visibility=View.GONE
+                                val mlayoutManager = LinearLayoutManager(context)
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+
+
+
+
+
+                                leaderboard_recycler.apply {
+                                    layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                    adapter = timelineAapter
+                                }
+
+
+                            }else{
+                                img_nodataimg.visibility=View.VISIBLE
+                            }}else{
+                            Log.d("3344","Byregion data not success");
+                            img_nodataimg.visibility=View.VISIBLE
+                        }
+                    }, {
+
+                        view.progressBar.visibility = View.GONE
+
+                    })
+
+                )
+
+
+
+
+
+            }
+
+
+        }
+
+        else if(region != null && store != null && sales == null){
+
+
+            if(selectedTab == 2){ subscription.add(leaderboardVM.getLeaderBoardByRegionByStore(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,region!!.regionId,store!!.storeId).subscribeOn(
+                Schedulers.io()
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                .doOnTerminate { view.progressBar.visibility = View.GONE }
+                .doOnError { view.progressBar.visibility = View.GONE }
+                .subscribe({
+                    if (it.isSuccess) {
+
+
+                        val  dataObj=leaderboardVM.executiveDataObj
+
+                        val  firstPlace_colour = leaderboardVM.firstPlace_colour
+                        val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
+                        if(dataObj!!.isNotEmpty()) {
+                            img_nodataimg.visibility=View.GONE
+                            val mlayoutManager = LinearLayoutManager(context)
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
+
+
+
+
+
+                            leaderboard_recycler.apply {
+                                layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                adapter = timelineAapter
+                            }
+
+
+                        }else{
+                            img_nodataimg.visibility=View.VISIBLE
+                        }}else{
+                        img_nodataimg.visibility=View.VISIBLE
+                    }
+                }, {
+
+                    view.progressBar.visibility = View.GONE
+
+                })
+
+            )
+            }else if(selectedTab == 3){
+
+                subscription.add(leaderboardVM.getLeaderBoardByRegionByStoreAlluser(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,region!!.regionId,store!!.storeId).subscribeOn(
+                Schedulers.io()
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                .doOnTerminate { view.progressBar.visibility = View.GONE }
+                .doOnError { view.progressBar.visibility = View.GONE }
+                .subscribe({
+                    if (it.isSuccess) {
+
+
+                        val  dataObj=leaderboardVM.executiveDataObj
+
+                        val  firstPlace_colour = leaderboardVM.firstPlace_colour
+                        val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
+                        if(dataObj!!.isNotEmpty()) {
+                            img_nodataimg.visibility=View.GONE
+                            val mlayoutManager = LinearLayoutManager(context)
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
+
+
+
+
+
+                            leaderboard_recycler.apply {
+                                layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                adapter = timelineAapter
+                            }
+
+
+                        }else{
+                            img_nodataimg.visibility=View.VISIBLE
+                        }}else{
+                        img_nodataimg.visibility=View.VISIBLE
+                    }
+                }, {
+
+                    view.progressBar.visibility = View.GONE
+
+                })
+
+            )}
+
+
+
+
+        }else if(region != null && store != null && sales != null){
+
+            subscription.add(leaderboardVM.getLeaderBoardByUser(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,region!!.regionId,store!!.storeId,sales!!.salesId).subscribeOn(
+                Schedulers.io()
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                .doOnTerminate { view.progressBar.visibility = View.GONE }
+                .doOnError { view.progressBar.visibility = View.GONE }
+                .subscribe({
+                    if (it.isSuccess) {
+
+
+                        val  dataObj=leaderboardVM.executiveDataObj
+
+                        val  firstPlace_colour = leaderboardVM.firstPlace_colour
+                        val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
+                        if(dataObj!!.isNotEmpty()) {
+                            img_nodataimg.visibility=View.GONE
+                            val mlayoutManager = LinearLayoutManager(context)
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
+
+
+
+
+
+                            leaderboard_recycler.apply {
+                                layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                adapter = timelineAapter
+                            }
+
+
+                        }else{
+                            img_nodataimg.visibility=View.VISIBLE
+                        }}else{
+                        img_nodataimg.visibility=View.VISIBLE
+                    }
+                }, {
+
+                    view.progressBar.visibility = View.GONE
+
+                })
+
+            )
+
+        }else if(region != null && store == null && sales != null){
+            subscription.add(leaderboardVM.getLeaderByRegionBoardByUser(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,region!!.regionId,sales!!.salesId).subscribeOn(
+                Schedulers.io()
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                .doOnTerminate { view.progressBar.visibility = View.GONE }
+                .doOnError { view.progressBar.visibility = View.GONE }
+                .subscribe({
+                    if (it.isSuccess) {
+
+
+                        val  dataObj=leaderboardVM.executiveDataObj
+
+                        val  firstPlace_colour = leaderboardVM.firstPlace_colour
+                        val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
+                        if(dataObj!!.isNotEmpty()) {
+                            img_nodataimg.visibility=View.GONE
+                            val mlayoutManager = LinearLayoutManager(context)
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+
+
+
+
+
+                            leaderboard_recycler.apply {
+                                layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                adapter = timelineAapter
+                            }
+
+
+                        }else{
+                            img_nodataimg.visibility=View.VISIBLE
+                        }}else{
+                        img_nodataimg.visibility=View.VISIBLE
+                    }
+                }, {
+
+                    view.progressBar.visibility = View.GONE
+
+                })
+
+            )
+        }
+
+
+
+
+    }
 //////fix cash issue////////
 
     private fun getTimelineData_MANAGER(view:View) {
@@ -528,12 +930,7 @@ var loopVal = 0;
         fun newInstance(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean) =
             LeaderboardFragment().apply {
                 arguments = Bundle().apply {
-                    /* putInt(ARG_INCENTID, incentivefield)
-                     putString(ARG_SELECTPERIOD, selectPeriod)
-                     putString(ARG_STARTDATE, StartDate)
-                     putString(ARG_ENDDATE, EndDate)
-                     putInt(ARG_PERIODID, PeriodId)
- */
+    
                     salesID=user.salesId
                     userRole=user.userRole
                     incentivefield = incentvefield
@@ -549,7 +946,234 @@ var loopVal = 0;
                     contxt=c
                 }
             }
+
+        @JvmStatic
+        fun newInstanceAllRegionAllStoreAllUser(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean) =
+            LeaderboardFragment().apply {
+                arguments = Bundle().apply {
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    storePrimaryId=user.storeId
+                    contxt=c
+                    region = null
+                    store = null
+                    sales = null
+
+                }
+            }
+
+        @JvmStatic
+        fun newInstanceByRegionAllStoreAllUser(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean,dataRegion: RegionData) =
+            LeaderboardFragment().apply {
+                arguments = Bundle().apply {
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    storePrimaryId=user.storeId
+                    contxt=c
+                    region = dataRegion
+                    store = null
+                    sales = null
+                    selectedTab = 3
+
+                }
+            }
+
+        @JvmStatic
+        fun newInstanceByRegionAllUser(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean,dataRegion: RegionData) =
+            LeaderboardFragment().apply {
+                arguments = Bundle().apply {
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    storePrimaryId=user.storeId
+                    contxt=c
+                    region = dataRegion
+                    store = null
+                    sales = null
+                    selectedTab = 1;
+
+                }
+            }
+
+
+        @JvmStatic
+        fun newInstanceByRegionByStoreAllUser(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean,dataRegion: RegionData,dataStore: StoreData) =
+            LeaderboardFragment().apply {
+                arguments = Bundle().apply {
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    storePrimaryId=user.storeId
+                    contxt=c
+                    region = dataRegion
+                    store = dataStore
+                    sales = null
+                    selectedTab = 2;
+
+                }
+            }
+
+        @JvmStatic
+        fun newInstanceByRegionByStoreWithAllUser(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean,dataRegion: RegionData,dataStore: StoreData) =
+            LeaderboardFragment().apply {
+                arguments = Bundle().apply {
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    storePrimaryId=user.storeId
+                    contxt=c
+                    region = dataRegion
+                    store = dataStore
+                    sales = null
+                    selectedTab = 3;
+
+                }
+            }
+
+        @JvmStatic
+        fun byRegionbyStorebyUser(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean,dataRegion: RegionData,dataStore: StoreData,dataSales: SalesData) =
+            LeaderboardFragment().apply {
+                arguments = Bundle().apply {
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    storePrimaryId=user.storeId
+                    contxt=c
+                    region = dataRegion
+                    store = dataStore
+                    sales = dataSales
+
+                }
+            }
+
+        @JvmStatic
+        fun byRegionbyAllbyUser(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean,dataRegion: RegionData,dataSales: SalesData) =
+            LeaderboardFragment().apply {
+                arguments = Bundle().apply {
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    storePrimaryId=user.storeId
+                    contxt=c
+                    region = dataRegion
+                    store = null
+                    sales = dataSales
+
+                }
+            }
+
+        @JvmStatic
+        fun byAllRegion(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean) =
+            LeaderboardFragment().apply {
+                arguments = Bundle().apply {
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    storePrimaryId=user.storeId
+                    contxt=c
+                    region = null
+                    store = null
+                    sales = null
+                    selectedTab =  0;
+                }
+            }
+
+
+        @JvmStatic
+        fun byAllUser(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean) =
+            LeaderboardFragment().apply {
+                arguments = Bundle().apply {
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    storePrimaryId=user.storeId
+                    contxt=c
+                    region = null
+                    store = null
+                    sales = null
+                    selectedTab =  3;
+                }
+            }
     }
+
+
+
+
+
 
 
 }

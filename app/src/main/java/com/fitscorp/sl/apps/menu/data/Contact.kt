@@ -5,4 +5,5 @@ class Contact{
 
     var message:String?=null
     var tittle:String?=null
+    var isFromDashboard:Boolean?=null
 }

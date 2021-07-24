@@ -3,6 +3,7 @@ package com.fitscorp.sl.apps.di
 
 
 import com.fitscorp.sl.apps.App
+import com.fitscorp.sl.apps.Resend_Code
 import com.fitscorp.sl.apps.home.MainActivity
 import com.fitscorp.sl.apps.home.SplashActivity
 import com.fitscorp.sl.apps.login.FrogotPassword
@@ -31,6 +32,7 @@ interface MyComponent {
     fun inject(timelineFragment: TimelineFragment)
     fun inject(profileActivity: ProfileActivity)
     fun inject(editprofileActivity: EditProfile)
+    fun inject(editprofileActivity: Resend_Code)
 
 
 }

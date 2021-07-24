@@ -7,5 +7,7 @@ const val BASE_URL = "https://incentive-api-dev.azurewebsites.net/api/v1/"
 const val MERCHANT_URL = "https://2degrees.pcincentives.co.nz/"
 //const val MERCHANT_URL = "https://incentive-app-module-uat.azurewebsites.net/"
 
+const val MERCHANT_ID = "134"
+
 
 

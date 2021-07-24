@@ -1,43 +1,36 @@
-package com.fitscorp.sl.apps.login
-
+package com.fitscorp.sl.apps
 
 import android.app.Activity
-import android.content.Intent
 import android.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import com.fitscorp.sl.apps.App
-import com.fitscorp.sl.apps.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import androidx.appcompat.app.AppCompatActivity
+import com.fitscorp.sl.apps.common.MERCHANT_URL
 import com.fitscorp.sl.apps.di.BaseActivity
-import com.fitscorp.sl.apps.home.MainActivity
-import com.fitscorp.sl.apps.home.model.UserAuthModel
 import com.fitscorp.sl.apps.home.model.UserRestModel
-import com.fitscorp.sl.apps.register.RegisterActivity
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.fitscorp.sl.apps.login.FrogotPassword
+import com.fitscorp.sl.apps.login.FrogotPasswordVM
+import com.fitscorp.sl.apps.login.LoginActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_main.*
-
-import org.json.JSONException
-import org.json.JSONObject
+import kotlinx.android.synthetic.main.activity_login.progressBar
 import javax.inject.Inject
-
-import com.fitscorp.sl.apps.common.MERCHANT_URL
-
-class FrogotPassword : BaseActivity() {
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_resend__code.*
 
 
+class Resend_Code : BaseActivity() {
     @Inject
     lateinit var frogotpwVM: FrogotPasswordVM
 
     companion object {
         fun startActivity(context: Activity) {
-            val intent = Intent(context, FrogotPassword::class.java)
+            val intent = Intent(context, Resend_Code::class.java)
             context.startActivity(intent)
         }
     }
@@ -45,11 +38,11 @@ class FrogotPassword : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.frogotpassword_activity)
+        setContentView(R.layout.activity_resend__code)
 
         App.getInstance().appComponent.inject(this)
 
-        btn_signup.setOnClickListener {
+        btn_resendcode.setOnClickListener {
             submitLogin()
         }
 
@@ -62,18 +55,18 @@ class FrogotPassword : BaseActivity() {
 
     private fun submitLogin() {
 
-        if (txt_email.text.isEmpty()) {
+        if (txt_email_resend_code.text.isEmpty()) {
             showAlert("Email is required!")
-           // Toast.makeText(this, "Email is required !", Toast.LENGTH_LONG).show()
+
             return
-        }else if(!isEmailValid(txt_email.text.toString())){
-            showAlert("Invalid email!")
-          //  Toast.makeText(this, "Invalid e-mail !", Toast.LENGTH_LONG).show()
+        }else if(!isEmailValid(txt_email_resend_code.text.toString())){
+            showAlert("Invalid Email!")
+
             return
         }
         val domainVAL = MERCHANT_URL
 
-        var email = txt_email.text.toString()
+        var email = txt_email_resend_code.text.toString()
 
 
 
@@ -118,11 +111,11 @@ class FrogotPassword : BaseActivity() {
 
                     val builder = AlertDialog.Builder(this)
                     builder.setTitle("Success")
-                    builder.setMessage("Reset password link sent. Please check your email to reset your password.")
+                    builder.setMessage("OTP code resent. Please check your Email.")
 
                     // Set a positive button and its click listener on alert dialog
                     builder.setPositiveButton("Ok"){dialog, which ->
-                        LoginActivity.startActivity(this@FrogotPassword)
+                        LoginActivity.startActivity(this@Resend_Code)
                     }
 
 
@@ -138,12 +131,12 @@ class FrogotPassword : BaseActivity() {
 
                 } else {
                     showAlert("User not available!")
-                   // showMessage("User not available !")
+                    // showMessage("User not available !")
                 }
             }, {
                 Log.d("====0======", it.stackTrace.toString())
                 progressBar.visibility = View.GONE
-             //   showMessage(R.string.service_loading_fail)
+                //   showMessage(R.string.service_loading_fail)
             })
 
         )

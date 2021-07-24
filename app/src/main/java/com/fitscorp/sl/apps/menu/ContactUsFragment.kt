@@ -94,8 +94,8 @@ class ContactUsFragment : Fragment() {
 
 
 
-
-
+        txt_title.setText("Incentive app issue");
+        txt_message_text_count.setText("20/40");
 
 
 
@@ -192,6 +192,7 @@ class ContactUsFragment : Fragment() {
         var data: Contact = Contact()
         data.tittle = view!!.txt_title.text.toString()
         data.message = view!!.txt_message_content.text.toString()
+        data.isFromDashboard = true;
 
 
 
@@ -205,7 +206,7 @@ class ContactUsFragment : Fragment() {
             .subscribe({
                 if (it.isSuccess) {
 
-                   txt_title.setText("")
+                   txt_title.setText("Incentive app issue")
                    txt_message_content.setText("")
                     showAlert_two("Message successfully sent.")
                    // Toast.makeText(context,"Message sent to server",Toast.LENGTH_LONG).show()

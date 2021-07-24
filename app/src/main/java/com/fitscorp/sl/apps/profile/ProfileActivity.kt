@@ -106,12 +106,20 @@ class ProfileActivity : AppCompatActivity() {
         (layout_salesId.findViewById(R.id.user_details_lable) as TextView).text = "Primary SalesID"
         (layout_salesId.findViewById(R.id.user_details_value) as TextView).text = user.salesId
 
-        if(dataLogin.response.data.salesIds.isNotEmpty()){
-             secondSalesId = dataLogin.response.data.salesIds.toString()
-
+        if(dataLogin.response.data.user.userRole.equals("HEAD_OFFICE")){
+            secondSalesId = "-"
         }else{
-             secondSalesId = "-"
+            if(dataLogin.response.data.salesIds.isNotEmpty()){
+                secondSalesId = dataLogin.response.data.salesIds.toString()
+
+            }else{
+                secondSalesId = "-"
+            }
         }
+
+
+
+
         (layout_salesId_second.findViewById(R.id.user_details_lable) as TextView).text = "Secondary Sales ID"
         (layout_salesId_second.findViewById(R.id.user_details_value) as TextView).text = secondSalesId
 
@@ -188,7 +196,7 @@ class ProfileActivity : AppCompatActivity() {
                     else {
 
 
-                        Toast.makeText(this,"This user do not have permission to login mobile application",Toast.LENGTH_LONG).show()
+                       // Toast.makeText(this,"This user do not have permission to login mobile application",Toast.LENGTH_LONG).show()
                     }
                     //  MainActivity.startActivity(this@LoginActivity)
 //                    RegisterActivity.startActivity(this@LoginActivity)

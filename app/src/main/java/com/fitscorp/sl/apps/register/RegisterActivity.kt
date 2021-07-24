@@ -17,6 +17,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.fitscorp.sl.apps.App
 import com.fitscorp.sl.apps.R
+import com.fitscorp.sl.apps.common.MERCHANT_ID
 import com.fitscorp.sl.apps.common.MERCHANT_URL
 import com.fitscorp.sl.apps.di.BaseActivity
 import com.fitscorp.sl.apps.login.LoginActivity
@@ -84,11 +85,11 @@ class RegisterActivity : BaseActivity() {
             override fun onItemSelected(parent:AdapterView<*>, view: View, position: Int, id: Long){
 
                 if(parent.getItemAtPosition(position)=="Store Manager"){
-                    getStoreData("33")
+                    getStoreData(MERCHANT_ID)
                     userRole="STORE_MANAGER"
 
                 }else{
-                    getStoreData("33")
+                    getStoreData(MERCHANT_ID)
                     userRole="SALES_REP"
                     spinner_view.visibility=View.GONE
 
@@ -159,7 +160,7 @@ class RegisterActivity : BaseActivity() {
         val salesid_secondry_3=(layout_saleid_tag.findViewById(R.id.register_feild_text_3) as TextView).text.toString()
        val userType="ORGANIZATION"
        val currentStatus="pending"
-       val organizationId="33"
+       val organizationId= MERCHANT_ID
       //  val domainVAL = "https://smugkidcorp.pcincentives.co.nz"
 
         val domainVAL = MERCHANT_URL
@@ -364,7 +365,7 @@ class RegisterActivity : BaseActivity() {
 
                     val builder = AlertDialog.Builder(this)
                     builder.setTitle("Success")
-                    builder.setMessage("Your account is created successfully, please check your e-mail for verification link to activate your account.")
+                    builder.setMessage("Your account is created successfully, please check your email for verification link to activate your account.")
 
                     // Set a positive button and its click listener on alert dialog
                     builder.setPositiveButton("Ok"){dialog, which ->

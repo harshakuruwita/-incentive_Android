@@ -11,6 +11,7 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import javax.inject.Inject
 import android.R.string
+import com.fitscorp.sl.apps.home.model.ExecutiveLeaderBordResponse
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -21,16 +22,16 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
 
     var dataObjStoreManager :  List<LeaderboardData>?=null
     var dataObj :  List<LeaderboardData>?=null
-    var leaderBoard_colour = "#f5c242"
-    var firstPlace_colour = "#f5c242"
+    var executiveDataObj :  List<ExecutiveLeaderBordResponse>?=null
+    var leaderBoard_colour = "#208EBE"
+    var firstPlace_colour = "#208EBE"
 
 
 
     fun getLeaderBoardSM(incentivefield:Int,selectPeriod:String,StartDate:String,EndDate:String,PeriodId:Int,moduleType:String,tableDisplay:Boolean) = apiService.getLeaderBoardSM(sharedPref.getAuthToken(),incentivefield,selectPeriod,StartDate,EndDate,PeriodId,moduleType,tableDisplay).map {
         if (it.isSuccessful && it.body() != null) {
 
-            /*fun getTimeLineStore() = apiService.getTimeineData(sharedPref.getAuthToken(),120,"MONTHLY","2019-08-01T00:00:00.000Z","2019-08-31T11:59:59.000Z",28,"rep","false").map {
-                if (it.isSuccessful && it.body() != null) {*/
+
 
             val dataOb = it.body()
             sharedPref.saveData("leaderboard_data_SM",detailsToJson(dataOb!!))
@@ -65,8 +66,7 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
     fun getLeaderBoard(incentivefield:Int,selectPeriod:String,StartDate:String,EndDate:String,PeriodId:Int,moduleType:String,tableDisplay:Boolean) = apiService.getLeaderBoardData(sharedPref.getAuthToken(),incentivefield,selectPeriod,StartDate,EndDate,PeriodId,moduleType,tableDisplay).map {
         if (it.isSuccessful && it.body() != null) {
 
-            /*fun getTimeLineStore() = apiService.getTimeineData(sharedPref.getAuthToken(),120,"MONTHLY","2019-08-01T00:00:00.000Z","2019-08-31T11:59:59.000Z",28,"rep","false").map {
-                if (it.isSuccessful && it.body() != null) {*/
+
 
             val dataOb = it.body()
             sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
@@ -96,6 +96,239 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
         Log.d("Erro.........", it.stackTrace.toString())
         State(false, MSG_FAILED_REQUEST)
     }
+
+    fun getLeaderBoardOnlyRegion(incentivefield:Int,selectPeriod:String,StartDate:String,EndDate:String,PeriodId:Int,moduleType:String,tableDisplay:Boolean,region:String) = apiService.getLeaderBoarOnlyRegion(sharedPref.getAuthToken(),incentivefield,selectPeriod,StartDate,EndDate,PeriodId,moduleType,tableDisplay,region,"all").map {
+        if (it.isSuccessful && it.body() != null) {
+
+
+
+            val dataOb = it.body()
+
+         //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
+
+            executiveDataObj = dataOb!!.response
+            if(dataOb!!.response.count() > 0){
+
+
+               // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+               // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+
+            }
+
+            State(true, MSG_SUCCESS)
+        } else {
+            Log.d("3344444","API faid");
+            State(false, MSG_FAILED_REQUEST)
+        }
+    }.onErrorReturn {
+        Log.d("Erro.........", it.stackTrace.toString())
+        State(false, MSG_FAILED_REQUEST)
+    }
+
+
+    fun getLeaderBoardByRegionByStore(incentivefield:Int,selectPeriod:String,StartDate:String,EndDate:String,PeriodId:Int,moduleType:String,tableDisplay:Boolean,region:String,storeId:String) = apiService.getLeaderBoarByRegionByStore(sharedPref.getAuthToken(),incentivefield,selectPeriod,StartDate,EndDate,PeriodId,moduleType,tableDisplay,region,storeId).map {
+        if (it.isSuccessful && it.body() != null) {
+
+
+
+            val dataOb = it.body()
+
+            //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
+
+            executiveDataObj = dataOb!!.response
+            if(dataOb!!.response.count() > 0){
+
+
+                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+
+            }
+
+            State(true, MSG_SUCCESS)
+        } else {
+            Log.d("3344444","API faid");
+            State(false, MSG_FAILED_REQUEST)
+        }
+    }.onErrorReturn {
+        Log.d("Erro.........", it.stackTrace.toString())
+        State(false, MSG_FAILED_REQUEST)
+    }
+
+    fun getLeaderBoardByRegionByStoreAlluser(incentivefield:Int,selectPeriod:String,StartDate:String,EndDate:String,PeriodId:Int,moduleType:String,tableDisplay:Boolean,region:String,storeId:String) = apiService.getLeaderBoarByRegionByStoreAlluser(sharedPref.getAuthToken(),incentivefield,selectPeriod,StartDate,EndDate,PeriodId,moduleType,tableDisplay,region,storeId,"all").map {
+        if (it.isSuccessful && it.body() != null) {
+
+
+
+            val dataOb = it.body()
+
+            //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
+
+            executiveDataObj = dataOb!!.response
+            if(dataOb!!.response.count() > 0){
+
+
+                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+
+            }
+
+            State(true, MSG_SUCCESS)
+        } else {
+            Log.d("3344444","API faid");
+            State(false, MSG_FAILED_REQUEST)
+        }
+    }.onErrorReturn {
+        Log.d("Erro.........", it.stackTrace.toString())
+        State(false, MSG_FAILED_REQUEST)
+    }
+
+
+
+    fun getLeaderBoardAllRegion(incentivefield:Int,selectPeriod:String,StartDate:String,EndDate:String,PeriodId:Int,moduleType:String,tableDisplay:Boolean) = apiService.getLeaderBoarAllRegion(sharedPref.getAuthToken(),incentivefield,selectPeriod,StartDate,EndDate,PeriodId,moduleType,tableDisplay,"All").map {
+        if (it.isSuccessful && it.body() != null) {
+
+
+
+            val dataOb = it.body()
+
+            //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
+
+            executiveDataObj = dataOb!!.response
+            if(dataOb!!.response.count() > 0){
+
+
+                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+
+            }
+
+            State(true, MSG_SUCCESS)
+        } else {
+            Log.d("3344444","API faid");
+            State(false, MSG_FAILED_REQUEST)
+        }
+    }.onErrorReturn {
+        Log.d("Erro.........", it.stackTrace.toString())
+        State(false, MSG_FAILED_REQUEST)
+    }
+
+
+    fun getLeaderBoardByRegionAllUser(incentivefield:Int,selectPeriod:String,StartDate:String,EndDate:String,PeriodId:Int,moduleType:String,tableDisplay:Boolean,region:String,) = apiService.getLeaderBoarByRegionAllUser(sharedPref.getAuthToken(),incentivefield,selectPeriod,StartDate,EndDate,PeriodId,moduleType,tableDisplay,region,"all").map {
+        if (it.isSuccessful && it.body() != null) {
+
+
+
+            val dataOb = it.body()
+
+            //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
+
+            executiveDataObj = dataOb!!.response
+            if(dataOb!!.response.count() > 0){
+
+
+                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+
+            }
+
+            State(true, MSG_SUCCESS)
+        } else {
+            Log.d("3344444","API faid");
+            State(false, MSG_FAILED_REQUEST)
+        }
+    }.onErrorReturn {
+        Log.d("Erro.........", it.stackTrace.toString())
+        State(false, MSG_FAILED_REQUEST)
+    }
+
+    fun getLeaderBoardAllUser(incentivefield:Int,selectPeriod:String,StartDate:String,EndDate:String,PeriodId:Int,moduleType:String,tableDisplay:Boolean) = apiService.getLeaderBoarAllUser(sharedPref.getAuthToken(),incentivefield,selectPeriod,StartDate,EndDate,PeriodId,moduleType,tableDisplay,"all").map {
+        if (it.isSuccessful && it.body() != null) {
+
+
+
+            val dataOb = it.body()
+
+            //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
+
+            executiveDataObj = dataOb!!.response
+            if(dataOb!!.response.count() > 0){
+
+
+                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+
+            }
+
+            State(true, MSG_SUCCESS)
+        } else {
+            Log.d("3344444","API faid");
+            State(false, MSG_FAILED_REQUEST)
+        }
+    }.onErrorReturn {
+        Log.d("Erro.........", it.stackTrace.toString())
+        State(false, MSG_FAILED_REQUEST)
+    }
+
+
+
+
+
+    fun getLeaderBoardByUser(incentivefield:Int,selectPeriod:String,StartDate:String,EndDate:String,PeriodId:Int,moduleType:String,tableDisplay:Boolean,region:String,store:String,sales:String) = apiService.getLeaderBoarByUserData(sharedPref.getAuthToken(),incentivefield,selectPeriod,StartDate,EndDate,PeriodId,moduleType,tableDisplay,region,sales,store).map {
+        if (it.isSuccessful && it.body() != null) {
+
+
+
+            val dataOb = it.body()
+
+            //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
+
+            executiveDataObj = dataOb!!.response
+            if(dataOb!!.response.count() > 0){
+
+
+                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+
+            }
+
+            State(true, MSG_SUCCESS)
+        } else {
+            State(false, MSG_FAILED_REQUEST)
+        }
+    }.onErrorReturn {
+        Log.d("Erro.........", it.stackTrace.toString())
+        State(false, MSG_FAILED_REQUEST)
+    }
+
+
+    fun getLeaderByRegionBoardByUser(incentivefield:Int,selectPeriod:String,StartDate:String,EndDate:String,PeriodId:Int,moduleType:String,tableDisplay:Boolean,region:String,sales:String) = apiService.getLeaderBoarByRegionByUser(sharedPref.getAuthToken(),incentivefield,selectPeriod,StartDate,EndDate,PeriodId,moduleType,tableDisplay,region,sales).map {
+        if (it.isSuccessful && it.body() != null) {
+
+
+
+            val dataOb = it.body()
+
+            //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
+
+            executiveDataObj = dataOb!!.response
+            if(dataOb!!.response.count() > 0){
+
+
+                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+
+            }
+
+            State(true, MSG_SUCCESS)
+        } else {
+            State(false, MSG_FAILED_REQUEST)
+        }
+    }.onErrorReturn {
+        Log.d("Erro.........", it.stackTrace.toString())
+        State(false, MSG_FAILED_REQUEST)
+    }
+
+
 
     @TypeConverter
     fun detailsToJson(value: Leaderboard): String {

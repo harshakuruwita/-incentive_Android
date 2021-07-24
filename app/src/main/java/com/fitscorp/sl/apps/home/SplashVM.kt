@@ -5,11 +5,7 @@ import android.util.Log
 import androidx.room.TypeConverter
 import com.fitscorp.sl.apps.common.*
 import com.fitscorp.sl.apps.home.model.FCMModel
-import com.fitscorp.sl.apps.home.model.UserAuthModel
-import com.fitscorp.sl.apps.home.model.UserRestModel
-import com.fitscorp.sl.apps.login.LoginServiceMainResponse
 import com.fitscorp.sl.apps.login.LoginUserMainResponse
-import com.fitscorp.sl.apps.register.StoreMainResponse
 import com.fitscorp.sl.apps.rest.ApiService
 import com.google.gson.Gson
 import javax.inject.Inject

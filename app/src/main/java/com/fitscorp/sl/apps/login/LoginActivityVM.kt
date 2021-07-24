@@ -30,7 +30,9 @@ class LoginActivityVM @Inject constructor(val apiService: ApiService,
 
             if(mainDataObj!!.response.code==200){
                val token= mainDataObj.response.data.access_token
+                val refreshToken = mainDataObj.response.data.refresh_token
                 sharedPref.saveData("key_user_token",token)
+                sharedPref.saveData("key_refresh_token",refreshToken)
                 State(true, MSG_SUCCESS)
 
             }
@@ -116,5 +118,7 @@ class LoginActivityVM @Inject constructor(val apiService: ApiService,
     fun getData():String{
         return  sharedPref.getCashedDataByName("user_data")
     }
+
+
 
 }

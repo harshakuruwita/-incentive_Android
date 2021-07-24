@@ -5,3 +5,10 @@ class UserRestModel {
     var domain:String?=null
 
 }
+
+
+class TokenReGenerateModel {
+    var grant_type:String?=null
+    var refresh_token:String?=null
+
+}

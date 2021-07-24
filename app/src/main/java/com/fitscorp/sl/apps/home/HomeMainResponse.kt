@@ -19,6 +19,8 @@ data class HomeMain (
 data class Periods (
 
     @SerializedName("url") val url : String,
+    @SerializedName("documentType") val documentType : String,
+    @SerializedName("documentData") val documentData : String,
     @SerializedName("incentiveId") val incentiveId : Int,
     @SerializedName("timePeriodArr") val timePeriodArr : List<TimePeriodArr>,
     @SerializedName("incentiveName") val incentiveName : String

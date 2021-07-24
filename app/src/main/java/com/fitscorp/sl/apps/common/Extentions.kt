@@ -51,6 +51,8 @@ fun SharedPreferences.getCashedDataByName(key:String) : String = getString(key, 
 
 fun SharedPreferences.getAuthToken(): String = getString("key_user_token", "").toString()
 
+fun SharedPreferences.getRefreshToken(): String = getString("key_refresh_token", "").toString()
+
 fun SharedPreferences.getStoreImage(): String = getString("storeImage", "").toString()
 
 fun SharedPreferences.saveData(key: String, value: String) {

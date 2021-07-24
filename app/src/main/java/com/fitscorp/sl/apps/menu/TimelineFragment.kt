@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fitscorp.sl.apps.App
 
 import com.fitscorp.sl.apps.R
+import com.fitscorp.sl.apps.home.model.RegionData
+import com.fitscorp.sl.apps.home.model.SalesData
+import com.fitscorp.sl.apps.home.model.StoreData
 import com.fitscorp.sl.apps.login.LoginUserMainResponse
 import com.fitscorp.sl.apps.login.User
 import com.fitscorp.sl.apps.menu.adapter.LeaderboardAapter
@@ -62,9 +65,14 @@ class TimelineFragment : Fragment() {
     lateinit var moduleType:String
      var tableDisplay:Boolean = false
     var isLoadFromCash:Boolean = false
+    var istargetSelectec :Boolean = false
+    var isAllRegiononly:Boolean = false
 
     lateinit var salesID:String
     lateinit var userRole:String
+    var region: RegionData?=null
+    var store: StoreData?=null
+    var sales: SalesData?=null
 
 
     private var listener: OnFragmentInteractionListener? = null
@@ -86,7 +94,7 @@ class TimelineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-Log.d("0099","ewwwww")
+
         if(userRole=="STORE_MANAGER") {
             individulbtn.visibility=View.VISIBLE
             individulbtn2.visibility=View.VISIBLE
@@ -95,16 +103,37 @@ Log.d("0099","ewwwww")
             individulbtn2.visibility=View.GONE
         }
 
-        if(isLoadFromCash){
-            callTimelineFromCash()
+
+        if(userRole=="HEAD_OFFICE") {
+
+            getTimelineData_EXECUTIVE(view)
+
         }else{
 
             getTimelineData_MANAGER(view)
             getTimelineData_SALES(view)
             registerUser_STORE_MANAGER(view)
             registerUser_SALES(view)
-
         }
+
+//        if(isLoadFromCash){
+//            callTimelineFromCash()
+//        }else{
+//            if(userRole=="HEAD_OFFICE") {
+//
+//                getTimelineData_EXECUTIVE(view)
+//
+//            }else{
+//
+//            getTimelineData_MANAGER(view)
+//            getTimelineData_SALES(view)
+//            registerUser_STORE_MANAGER(view)
+//            registerUser_SALES(view)
+//            }
+//
+//
+//
+//        }
         individulbtn2.setOnClickListener {
 
             if(smBtn == 1){
@@ -163,7 +192,7 @@ Log.d("0099","ewwwww")
             Log.d("QW1234","Calltiline")
             img_nodata.visibility=View.INVISIBLE
             val mlayoutManager = LinearLayoutManager(context)
-            val timelineAapter = TimelineAdapter(contxt,dataList)
+            val timelineAapter = TimelineAdapter(contxt,dataList,userRole,istargetSelectec)
             //  otherPaymentOptionsAdapter.onitemClickListener = contxt
             timeline_recycle.apply {
                 layoutManager = mlayoutManager as RecyclerView.LayoutManager?
@@ -196,7 +225,7 @@ Log.d("0099","ewwwww")
         }else{
             img_nodata.visibility=View.INVISIBLE
             val mlayoutManager = LinearLayoutManager(context)
-            val timelineAapter = TimelineAdapter(contxt,dataList)
+            val timelineAapter = TimelineAdapter(contxt,dataList,userRole,istargetSelectec)
             //  otherPaymentOptionsAdapter.onitemClickListener = contxt
             timeline_recycle.apply {
                 layoutManager = mlayoutManager as RecyclerView.LayoutManager?
@@ -230,7 +259,7 @@ Log.d("0099","ewwwww")
         }else{
             img_nodata.visibility=View.INVISIBLE
             val mlayoutManager = LinearLayoutManager(context)
-            val timelineAapter = TimelineAdapter(contxt,dataList)
+            val timelineAapter = TimelineAdapter(contxt,dataList,userRole,istargetSelectec)
             //  otherPaymentOptionsAdapter.onitemClickListener = contxt
             timeline_recycle.apply {
                 layoutManager = mlayoutManager as RecyclerView.LayoutManager?
@@ -302,7 +331,7 @@ Log.d("0099","ewwwww")
                         }else{
                             img_nodata.visibility=View.INVISIBLE
                             val mlayoutManager = LinearLayoutManager(context)
-                            val timelineAapter = TimelineAdapter(contxt,dataList)
+                            val timelineAapter = TimelineAdapter(contxt,dataList,userRole,istargetSelectec)
                             //  otherPaymentOptionsAdapter.onitemClickListener = contxt
                             timeline_recycle.apply {
                                 layoutManager = mlayoutManager as RecyclerView.LayoutManager?
@@ -319,6 +348,269 @@ Log.d("0099","ewwwww")
             })
 
         )
+    }
+
+    private fun getTimelineData_EXECUTIVE(view:View) {
+
+        if(region==null&&store == null&&sales == null){
+
+            if(isAllRegiononly){
+                subscription.add(timelineVM.getTimeLineExecitiveSalesOnly(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay).subscribeOn(
+                    Schedulers.io()
+                )
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                    .doOnTerminate { view.progressBar.visibility = View.GONE }
+                    .doOnError { view.progressBar.visibility = View.GONE }
+                    .subscribe({
+                        if (it.isSuccess) {
+
+                            val  dataObj=timelineVM.executiveDataObj
+                            if(dataObj!!.response.code==200){
+
+
+                                val dataList=dataObj.response.dataArr[0].dashboardData as ArrayList
+
+                                if(dataList.isEmpty()){
+                                    img_nodata.visibility=View.VISIBLE
+                                }else{
+
+                                    img_nodata.visibility=View.INVISIBLE
+                                    val mlayoutManager = LinearLayoutManager(context)
+                                    val timelineAapter = TimelineAdapter(contxt,dataList,userRole,istargetSelectec)
+                                    //  otherPaymentOptionsAdapter.onitemClickListener = contxt
+                                    timeline_recycle.apply {
+                                        layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                        adapter = timelineAapter
+                                    }}
+
+                            }
+
+                        }else{
+                            img_nodata.visibility=View.VISIBLE
+                        }
+                    }, {
+
+                        view.progressBar.visibility = View.GONE
+
+                    })
+
+                )
+            }else{
+                subscription.add(timelineVM.getTimeLineExecitiveAllRegion(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,"All","all").subscribeOn(
+                    Schedulers.io()
+                )
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                    .doOnTerminate { view.progressBar.visibility = View.GONE }
+                    .doOnError { view.progressBar.visibility = View.GONE }
+                    .subscribe({
+                        if (it.isSuccess) {
+
+                            val  dataObj=timelineVM.executiveDataObj
+                            if(dataObj!!.response.code==200){
+
+
+                                val dataList=dataObj.response.dataArr[0].dashboardData as ArrayList
+
+                                if(dataList.isEmpty()){
+                                    img_nodata.visibility=View.VISIBLE
+                                }else{
+
+                                    img_nodata.visibility=View.INVISIBLE
+                                    val mlayoutManager = LinearLayoutManager(context)
+                                    val timelineAapter = TimelineAdapter(contxt,dataList,userRole,istargetSelectec)
+                                    //  otherPaymentOptionsAdapter.onitemClickListener = contxt
+                                    timeline_recycle.apply {
+                                        layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                        adapter = timelineAapter
+                                    }}
+
+                            }
+
+                        }else{
+                            img_nodata.visibility=View.VISIBLE
+                        }
+                    }, {
+
+                        view.progressBar.visibility = View.GONE
+
+                    })
+
+                )
+            }
+
+
+
+        }else if(region!=null&&store == null&&sales == null){
+
+            subscription.add(timelineVM.getTimeLineExecitiveAllRegion(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,region!!.regionId.toString(),"all").subscribeOn(
+                Schedulers.io()
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                .doOnTerminate { view.progressBar.visibility = View.GONE }
+                .doOnError { view.progressBar.visibility = View.GONE }
+                .subscribe({
+                    if (it.isSuccess) {
+                        val  dataObj=timelineVM.executiveDataObj
+                        if(dataObj!!.response.code==200){
+
+                            val dataList=dataObj.response.dataArr[0].dashboardData as ArrayList
+
+                            Log.d("098",dataList.toString())
+                            if(dataList.isEmpty()){
+                                img_nodata.visibility=View.VISIBLE
+                            }else{
+                                img_nodata.visibility=View.INVISIBLE
+                                val mlayoutManager = LinearLayoutManager(context)
+                                val timelineAapter = TimelineAdapter(contxt,dataList,userRole,istargetSelectec)
+                                //  otherPaymentOptionsAdapter.onitemClickListener = contxt
+                                timeline_recycle.apply {
+                                    layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                    adapter = timelineAapter
+                                }}
+
+                        }
+
+                    }else{
+                        img_nodata.visibility=View.VISIBLE
+                    }
+                }, {
+
+                    view.progressBar.visibility = View.GONE
+
+                })
+
+            )
+        }else if(region!=null&&store != null&&sales == null){
+
+            subscription.add(timelineVM.getTimeLineExecitiveAllRegion(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,region!!.regionId.toString(),store!!.storeId.toString()).subscribeOn(
+                Schedulers.io()
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                .doOnTerminate { view.progressBar.visibility = View.GONE }
+                .doOnError { view.progressBar.visibility = View.GONE }
+                .subscribe({
+                    if (it.isSuccess) {
+                        val  dataObj=timelineVM.executiveDataObj
+                        if(dataObj!!.response.code==200){
+
+                            val dataList=dataObj.response.dataArr[0].dashboardData as ArrayList
+
+
+                            if(dataList.isEmpty()){
+                                img_nodata.visibility=View.VISIBLE
+                            }else{
+                                img_nodata.visibility=View.INVISIBLE
+                                val mlayoutManager = LinearLayoutManager(context)
+                                val timelineAapter = TimelineAdapter(contxt,dataList,userRole,istargetSelectec)
+                                //  otherPaymentOptionsAdapter.onitemClickListener = contxt
+                                timeline_recycle.apply {
+                                    layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                    adapter = timelineAapter
+                                }}
+
+                        }
+
+                    }else{
+                        img_nodata.visibility=View.VISIBLE
+                    }
+                }, {
+
+                    view.progressBar.visibility = View.GONE
+
+                })
+
+            )
+        }else if(region!=null&&store != null&&sales != null){
+            Log.d("2233","All store")
+            subscription.add(timelineVM.getTimeLineExecitiveByUser(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,region!!.regionId.toString(),store!!.storeId.toString(),sales!!.salesId ).subscribeOn(
+                Schedulers.io()
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                .doOnTerminate { view.progressBar.visibility = View.GONE }
+                .doOnError { view.progressBar.visibility = View.GONE }
+                .subscribe({
+                    if (it.isSuccess) {
+                        val  dataObj=timelineVM.executiveDataObj
+                        if(dataObj!!.response.code==200){
+
+                            val dataList=dataObj.response.dataArr[0].dashboardData as ArrayList
+
+                            Log.d("098",dataList.toString())
+                            if(dataList.isEmpty()){
+                                img_nodata.visibility=View.VISIBLE
+                            }else{
+                                img_nodata.visibility=View.INVISIBLE
+                                val mlayoutManager = LinearLayoutManager(context)
+                                val timelineAapter = TimelineAdapter(contxt,dataList,userRole,istargetSelectec)
+                                //  otherPaymentOptionsAdapter.onitemClickListener = contxt
+                                timeline_recycle.apply {
+                                    layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                    adapter = timelineAapter
+                                }}
+
+                        }
+
+                    }else{
+                        img_nodata.visibility=View.VISIBLE
+                    }
+                }, {
+
+                    view.progressBar.visibility = View.GONE
+
+                })
+
+            )
+        }else if(region!=null&&store == null&&sales != null){
+            Log.d("2233","All store")
+            subscription.add(timelineVM.getTimeLineExecitiveRegionByUser(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,region!!.regionId.toString(),sales!!.salesId.toString()).subscribeOn(
+                Schedulers.io()
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                .doOnTerminate { view.progressBar.visibility = View.GONE }
+                .doOnError { view.progressBar.visibility = View.GONE }
+                .subscribe({
+                    if (it.isSuccess) {
+                        val  dataObj=timelineVM.executiveDataObj
+                        if(dataObj!!.response.code==200){
+
+                            val dataList=dataObj.response.dataArr[0].dashboardData as ArrayList
+
+                            Log.d("098",dataList.toString())
+                            if(dataList.isEmpty()){
+                                img_nodata.visibility=View.VISIBLE
+                            }else{
+                                img_nodata.visibility=View.INVISIBLE
+                                val mlayoutManager = LinearLayoutManager(context)
+                                val timelineAapter = TimelineAdapter(contxt,dataList,userRole,istargetSelectec)
+                                //  otherPaymentOptionsAdapter.onitemClickListener = contxt
+                                timeline_recycle.apply {
+                                    layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                    adapter = timelineAapter
+                                }}
+
+                        }
+
+                    }else{
+                        img_nodata.visibility=View.VISIBLE
+                    }
+                }, {
+
+                    view.progressBar.visibility = View.GONE
+
+                })
+
+            )
+        }
+
+
+
+
     }
 
 ////Code for fix pre cash isse///
@@ -411,14 +703,7 @@ Log.d("0099","ewwwww")
         fun newInstance(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean, isLodFromCash:Boolean) =
             TimelineFragment().apply {
                 arguments = Bundle().apply {
-                   /* putInt(ARG_INCENTID, incentivefield)
-                    putString(ARG_SELECTPERIOD, selectPeriod)
-                    putString(ARG_STARTDATE, StartDate)
-                    putString(ARG_ENDDATE, EndDate)
-                    putInt(ARG_PERIODID, PeriodId)
-*/
 
-                    Log.d("LOG MANAGER",user.userRole)
 
                     salesID=user.salesId
                     userRole=user.userRole
@@ -431,8 +716,126 @@ Log.d("0099","ewwwww")
                     moduleType = moduleTypeStr
                     tableDisplay = tableDisplaybool
                     isLoadFromCash=isLodFromCash
-
                     contxt=c
+                    istargetSelectec = false
+
+                }
+            }
+
+        @JvmStatic
+        fun newInstanceRegion(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean, isLodFromCash:Boolean,dataRegion: RegionData) =
+            TimelineFragment().apply {
+                arguments = Bundle().apply {
+
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    contxt=c
+                    region = dataRegion
+                    istargetSelectec = false
+                }
+            }
+        @JvmStatic
+        fun newInstanceStore(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean, isLodFromCash:Boolean,dataRegion: RegionData,dataStore: StoreData) =
+            TimelineFragment().apply {
+                arguments = Bundle().apply {
+
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    contxt=c
+                    region = dataRegion
+                    store = dataStore
+                    istargetSelectec = true
+
+                }
+            }
+
+        @JvmStatic
+        fun newInstanceSales(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean, isLodFromCash:Boolean,dataRegion: RegionData,dataStore: StoreData,dataSales: SalesData) =
+            TimelineFragment().apply {
+                arguments = Bundle().apply {
+
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    contxt=c
+                    region = dataRegion
+                    store = dataStore
+                    sales = dataSales
+                    istargetSelectec = true
+                }
+            }
+
+        @JvmStatic
+        fun newInstanceSalesByRegion(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean, isLodFromCash:Boolean,dataRegion: RegionData,dataSales: SalesData) =
+            TimelineFragment().apply {
+                arguments = Bundle().apply {
+
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    contxt=c
+                    region = dataRegion
+                    sales = dataSales
+                    istargetSelectec = true
+
+                }
+            }
+
+
+        @JvmStatic
+        fun newInstanceAllSales(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean, isLodFromCash:Boolean) =
+            TimelineFragment().apply {
+                arguments = Bundle().apply {
+
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    contxt=c
+                    istargetSelectec = true
+                    isAllRegiononly = true
+
                 }
             }
     }

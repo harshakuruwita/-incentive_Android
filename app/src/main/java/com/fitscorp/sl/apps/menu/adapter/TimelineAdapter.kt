@@ -6,6 +6,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
+import android.util.Log
 
 import android.view.View
 import android.view.ViewGroup
@@ -26,12 +27,14 @@ import kotlinx.android.synthetic.main.timeline_main_cell.view.txt_dsc_persentage
 import kotlinx.android.synthetic.main.timeline_main_cell.view.txt_dsc_persentage3
 import kotlinx.android.synthetic.main.timeline_main_cell.view.txt_title
 import kotlinx.android.synthetic.main.timeline_sub_cell.view.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 
 const val MAIN_CELL = 1
 const val SUB_CELL = 2
 
-class TimelineAdapter(val context: Context, val list: ArrayList<DataArr>) :
+class TimelineAdapter(val context: Context, val list: ArrayList<DataArr>, val userRole: String, val isTargetShow: Boolean) :
     RecyclerView.Adapter<TimelineAdapter.BaseHolder>() {
 
 
@@ -91,7 +94,7 @@ class TimelineAdapter(val context: Context, val list: ArrayList<DataArr>) :
         override fun bind(item: Any) = with(itemView) {
 
            val data= item as DataArr
-
+            txt_title.text="ddddddd"
              if (data.shortName == " "){
                 txt_title.text=data.longName
             } else if(data.shortName.isNotEmpty() ){
@@ -101,59 +104,63 @@ class TimelineAdapter(val context: Context, val list: ArrayList<DataArr>) :
 
 
             txt_dsc.text=data.MobileName
+            val df = DecimalFormat("#.##")
+            df.roundingMode = RoundingMode.CEILING
 
             if(data.measureType == "%"){
                 txt_dsc_persentage.text=data.value1 +" " +  data.measureType
                 txt_dsc_persentage3.text=data.value2.toString() + " "+ data.measureType
             } else if(data.measureType == "POINT"){
-                txt_dsc_persentage.text= "Point" +" " + data.value1
-                txt_dsc_persentage3.text= "Point" + " "+  data.value2.toString()
+
+
+                txt_dsc_persentage.text= "Point" +" " + df.format(data.value1.toDouble()).toDouble()
+                txt_dsc_persentage3.text= "Point" + " "+  df.format(data.value2.toDouble()).toDouble()
             }
 
             else{
-                txt_dsc_persentage.text= data.measureType +" " + data.value1
-                txt_dsc_persentage3.text= data.measureType + " "+  data.value2.toString()
+                txt_dsc_persentage.text= data.measureType +" " + df.format(data.value1.toDouble()).toDouble()
+                txt_dsc_persentage3.text= data.measureType + " "+  df.format(data.value2.toDouble()).toDouble()
             }
 
-
-
             txt_descbellow.text=data.TargetMobileName
-
+            if(userRole=="HEAD_OFFICE"&& !isTargetShow){
+                txt_descbellow.visibility = View.GONE
+                progress_bar2.visibility = View.GONE
+                txt_dsc_persentage3.visibility = View.GONE
+            }else{
+                txt_descbellow.visibility = View.VISIBLE
+                progress_bar2.visibility = View.VISIBLE
+                txt_dsc_persentage3.visibility = View.VISIBLE
+            }
 
             val colo1:String=data.color2
             val colo2:String=data.color1
             txt_dsc.setTextColor(Color.parseColor(colo2))
             txt_dsc_persentage.setTextColor(Color.parseColor(colo2))
 
-
-
             progress_bar.progressColor = Color.parseColor(colo2)
 
 
-           //
-            // progress_bar.radius=20
             if(data.total.toFloat()<2){
+
                 progress_bar.progress= 4.0F
             }else{
-                progress_bar.progress= data.total.toFloat()
+
+               progress_bar.progress= data.total.toFloat()
             }
 
             if(data.target.toFloat()<2){
+
                 progress_bar2.progress= 4.0F
             }else{
-                progress_bar2.progress= data.target.toFloat()
+
+             progress_bar2.progress= data.target.toFloat()
             }
-
-
 
 
             txt_descbellow.setTextColor(Color.parseColor(colo1))
             txt_dsc_persentage3.setTextColor(Color.parseColor(colo1))
             progress_bar2.progressColor = Color.parseColor(colo1)
-
-
-
-
 
             return@with
         }
