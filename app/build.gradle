@@ -14,7 +14,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.fitscorp.bluebloods.degreeapps"
+        applicationId "com.fitscorp.bluebloods.vodafonevault"
         minSdkVersion 17
         targetSdkVersion 29
         versionCode 8

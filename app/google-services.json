@@ -116,6 +116,42 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:327274188108:android:c449c6ec8255241b8a93e9",
+        "android_client_info": {
+          "package_name": "com.fitscorp.bluebloods.vodafonevault"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWYuNbAlrTOs4_lIDUlkorwtR2R334ric"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327274188108-eju8n6d8to68847j8rff5dfsbvb624e2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "327274188108-dl3djuebgt7b1ord876k1ho23qgmeil9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.titanit.bluebloods"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:327274188108:android:7ea9275bf7a21b568a93e9",
         "android_client_info": {
           "package_name": "com.fitscorp.sl.apps"

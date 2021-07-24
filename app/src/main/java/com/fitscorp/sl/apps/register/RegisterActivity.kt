@@ -67,9 +67,9 @@ class RegisterActivity : BaseActivity() {
         (layout_mobilenumber.findViewById(R.id.register_feild_lable) as TextView).text = "Mobile Number"
         (layout_mobilenumber.findViewById(R.id.register_feild_lable) as TextView).inputType =
             InputType.TYPE_CLASS_PHONE
-        (layout_saleid.findViewById(R.id.register_feild_lable) as TextView).text = "Sales ID"
+        (layout_saleid.findViewById(R.id.register_feild_lable) as TextView).text = "Pronto Code"
 
-        (layout_saleid_tag.findViewById(R.id.register_feild_lable) as TextView).text = "Secondary Sales ID"
+        (layout_saleid_tag.findViewById(R.id.register_feild_lable) as TextView).text = "Secondary Pronto Code"
 
         
 
