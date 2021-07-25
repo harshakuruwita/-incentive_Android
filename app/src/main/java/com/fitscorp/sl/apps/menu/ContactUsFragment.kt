@@ -190,7 +190,7 @@ class ContactUsFragment : Fragment() {
         }
 
         var data: Contact = Contact()
-        data.tittle = view!!.txt_title.text.toString()
+        data.subject = view!!.txt_title.text.toString()
         data.message = view!!.txt_message_content.text.toString()
         data.isFromDashboard = true;
 

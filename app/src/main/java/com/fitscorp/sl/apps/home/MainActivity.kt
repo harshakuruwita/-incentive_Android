@@ -782,6 +782,7 @@ class CompanyAdapter3(val context: Context, var babbyList: List<DropDownList>) :
                 vh = view.tag as ItemRowHolder
             }
             vh.label.text = storeList.get(position).storeName
+
             return view
         }
 
