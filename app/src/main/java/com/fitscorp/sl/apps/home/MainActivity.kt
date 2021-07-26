@@ -82,199 +82,198 @@ class MainActivity : BaseActivity() {
     var isStoreEnable = false;
     var isSalesEnable = false;
 
-@Inject
-lateinit var homeVM: HomeVM
-@Inject
-lateinit var loginVM: LoginActivityVM
-@Inject
-lateinit var profileVM: ProfileVM
+    @Inject
+    lateinit var homeVM: HomeVM
+    @Inject
+    lateinit var loginVM: LoginActivityVM
+    @Inject
+    lateinit var profileVM: ProfileVM
 
-lateinit var webURL:String
-lateinit var documentType:String
-lateinit var documentData:String
+    lateinit var webURL:String
+    lateinit var documentType:String
+    lateinit var documentData:String
 
 
-companion object {
-   fun startActivity(context: Activity) {
-       val intent = Intent(context, MainActivity::class.java)
-       context.startActivity(intent)
+    companion object {
+        fun startActivity(context: Activity) {
+            val intent = Intent(context, MainActivity::class.java)
+            context.startActivity(intent)
 
-   }
+        }
 
-    fun finishActivity(context: Activity) {
-        val intent = Intent(context, MainActivity::class.java)
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        fun finishActivity(context: Activity) {
+            val intent = Intent(context, MainActivity::class.java)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        }
+
+
 
     }
 
 
 
-}
 
-
-
-
-override fun onCreate(savedInstanceState: Bundle?) {
-   super.onCreate(savedInstanceState)
-   setContentView(R.layout.activity_main)
-   // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-    webURL = ""
-    documentType = ""
-    documentData = ""
-   App.getInstance().appComponent.inject(this)
-    store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#FFBC00"));
-    val intent = intent
-    val message = intent.getStringExtra("message")
-    if(!message.isNullOrEmpty()) {
-        AlertDialog.Builder(this)
-            .setTitle("Notification")
-            .setMessage(message)
-            .setPositiveButton("Ok", { dialog, which -> }).show()
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        webURL = ""
+        documentType = ""
+        documentData = ""
+        App.getInstance().appComponent.inject(this)
+        store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#00B2A9"));
+        val intent = intent
+        val message = intent.getStringExtra("message")
+        if(!message.isNullOrEmpty()) {
+            AlertDialog.Builder(this)
+                .setTitle("Notification")
+                .setMessage(message)
+                .setPositiveButton("Ok", { dialog, which -> }).show()
+        }
 
         setViewColors()
         setupBottomMenu()
         readDropDownData();
         readRegionFilter();
-   // getAppFilters();
-    getDefaultIncentive();
+        // getAppFilters();
+        getDefaultIncentive();
 
 
 
-    FirebaseApp.initializeApp(this)
+        FirebaseApp.initializeApp(this)
 
-    FirebaseInstanceId.getInstance().instanceId
-        .addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("SSSSSS", "getInstanceId failed", task.exception)
-                return@OnCompleteListener
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("SSSSSS", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+
+                // Log and toast
+                val msg = getString(R.string.abc_action_bar_home_description, token)
+                Log.d("AAAAA", token)
+                var p: FCMModel = FCMModel()
+                p.deviceType = "android"
+                p.token = token
+
+
+                sendDevicetoken(p)
+
+            })
+
+
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+
+                childArray=periodArray?.get(position)!!.timePeriodArr
+                val dataList=periodArray?.get(position)!!.timePeriodArr
+                val spinnerAdapter2 = CompanyAdapter2(this@MainActivity, dataList)
+                spinnermonth_type?.adapter = spinnerAdapter2
+
+                spinnerselect_year?.adapter = null
+
+
+
+                incentivefield = periodArray?.get(position)!!.incentiveId
+                isLoadFromCashed = false
+
+
+                webURL=periodArray?.get(position)!!.url
+                documentType=periodArray?.get(position)!!.documentType
+                documentData=periodArray?.get(position)!!.documentData
+                if(selectedTab==0){
+
+                    if(childArray!!.isEmpty()){
+                        Log.d("XXXXX", "sssssss")
+                        navigateToFragment(NoDataFragment.newInstance("", ""))
+                    }
+
+                }
+
+                else if(selectedTab==2){
+                    webURL=periodArray?.get(position)!!.url
+                    documentType=periodArray?.get(position)!!.documentType
+                    documentData=periodArray?.get(position)!!.documentData
+                    callInfo()
+                }
+
             }
-
-            // Get new Instance ID token
-            val token = task.result?.token
-
-            // Log and toast
-            val msg = getString(R.string.abc_action_bar_home_description, token)
-            Log.d("AAAAA", token)
-            var p: FCMModel = FCMModel()
-            p.deviceType = "android"
-            p.token = token
-
-
-            sendDevicetoken(p)
-
-        })
-
-
-
-   spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-       override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-
-           childArray=periodArray?.get(position)!!.timePeriodArr
-           val dataList=periodArray?.get(position)!!.timePeriodArr
-           val spinnerAdapter2 = CompanyAdapter2(this@MainActivity, dataList)
-           spinnermonth_type?.adapter = spinnerAdapter2
-
-           spinnerselect_year?.adapter = null
-
-
-
-           incentivefield = periodArray?.get(position)!!.incentiveId
-           isLoadFromCashed = false
-
-
-           webURL=periodArray?.get(position)!!.url
-           documentType=periodArray?.get(position)!!.documentType
-           documentData=periodArray?.get(position)!!.documentData
-           if(selectedTab==0){
-
-               if(childArray!!.isEmpty()){
-                   Log.d("XXXXX", "sssssss")
-                   navigateToFragment(NoDataFragment.newInstance("", ""))
-               }
-
-           }
-
-           else if(selectedTab==2){
-               webURL=periodArray?.get(position)!!.url
-               documentType=periodArray?.get(position)!!.documentType
-               documentData=periodArray?.get(position)!!.documentData
-               callInfo()
-           }
-
-       }
-       override fun onNothingSelected(parent: AdapterView<*>) {
-       }
-   }
-
-   spinnermonth_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-       override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-
-
-           if((childArray!!.size-1) >=position){
-
-
-
-               babbyArrsy= childArray?.get(position)!!.dropDownList
-               val babbyList= childArray?.get(position)!!.dropDownList
-               val spinnerAdapter3 = CompanyAdapter3(this@MainActivity, babbyList)
-
-
-               if((babbyArrsy!!.size-1) >=0){
-
-                   spinnerselect_year?.adapter = spinnerAdapter3
-               }else{
-
-               }
-
-               selectPeriod=childArray?.get(position)!!.name
-               isLoadFromCashed=false
-               if(selectedTab==0){
-                   callTimeline()
-               }
-               if(selectedTab==1){
-                   callLeaderboard()
-               }
-           }else{
-
-           }
-
-
-       }
-       override fun onNothingSelected(parent: AdapterView<*>) {
-       }
-   }
-
-
-
-
-
-    spinnerselect_year.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-
-            startDate = babbyArrsy?.get(position)!!.startDate
-            endDate = babbyArrsy?.get(position)!!.endDate
-            periodId = babbyArrsy?.get(position)!!.id
-            isLoadFromCashed=false
-            if(selectedTab==0){
-                callTimeline()
-            }
-            if(selectedTab==1){
-                callLeaderboard()
-
+            override fun onNothingSelected(parent: AdapterView<*>) {
             }
         }
-        override fun onNothingSelected(parent: AdapterView<*>) {
+
+        spinnermonth_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+
+
+                if((childArray!!.size-1) >=position){
+
+
+
+                    babbyArrsy= childArray?.get(position)!!.dropDownList
+                    val babbyList= childArray?.get(position)!!.dropDownList
+                    val spinnerAdapter3 = CompanyAdapter3(this@MainActivity, babbyList)
+
+
+                    if((babbyArrsy!!.size-1) >=0){
+
+                        spinnerselect_year?.adapter = spinnerAdapter3
+                    }else{
+
+                    }
+
+                    selectPeriod=childArray?.get(position)!!.name
+                    isLoadFromCashed=false
+                    if(selectedTab==0){
+                        callTimeline()
+                    }
+                    if(selectedTab==1){
+                        callLeaderboard()
+                    }
+                }else{
+
+                }
+
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
         }
-    }
 
 
 
-    spinner_executive_region.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
-                Log.d("334449", position.toString());
-            storeSelectedType = 1;
+
+        spinnerselect_year.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+
+                startDate = babbyArrsy?.get(position)!!.startDate
+                endDate = babbyArrsy?.get(position)!!.endDate
+                periodId = babbyArrsy?.get(position)!!.id
+                isLoadFromCashed=false
+                if(selectedTab==0){
+                    callTimeline()
+                }
+                if(selectedTab==1){
+                    callLeaderboard()
+
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
+        }
+
+
+
+        spinner_executive_region.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+
+                storeSelectedType = 1;
                 selectedRegion = allRegionArr!![position];
                 updateExecutiveStore(selectedRegion!!, 0);
                 executive_headder.visibility = View.VISIBLE
@@ -293,45 +292,52 @@ override fun onCreate(savedInstanceState: Bundle?) {
                     Log.d("334450", "call leader board");
                     callLeaderboard()
                 }
-        }
-        override fun onNothingSelected(parent: AdapterView<*>) {
-        }
-    }
-
-    spinner_executive_store.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-
-            selectedstore = storeArr!![position];
-            storeSelectedType = 0;
-            updateExecutiveSalesPersion(selectedstore!!, 0);
-            executive_headder.visibility = View.VISIBLE
-            executive_headder_name.text = selectedstore!!.storeName;
-            all_store_text.visibility = View.GONE
-            executive_search.visibility = View.GONE
-
-            selectedsales = null;
-            if(selectedTab==0){
-                callTimeline()
             }
-            if(selectedTab==1){
-                callLeaderboard()
+            override fun onNothingSelected(parent: AdapterView<*>) {
             }
+        }
 
+        spinner_executive_store.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+
+//            if(storeArr != null){
+//                selectedstore = storeArr!![position];
+//            }else{
+//                selectedstore = selectedRegion!!.storeData[0];
+//            }
+
+                selectedstore = selectedRegion!!.storeData[position];
+
+                storeSelectedType = 0;
+                updateExecutiveSalesPersion(selectedstore!!, 0);
+                executive_headder.visibility = View.VISIBLE
+                executive_headder_name.text = selectedstore!!.storeName;
+                all_store_text.visibility = View.GONE
+                executive_search.visibility = View.GONE
+
+                selectedsales = null;
+                if(selectedTab==0){
+                    callTimeline()
+                }
+                if(selectedTab==1){
+                    callLeaderboard()
+                }
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
         }
-        override fun onNothingSelected(parent: AdapterView<*>) {
-        }
+
+
+
+
+        spinner_executive_region.visibility = View.GONE
+        spinner_executive_store.visibility = View.GONE
+
+        executive_search.visibility = View.GONE
+        executive_headder.visibility = View.GONE
+
     }
-
-
-
-
-    spinner_executive_region.visibility = View.GONE
-    spinner_executive_store.visibility = View.GONE
-
-    executive_search.visibility = View.GONE
-    executive_headder.visibility = View.GONE
-
-}
 
     override fun onResume() {
 
@@ -403,64 +409,64 @@ override fun onCreate(savedInstanceState: Bundle?) {
         )
     }
 
-private fun setViewColors() {
+    private fun setViewColors() {
 
 
-   val colorData = homeVM.getData()
+        val colorData = homeVM.getData()
 
-   if (colorData.isNotEmpty()) {
+        if (colorData.isNotEmpty()) {
 
-       var jsonObj: JSONObject? = null
-       try {
-           jsonObj = JSONObject(colorData)
-       } catch (e: JSONException) {
-           e.printStackTrace()
-       }
+            var jsonObj: JSONObject? = null
+            try {
+                jsonObj = JSONObject(colorData)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
 
-       val grenColorValue1 = jsonObj!!.optString("color1").toString()
-       val grenColorValue2 = jsonObj.optString("color2").toString()
-       val grenColorValue3 = jsonObj.optString("color3").toString()
+            val grenColorValue1 = jsonObj!!.optString("color1").toString()
+            val grenColorValue2 = jsonObj.optString("color2").toString()
+            val grenColorValue3 = jsonObj.optString("color3").toString()
 
-       val logoSmall = jsonObj.optString("logoSmall").toString()
-       var jsonArry: JSONArray? = null
-       try {
-           jsonArry = JSONArray(logoSmall)
-       } catch (e: JSONException) {
-           e.printStackTrace()
-       }
-       for (i in 0 until jsonArry!!.length()) {
-           val item = jsonArry.getJSONObject(i)
-           val url = item!!.optString("url").toString()
-           Glide.with(this).load(url).into(img_logo)
-       }
+            val logoSmall = jsonObj.optString("logoSmall").toString()
+            var jsonArry: JSONArray? = null
+            try {
+                jsonArry = JSONArray(logoSmall)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            for (i in 0 until jsonArry!!.length()) {
+                val item = jsonArry.getJSONObject(i)
+                val url = item!!.optString("url").toString()
+                Glide.with(this).load(url).into(img_logo)
+            }
 
-       txt_page_layout!!.setBackgroundColor(Color.parseColor(grenColorValue3))
-
-
-       val greenColorValue1 = Color.parseColor(grenColorValue1)
-       val greenColorValue2 = Color.parseColor(grenColorValue2)
+            txt_page_layout!!.setBackgroundColor(Color.parseColor(grenColorValue3))
 
 
-       val gd = GradientDrawable(
-           GradientDrawable.Orientation.LEFT_RIGHT,
-           intArrayOf(greenColorValue2, greenColorValue1)
-       )
-       gd.gradientType = GradientDrawable.LINEAR_GRADIENT
-       gd.cornerRadius = 0f
-
-       top_main_menu.setBackgroundDrawable(gd)
-       lay_filter_second.setBackgroundDrawable(gd)
-
-       bottom_menu_view.setBackgroundColor(Color.parseColor(grenColorValue1))
-       // bottom_menu_view.setBackgroundDrawable(gd)
-
-       txt_page_layout.setBackgroundColor(Color.parseColor(grenColorValue1))
-       img_home.setBackgroundResource(R.drawable.user)
-   }
+            val greenColorValue1 = Color.parseColor(grenColorValue1)
+            val greenColorValue2 = Color.parseColor(grenColorValue2)
 
 
+            val gd = GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                intArrayOf(greenColorValue2, greenColorValue1)
+            )
+            gd.gradientType = GradientDrawable.LINEAR_GRADIENT
+            gd.cornerRadius = 0f
 
-}
+            top_main_menu.setBackgroundDrawable(gd)
+            lay_filter_second.setBackgroundDrawable(gd)
+
+            bottom_menu_view.setBackgroundColor(Color.parseColor(grenColorValue1))
+            // bottom_menu_view.setBackgroundDrawable(gd)
+
+            txt_page_layout.setBackgroundColor(Color.parseColor(grenColorValue1))
+            img_home.setBackgroundResource(R.drawable.user)
+        }
+
+
+
+    }
 
     private fun checkToken() {
 
@@ -551,88 +557,88 @@ private fun setViewColors() {
 
     }
 
-class CompanyAdapter(val context: Context, var peridesList: List<Periods>) : BaseAdapter(), SpinnerAdapter {
+    class CompanyAdapter(val context: Context, var peridesList: List<Periods>) : BaseAdapter(), SpinnerAdapter {
 
 
-   val mInflater: LayoutInflater = LayoutInflater.from(context)
+        val mInflater: LayoutInflater = LayoutInflater.from(context)
 
-   override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-       val view: View
-       val vh: ItemRowHolder
-       if (convertView == null) {
-           view = mInflater.inflate(R.layout.spinner_main_cell_dropdown, parent, false)
-           vh = ItemRowHolder(view)
-           view?.tag = vh
-       } else {
-           view = convertView
-           vh = view.tag as ItemRowHolder
-       }
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val view: View
+            val vh: ItemRowHolder
+            if (convertView == null) {
+                view = mInflater.inflate(R.layout.spinner_main_cell_dropdown, parent, false)
+                vh = ItemRowHolder(view)
+                view?.tag = vh
+            } else {
+                view = convertView
+                vh = view.tag as ItemRowHolder
+            }
 
-       // setting adapter item height programatically.
+            // setting adapter item height programatically.
 
-       //   val params = view.layoutParams
-       //   params.height = 60
-       //  view.layoutParams = params
+            //   val params = view.layoutParams
+            //   params.height = 60
+            //  view.layoutParams = params
 
-       vh.label.text = peridesList.get(position).incentiveName
-       return view
-   }
+            vh.label.text = peridesList.get(position).incentiveName
+            return view
+        }
 
-   override fun getItem(position: Int): Any? {
+        override fun getItem(position: Int): Any? {
 
-       return null
+            return null
 
-   }
+        }
 
-   override fun getItemId(position: Int): Long {
+        override fun getItemId(position: Int): Long {
 
-       return 0
+            return 0
 
-   }
+        }
 
-   override fun getCount(): Int {
-       return peridesList.size
-   }
+        override fun getCount(): Int {
+            return peridesList.size
+        }
 
-   private class ItemRowHolder(row: View?) {
+        private class ItemRowHolder(row: View?) {
 
-       val label: TextView
+            val label: TextView
 
-       init {
-           this.label = row?.findViewById(R.id.dropdown) as TextView
-       }
-   }
-
-
-}
+            init {
+                this.label = row?.findViewById(R.id.dropdown) as TextView
+            }
+        }
 
 
-
+    }
 
 
 
-class CompanyAdapter2(val context: Context, var timePerieodsList: List<TimePeriodArr>) : BaseAdapter() {
 
 
-   val mInflater: LayoutInflater = LayoutInflater.from(context)
 
-   override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-       val view: View
-       val vh: ItemRowHolder
-       if (convertView == null) {
-           view = mInflater.inflate(R.layout.spinner_main_cell_dropdown, parent, false)
-           vh = ItemRowHolder(view)
-           view?.tag = vh
-       } else {
-           view = convertView
-           vh = view.tag as ItemRowHolder
-       }
+    class CompanyAdapter2(val context: Context, var timePerieodsList: List<TimePeriodArr>) : BaseAdapter() {
+
+
+        val mInflater: LayoutInflater = LayoutInflater.from(context)
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val view: View
+            val vh: ItemRowHolder
+            if (convertView == null) {
+                view = mInflater.inflate(R.layout.spinner_main_cell_dropdown, parent, false)
+                vh = ItemRowHolder(view)
+                view?.tag = vh
+            } else {
+                view = convertView
+                vh = view.tag as ItemRowHolder
+            }
 
 //            val params = view.layoutParams
 //            params.height = 60
 //              view.layoutParams = params
 
-       vh.label.text = timePerieodsList.get(position).name
+            vh.label.text = timePerieodsList.get(position).name
 //            vh.label.setOnClickListener {
 //
 //                timePeriodArr=timePerieodsList[position].dropDownList
@@ -640,83 +646,83 @@ class CompanyAdapter2(val context: Context, var timePerieodsList: List<TimePerio
 //               // val spinnerAdapter3 = CompanyAdapter3(context, timePerieodsList[position].dropDownList)
 //                //updateDropDowns(mainList,0)
 //            }
-       return view
-   }
+            return view
+        }
 
-   override fun getItem(position: Int): Any? {
+        override fun getItem(position: Int): Any? {
 
-       return null
+            return null
 
-   }
+        }
 
-   override fun getItemId(position: Int): Long {
+        override fun getItemId(position: Int): Long {
 
-       return 0
+            return 0
 
-   }
+        }
 
-   override fun getCount(): Int {
-       return timePerieodsList.size
-   }
+        override fun getCount(): Int {
+            return timePerieodsList.size
+        }
 
-   private class ItemRowHolder(row: View?) {
+        private class ItemRowHolder(row: View?) {
 
-       val label: TextView
+            val label: TextView
 
-       init {
-           this.label = row?.findViewById(R.id.dropdown) as TextView
-       }
-   }
-}
+            init {
+                this.label = row?.findViewById(R.id.dropdown) as TextView
+            }
+        }
+    }
 
-class CompanyAdapter3(val context: Context, var babbyList: List<DropDownList>) : BaseAdapter() {
-
-
-   val mInflater: LayoutInflater = LayoutInflater.from(context)
-
-   override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-       val view: View
-       val vh: ItemRowHolder
-       if (convertView == null) {
-           view = mInflater.inflate(R.layout.spinner_main_cell_dropdown, parent, false)
-           vh = ItemRowHolder(view)
-           view?.tag = vh
-       } else {
-           view = convertView
-           vh = view.tag as ItemRowHolder
-       }
+    class CompanyAdapter3(val context: Context, var babbyList: List<DropDownList>) : BaseAdapter() {
 
 
-       vh.label.text = babbyList.get(position).name
+        val mInflater: LayoutInflater = LayoutInflater.from(context)
 
-       return view
-   }
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val view: View
+            val vh: ItemRowHolder
+            if (convertView == null) {
+                view = mInflater.inflate(R.layout.spinner_main_cell_dropdown, parent, false)
+                vh = ItemRowHolder(view)
+                view?.tag = vh
+            } else {
+                view = convertView
+                vh = view.tag as ItemRowHolder
+            }
 
-   override fun getItem(position: Int): Any? {
 
-       return null
+            vh.label.text = babbyList.get(position).name
 
-   }
+            return view
+        }
 
-   override fun getItemId(position: Int): Long {
+        override fun getItem(position: Int): Any? {
 
-       return 0
+            return null
 
-   }
+        }
 
-   override fun getCount(): Int {
-       return babbyList.size
-   }
+        override fun getItemId(position: Int): Long {
 
-   private class ItemRowHolder(row: View?) {
+            return 0
 
-       val label: TextView
+        }
 
-       init {
-           this.label = row?.findViewById(R.id.dropdown) as TextView
-       }
-   }
-}
+        override fun getCount(): Int {
+            return babbyList.size
+        }
+
+        private class ItemRowHolder(row: View?) {
+
+            val label: TextView
+
+            init {
+                this.label = row?.findViewById(R.id.dropdown) as TextView
+            }
+        }
+    }
 
 
     class executiveRegionAdapter(val context: Context, var regionList: List<RegionData>) : BaseAdapter(), SpinnerAdapter {
@@ -784,6 +790,7 @@ class CompanyAdapter3(val context: Context, var babbyList: List<DropDownList>) :
                 vh = view.tag as ItemRowHolder
             }
             vh.label.text = storeList.get(position).storeName
+
             return view
         }
 
@@ -867,240 +874,261 @@ class CompanyAdapter3(val context: Context, var babbyList: List<DropDownList>) :
 
 
 
-private fun setupBottomMenu() {
+    private fun setupBottomMenu() {
 
-    img_home.setOnClickListener {
+        img_home.setOnClickListener {
 
-        if(selectedTab ==0 || selectedTab== 1 || selectedTab ==2){
-           val data = homeVM.getLoginData()
-            ProfileActivity.startActivity(this@MainActivity, data)
-        }
-        if(selectedTab ==3){
-          //  sendMessage(null)
+            if(selectedTab ==0 || selectedTab== 1 || selectedTab ==2){
+                val data = homeVM.getLoginData()
+                ProfileActivity.startActivity(this@MainActivity, data)
+            }
+            if(selectedTab ==3){
+                //  sendMessage(null)
 
-            var frafmen=supportFragmentManager.findFragmentById(R.id.content_frame) as ContactUsFragment
-            frafmen.snedMessage()
+                var frafmen=supportFragmentManager.findFragmentById(R.id.content_frame) as ContactUsFragment
+                frafmen.snedMessage()
 
-         }
+            }
 
-
-    }
-
-
-   lay_timeline.setOnClickListener {
-       if(loadtab == 0){
-
-       }else{
-
-           isLoadFromCashed=true
-           callTimeline()
-           loadtab = 0
-       }
-
-
-   }
-   layy_timeline.setOnClickListener {
-       if(loadtab == 0){
-
-       }else{
-
-           isLoadFromCashed=true
-           callTimeline()
-           loadtab = 0
-       }
-   }
-   img_timeline.setOnClickListener {
-       if(loadtab == 0){
-
-       }else{
-
-           isLoadFromCashed=true
-           callTimeline()
-           loadtab = 0
-       }
-   }
-   txt_timeline.setOnClickListener {
-       if(loadtab == 0){
-
-       }else{
-
-           isLoadFromCashed=true
-           callTimeline()
-           loadtab = 0
-       }
-   }
-
-
-   // loginVM.loginUserMainResponse.response.data.org
-   lay_leaderboard.setOnClickListener {
-
-       if(loadtab == 1){
-
-       }else{
-
-           isLoadFromCashed=true
-           callLeaderboard()
-           loadtab = 1
-       }
-
-
-
-   }
-   layy_leaderboard.setOnClickListener {
-       if(loadtab == 1){
-
-       }else{
-
-           isLoadFromCashed=true
-           callLeaderboard()
-           loadtab = 1
-       }
-   }
-   img_leaderboard.setOnClickListener {
-       if(loadtab == 1){
-
-       }else{
-
-           isLoadFromCashed=true
-           callLeaderboard()
-           loadtab = 1
-       }
-   }
-   txt_leaderboard.setOnClickListener {
-       if(loadtab == 1){
-
-       }else{
-
-           isLoadFromCashed=true
-           callLeaderboard()
-           loadtab = 1
-       }
-   }
-
-
-
-   lay_info_us.setOnClickListener {
-
-       if(loadtab == 2){
-
-       }else{
-
-
-           callInfo()
-           loadtab = 2
-       }
-
-
-   }
-   layy_info_us.setOnClickListener {
-       if(loadtab == 2){
-
-       }else{
-
-
-           callInfo()
-           loadtab = 2
-       }
-   }
-   img_info_us.setOnClickListener {
-       if(loadtab == 2){
-
-       }else{
-
-
-           callInfo()
-           loadtab = 2
-       }
-   }
-   txt_info_us.setOnClickListener {
-       if(loadtab == 2){
-
-       }else{
-
-
-           callInfo()
-           loadtab = 2
-       }
-   }
-
-   lay_contact_us.setOnClickListener {
-       if(loadtab == 3){
-
-       }else{
-
-           callContact()
-           loadtab = 3
-       }
-
-   }
-   layy_contact_us.setOnClickListener {
-       if(loadtab == 3){
-
-       }else{
-
-           callContact()
-           loadtab = 3
-       }
-   }
-   img_contact_us.setOnClickListener {
-       if(loadtab == 3){
-
-       }else{
-
-           callContact()
-           loadtab = 3
-       }
-   }
-   txt_contact_us.setOnClickListener {
-       if(loadtab == 3){
-
-       }else{
-
-           callContact()
-           loadtab = 3
-       }
-   }
-
-    region_card.setOnClickListener {
-        executiveTab = 1;
-        spinner_executive_region.visibility = View.VISIBLE
-        all_region_text.visibility = View.GONE
-        spinner_executive_region.performClick();
-
-        store_meterial_card_store.setCardBackgroundColor(Color.parseColor("#FFBC00"));
-        store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#FFBC00"));
-        isStoreEnable=true;
-        isSalsesIDTabSelected = false;
-
-
-        if(selectedTab == 1 && selectedstore == null){
-            listView.visibility = View.GONE
-            isSalsesIDTabSelected = true;
-            callLeaderboard()
-        }else if(selectedTab == 0 && selectedstore == null){
-            listView.visibility = View.GONE
-            isSalsesIDTabSelected = true;
-            callTimeline();
-        }
-        storeSelectedType == 1;
-    }
-
-    store_meterial_card_store.setOnClickListener {
-        executiveTab = 2;
-        if(selectedRegion!=null&& storeSelectedType == 1) {
-            all_store_text.visibility = View.GONE
-            spinner_executive_store.visibility = View.VISIBLE
-            spinner_executive_store.performClick();
-            isSalesEnable = true;
 
         }
-        isSalsesIDTabSelected = false;
-    }
 
-    store_meterial_card_sales.setOnClickListener {
 
-      //  if(selectedRegion!=null) {
-        executiveTab = 3;
+        lay_timeline.setOnClickListener {
+            if(loadtab == 0){
+
+            }else{
+
+                isLoadFromCashed=true
+                callTimeline()
+                loadtab = 0
+            }
+
+
+        }
+        layy_timeline.setOnClickListener {
+            if(loadtab == 0){
+
+            }else{
+
+                isLoadFromCashed=true
+                callTimeline()
+                loadtab = 0
+            }
+        }
+        img_timeline.setOnClickListener {
+            if(loadtab == 0){
+
+            }else{
+
+                isLoadFromCashed=true
+                callTimeline()
+                loadtab = 0
+            }
+        }
+        txt_timeline.setOnClickListener {
+            if(loadtab == 0){
+
+            }else{
+
+                isLoadFromCashed=true
+                callTimeline()
+                loadtab = 0
+            }
+        }
+
+
+        // loginVM.loginUserMainResponse.response.data.org
+        lay_leaderboard.setOnClickListener {
+
+            if(loadtab == 1){
+
+            }else{
+
+                isLoadFromCashed=true
+                callLeaderboard()
+                loadtab = 1
+            }
+
+
+
+        }
+        layy_leaderboard.setOnClickListener {
+            if(loadtab == 1){
+
+            }else{
+
+                isLoadFromCashed=true
+                callLeaderboard()
+                loadtab = 1
+            }
+        }
+        img_leaderboard.setOnClickListener {
+            if(loadtab == 1){
+
+            }else{
+
+                isLoadFromCashed=true
+                callLeaderboard()
+                loadtab = 1
+            }
+        }
+        txt_leaderboard.setOnClickListener {
+            if(loadtab == 1){
+
+            }else{
+
+                isLoadFromCashed=true
+                callLeaderboard()
+                loadtab = 1
+            }
+        }
+
+
+
+        lay_info_us.setOnClickListener {
+
+            if(loadtab == 2){
+
+            }else{
+
+
+                callInfo()
+                loadtab = 2
+            }
+
+
+        }
+        layy_info_us.setOnClickListener {
+            if(loadtab == 2){
+
+            }else{
+
+
+                callInfo()
+                loadtab = 2
+            }
+        }
+        img_info_us.setOnClickListener {
+            if(loadtab == 2){
+
+            }else{
+
+
+                callInfo()
+                loadtab = 2
+            }
+        }
+        txt_info_us.setOnClickListener {
+            if(loadtab == 2){
+
+            }else{
+
+
+                callInfo()
+                loadtab = 2
+            }
+        }
+
+        lay_contact_us.setOnClickListener {
+            if(loadtab == 3){
+
+            }else{
+
+                callContact()
+                loadtab = 3
+            }
+
+        }
+        layy_contact_us.setOnClickListener {
+            if(loadtab == 3){
+
+            }else{
+
+                callContact()
+                loadtab = 3
+            }
+        }
+        img_contact_us.setOnClickListener {
+            if(loadtab == 3){
+
+            }else{
+
+                callContact()
+                loadtab = 3
+            }
+        }
+        txt_contact_us.setOnClickListener {
+            if(loadtab == 3){
+
+            }else{
+
+                callContact()
+                loadtab = 3
+            }
+        }
+
+        region_card.setOnClickListener {
+            executiveTab = 1;
+            spinner_executive_region.visibility = View.VISIBLE
+            all_region_text.visibility = View.GONE
+            spinner_executive_region.performClick();
+            executive_headder.visibility = View.VISIBLE
+
+            store_meterial_card_store.setCardBackgroundColor(Color.parseColor("#00B2A9"));
+            store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#00B2A9"));
+            isStoreEnable=true;
+            isSalsesIDTabSelected = false;
+            selectedRegion = allRegionArr!![0];
+            executive_headder_name.text = selectedRegion!!.regionName;
+
+            if(selectedTab == 1 ){
+
+                listView.visibility = View.GONE
+                isSalsesIDTabSelected = true;
+                callLeaderboard()
+            }else if(selectedTab == 0 ){
+
+                listView.visibility = View.GONE
+                isSalsesIDTabSelected = true;
+                callTimeline();
+            }
+
+            storeSelectedType == 1;
+            selectedstore = selectedRegion!!.storeData[0]
+        }
+
+        store_meterial_card_store.setOnClickListener {
+            executiveTab = 2;
+            Log.d("7866","top")
+            if(selectedRegion!=null) {
+                if(selectedstore == null){
+                    selectedstore = selectedRegion!!.storeData[0];
+                }
+
+                all_store_text.visibility = View.GONE
+                spinner_executive_store.visibility = View.VISIBLE
+                spinner_executive_store.performClick();
+                isSalesEnable = true;
+                executive_headder_name.text = selectedstore!!.storeName;
+                if(selectedTab == 1 ){
+
+
+                    callLeaderboard()
+                }else if(selectedTab == 0 ) {
+                    callTimeline();
+                }
+                isSalsesIDTabSelected = true;
+
+
+            }
+            isSalsesIDTabSelected = false;
+        }
+
+        store_meterial_card_sales.setOnClickListener {
+
+            //  if(selectedRegion!=null) {
+            executiveTab = 3;
 
             executive_headder.visibility = View.GONE
 
@@ -1120,13 +1148,13 @@ private fun setupBottomMenu() {
             }else{
 
                 if(selectedRegion == null){
-                   for(region in allRegionArr!!){
-                       for (store in region!!.storeData) {
-                           for (sales in store.salesData) {
-                               list.add(sales.firstName)
-                           }
-                       }
-                   }
+                    for(region in allRegionArr!!){
+                        for (store in region!!.storeData) {
+                            for (sales in store.salesData) {
+                                list.add(sales.firstName)
+                            }
+                        }
+                    }
                 }else{
                     for (store in selectedRegion!!.storeData) {
                         for (sales in store.salesData) {
@@ -1272,82 +1300,122 @@ private fun setupBottomMenu() {
                 }
             })
 
-       // }
+            // }
+
+        }
+
+
+
+        homebutton_card.setOnClickListener {
+            executiveTab = 0;
+            all_region_text.visibility=View.VISIBLE
+            spinner_executive_region.visibility=View.GONE
+
+            store_meterial_card_store.setCardBackgroundColor(Color.parseColor("#000000"));
+            isStoreEnable = false;
+
+            all_store_text.visibility = View.VISIBLE
+            spinner_executive_store.visibility = View.GONE
+            executive_search.visibility = View.GONE
+
+            isSalesEnable = false;
+            // store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#000000"));
+            executive_headder.visibility = View.GONE
+            all_store_sales.visibility = View.VISIBLE
+            selectedRegion=null
+            storeArr=null
+            selectedstore=null
+            salesArr=null
+            selectedsales=null
+            if(selectedTab==0){
+                callTimeline()
+            }
+            if(selectedTab==1){
+                callLeaderboard()
+            }
+            //   selectedRegion = allRegionArr!![0];
+            //   selectedstore = selectedRegion!!.storeData[0]
+            storeSelectedType = 0;
+        }
+
+        txt_leaderboard.setTextColor(Color.parseColor("#ffffff"))
+        txt_info_us.setTextColor(Color.parseColor("#ffffff"))
+        txt_contact_us.setTextColor(Color.parseColor("#ffffff"))
+        txt_timeline.setTextColor(Color.parseColor("#000000"))
+
+
+        img_timeline.setImageResource(R.drawable.dashbord_unselect)
+        img_leaderboard.setImageResource(R.drawable.leaderbord_selectn)
+        img_info_us.setImageResource(R.drawable.info_selectn)
+        img_contact_us.setImageResource(R.drawable.contactus_selectn)
+
 
     }
 
 
 
-    homebutton_card.setOnClickListener {
-        executiveTab = 0;
-        all_region_text.visibility=View.VISIBLE
-        spinner_executive_region.visibility=View.GONE
-        store_meterial_card_store.setCardBackgroundColor(Color.parseColor("#000000"));
-        isStoreEnable = false;
+    fun callTimeline(){
 
-        all_store_text.visibility = View.VISIBLE
-        spinner_executive_store.visibility = View.GONE
-        executive_search.visibility = View.GONE
+        val data = homeVM.getLoginData()
+        val gson = Gson()
+        val type = object : TypeToken<LoginUserMainResponse>() {}.type
+        val dataLogin=gson.fromJson<LoginUserMainResponse>(data, type)
 
-        isSalesEnable = false;
-       // store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#000000"));
-        executive_headder.visibility = View.GONE
-        all_store_sales.visibility = View.VISIBLE
-         selectedRegion=null
-         storeArr=null
-         selectedstore=null
-         salesArr=null
-         selectedsales=null
-        if(selectedTab==0){
-            callTimeline()
-        }
-        if(selectedTab==1){
-            callLeaderboard()
-        }
-        selectedRegion = allRegionArr!![0];
-        selectedstore = selectedRegion!!.storeData[0]
-        storeSelectedType = 0;
-    }
+        selectedTab=0
 
-    txt_leaderboard.setTextColor(Color.parseColor("#ffffff"))
-    txt_info_us.setTextColor(Color.parseColor("#ffffff"))
-    txt_contact_us.setTextColor(Color.parseColor("#ffffff"))
-    txt_timeline.setTextColor(Color.parseColor("#000000"))
+        txt_page_heading.text="Dashboard"
+        img_home.setBackgroundResource(R.drawable.user)
+        top_main_menu.visibility=View.VISIBLE
+        lay_filter_second.visibility=View.VISIBLE
+
+        if(dataLogin.response.data.user.userRole=="HEAD_OFFICE") {
+            lay_filter_executive.visibility = View.VISIBLE
+
+            if(startDate!=null&&selectedRegion==null&&selectedstore==null&&selectedsales==null) {
 
 
-    img_timeline.setImageResource(R.drawable.dashbord_unselect)
-    img_leaderboard.setImageResource(R.drawable.leaderbord_selectn)
-    img_info_us.setImageResource(R.drawable.info_selectn)
-    img_contact_us.setImageResource(R.drawable.contactus_selectn)
+                if (isSalsesIDTabSelected) {
+                    navigateToFragment(
+                        TimelineFragment.newInstanceAllSales(
+                            this@MainActivity,
+                            dataLogin.response.data.user,
+                            incentivefield,
+                            selectPeriod!!,
+                            startDate!!,
+                            endDate!!,
+                            periodId,
+                            moduleType!!,
+                            tableDisplay!!,
+                            isLoadFromCashed,
+                        )
+                    )
+
+                }else{
+                    navigateToFragment(
+                        TimelineFragment.newInstance(
+                            this@MainActivity,
+                            dataLogin.response.data.user,
+                            incentivefield,
+                            selectPeriod!!,
+                            startDate!!,
+                            endDate!!,
+                            periodId,
+                            moduleType!!,
+                            tableDisplay!!,
+                            isLoadFromCashed,
 
 
-}
+                            )
+                    )
+                }
 
 
 
-fun callTimeline(){
 
-    val data = homeVM.getLoginData()
-    val gson = Gson()
-    val type = object : TypeToken<LoginUserMainResponse>() {}.type
-    val dataLogin=gson.fromJson<LoginUserMainResponse>(data, type)
-
-    selectedTab=0
-
-   txt_page_heading.text="Dashboard"
-   img_home.setBackgroundResource(R.drawable.user)
-   top_main_menu.visibility=View.VISIBLE
-   lay_filter_second.visibility=View.VISIBLE
-
-    if(dataLogin.response.data.user.userRole=="HEAD_OFFICE") {
-           lay_filter_executive.visibility = View.VISIBLE
-
-        if(startDate!=null&&selectedRegion==null&&selectedstore==null&&selectedsales==null) {
-
-
-            if (isSalsesIDTabSelected) {
+            }else if(selectedRegion!=null&&selectedstore==null&&selectedsales==null) {
+                Log.d("3344", selectedRegion!!.regionId)
                 navigateToFragment(
-                    TimelineFragment.newInstanceAllSales(
+                    TimelineFragment.newInstanceRegion(
                         this@MainActivity,
                         dataLogin.response.data.user,
                         incentivefield,
@@ -1358,10 +1426,70 @@ fun callTimeline(){
                         moduleType!!,
                         tableDisplay!!,
                         isLoadFromCashed,
+                        selectedRegion!!,
+
+                        )
+                )
+            }
+            else if(selectedRegion!=null&&selectedstore!=null&&selectedsales==null) {
+
+
+
+
+                navigateToFragment(
+                    TimelineFragment.newInstanceStore(
+                        this@MainActivity,
+                        dataLogin.response.data.user,
+                        incentivefield,
+                        selectPeriod!!,
+                        startDate!!,
+                        endDate!!,
+                        periodId,
+                        moduleType!!,
+                        tableDisplay!!,
+                        isLoadFromCashed,
+                        selectedRegion!!,
+                        selectedstore!!
                     )
                 )
-
-            }else{
+            } else if(selectedRegion!=null&&selectedstore!=null&&selectedsales!=null) {
+                navigateToFragment(
+                    TimelineFragment.newInstanceSales(
+                        this@MainActivity,
+                        dataLogin.response.data.user,
+                        incentivefield,
+                        selectPeriod!!,
+                        startDate!!,
+                        endDate!!,
+                        periodId,
+                        moduleType!!,
+                        tableDisplay!!,
+                        isLoadFromCashed,
+                        selectedRegion!!,
+                        selectedstore!!, selectedsales!!
+                    )
+                )
+            }else if(selectedRegion!=null&&selectedstore==null&&selectedsales!=null) {
+                navigateToFragment(
+                    TimelineFragment.newInstanceSalesByRegion(
+                        this@MainActivity,
+                        dataLogin.response.data.user,
+                        incentivefield,
+                        selectPeriod!!,
+                        startDate!!,
+                        endDate!!,
+                        periodId,
+                        moduleType!!,
+                        tableDisplay!!,
+                        isLoadFromCashed,
+                        selectedRegion!!,
+                        selectedsales!!
+                    )
+                )
+            }
+        }else{
+            lay_filter_executive.visibility = View.GONE
+            if(startDate!=null) {
                 navigateToFragment(
                     TimelineFragment.newInstance(
                         this@MainActivity,
@@ -1374,439 +1502,340 @@ fun callTimeline(){
                         moduleType!!,
                         tableDisplay!!,
                         isLoadFromCashed,
+                    )
+                )
+            } else{
+                navigateToFragment(NoDataFragment.newInstance("", ""))
 
+            }
+        }
+
+        txt_leaderboard.setTextColor(Color.parseColor("#ffffff"))
+        txt_info_us.setTextColor(Color.parseColor("#ffffff"))
+        txt_contact_us.setTextColor(Color.parseColor("#ffffff"))
+        txt_timeline.setTextColor(Color.parseColor("#000000"))
+
+
+        img_timeline.setImageResource(R.drawable.dashbord_unselect)
+        img_leaderboard.setImageResource(R.drawable.leaderbord_selectn)
+        img_info_us.setImageResource(R.drawable.info_selectn)
+        img_contact_us.setImageResource(R.drawable.contactus_selectn)
+
+    }
+
+    fun callContact(){
+
+        selectedTab=3
+        loadtab = 2
+        executive_headder.visibility = View.GONE
+
+        executive_search.visibility = View.GONE
+        img_home.setBackgroundResource(R.drawable.sendbutton)
+        txt_page_heading.text="Contact Us"
+        top_main_menu.visibility=View.GONE
+        lay_filter_second.visibility=View.GONE
+        navigateToFragment(ContactUsFragment.newInstance("", ""))
+
+        txt_leaderboard.setTextColor(Color.parseColor("#ffffff"))
+        txt_info_us.setTextColor(Color.parseColor("#ffffff"))
+        txt_contact_us.setTextColor(Color.parseColor("#000000"))
+        txt_timeline.setTextColor(Color.parseColor("#ffffff"))
+
+        img_timeline.setImageResource(R.drawable.dashbord_select)
+        img_leaderboard.setImageResource(R.drawable.leaderbord_selectn)
+        img_info_us.setImageResource(R.drawable.info_selectn)
+        img_contact_us.setImageResource(R.drawable.contactus_unselect)
+    }
+
+
+
+    fun callLeaderboard(){
+
+        val data = homeVM.getLoginData()
+        val gson = Gson()
+        val type = object : TypeToken<LoginUserMainResponse>() {}.type
+        val dataLogin=gson.fromJson<LoginUserMainResponse>(data, type)
+
+        selectedTab=1
+        img_home.setBackgroundResource(R.drawable.user)
+        txt_page_heading.text="Leaderboard"
+        top_main_menu.visibility=View.VISIBLE
+        lay_filter_second.visibility=View.VISIBLE
+
+
+        if(dataLogin.response.data.user.userRole=="HEAD_OFFICE") {
+            lay_filter_executive.visibility=View.VISIBLE
+
+
+            if (startDate != null && selectedRegion == null && selectedstore == null && selectedsales == null) {
+
+                if (executiveTab == 0) {
+                    navigateToFragment(
+                        LeaderboardFragment.byAllRegion(
+                            this@MainActivity,
+                            dataLogin.response.data.user,
+                            incentivefield,
+                            selectPeriod!!,
+                            startDate!!,
+                            endDate!!,
+                            periodId,
+                            moduleType!!,
+                            false,
+                            isLoadFromCashed
+                        )
+                    )
+                }else if(executiveTab == 3){
+                    navigateToFragment(
+                        LeaderboardFragment.byAllUser(
+                            this@MainActivity,
+                            dataLogin.response.data.user,
+                            incentivefield,
+                            selectPeriod!!,
+                            startDate!!,
+                            endDate!!,
+                            periodId,
+                            moduleType!!,
+                            false,
+                            isLoadFromCashed
+                        )
+                    )
+                }
+
+
+            } else if (selectedRegion != null && selectedstore == null && selectedsales == null) {
+
+                Log.d("3398", "Region by")
+                if (executiveTab == 1) {
+                    navigateToFragment(
+                        LeaderboardFragment.newInstanceByRegionAllUser(
+                            this@MainActivity,
+                            dataLogin.response.data.user,
+                            incentivefield,
+                            selectPeriod!!,
+                            startDate!!,
+                            endDate!!,
+                            periodId,
+                            moduleType!!,
+                            false,
+                            isLoadFromCashed,
+                            selectedRegion!!
+                        )
+                    )
+                }
+                else if (executiveTab == 3){
+                    Log.d("3398", "Region by all user")
+                    navigateToFragment(
+                        LeaderboardFragment.newInstanceByRegionAllStoreAllUser(
+                            this@MainActivity,
+                            dataLogin.response.data.user,
+                            incentivefield,
+                            selectPeriod!!,
+                            startDate!!,
+                            endDate!!,
+                            periodId,
+                            moduleType!!,
+                            false,
+                            isLoadFromCashed,
+                            selectedRegion!!
+                        )
+                    )
+                }
+
+            }
+            else if(selectedRegion!=null&&selectedstore!=null&&selectedsales==null) {
+
+
+                if (executiveTab == 2) {
+                    navigateToFragment(
+                        LeaderboardFragment.newInstanceByRegionByStoreAllUser(
+                            this@MainActivity,
+                            dataLogin.response.data.user,
+                            incentivefield,
+                            selectPeriod!!,
+                            startDate!!,
+                            endDate!!,
+                            periodId,
+                            moduleType!!,
+                            false,
+                            isLoadFromCashed,
+                            selectedRegion!!,
+                            selectedstore!!
 
                         )
+                    )
+
+
+                }else  if (executiveTab == 3) {
+
+                    navigateToFragment(
+                        LeaderboardFragment.newInstanceByRegionByStoreWithAllUser(
+                            this@MainActivity,
+                            dataLogin.response.data.user,
+                            incentivefield,
+                            selectPeriod!!,
+                            startDate!!,
+                            endDate!!,
+                            periodId,
+                            moduleType!!,
+                            false,
+                            isLoadFromCashed,
+                            selectedRegion!!,
+                            selectedstore!!
+
+                        )
+                    )
+                }
+
+
+
+
+            } else if(selectedRegion!=null&&selectedstore!=null&&selectedsales!=null) {
+                Log.d("1267", "region by user and store");
+                navigateToFragment(
+                    LeaderboardFragment.byRegionbyStorebyUser(
+                        this@MainActivity,
+                        dataLogin.response.data.user,
+                        incentivefield,
+                        selectPeriod!!,
+                        startDate!!,
+                        endDate!!,
+                        periodId,
+                        moduleType!!,
+                        false,
+                        isLoadFromCashed,
+                        selectedRegion!!,
+                        selectedstore!!,
+                        selectedsales!!
+                    )
+                )
+            }else if(selectedRegion!=null&&selectedstore==null&&selectedsales!=null) {
+                Log.d("1267", "region by user");
+                navigateToFragment(
+                    LeaderboardFragment.byRegionbyAllbyUser(
+                        this@MainActivity,
+                        dataLogin.response.data.user,
+                        incentivefield,
+                        selectPeriod!!,
+                        startDate!!,
+                        endDate!!,
+                        periodId,
+                        moduleType!!,
+                        false,
+                        isLoadFromCashed,
+                        selectedRegion!!,
+                        selectedsales!!
+                    )
                 )
             }
 
 
 
-
-        }else if(selectedRegion!=null&&selectedstore==null&&selectedsales==null) {
-            Log.d("3344", selectedRegion!!.regionId)
-            navigateToFragment(
-                TimelineFragment.newInstanceRegion(
-                    this@MainActivity,
-                    dataLogin.response.data.user,
-                    incentivefield,
-                    selectPeriod!!,
-                    startDate!!,
-                    endDate!!,
-                    periodId,
-                    moduleType!!,
-                    tableDisplay!!,
-                    isLoadFromCashed,
-                    selectedRegion!!,
-
+        }else{
+            lay_filter_executive.visibility=View.GONE
+            if(startDate!=null){
+                navigateToFragment(
+                    LeaderboardFragment.newInstance(
+                        this@MainActivity,
+                        dataLogin.response.data.user,
+                        incentivefield,
+                        selectPeriod!!,
+                        startDate!!,
+                        endDate!!,
+                        periodId,
+                        moduleType!!,
+                        false,
+                        isLoadFromCashed
                     )
-            )
+                )
+            }else{
+                navigateToFragment(NoDataFragment.newInstance("", ""))
+
+            }
         }
-        else if(selectedRegion!=null&&selectedstore!=null&&selectedsales==null) {
 
 
 
 
-            navigateToFragment(
-                TimelineFragment.newInstanceStore(
-                    this@MainActivity,
-                    dataLogin.response.data.user,
-                    incentivefield,
-                    selectPeriod!!,
-                    startDate!!,
-                    endDate!!,
-                    periodId,
-                    moduleType!!,
-                    tableDisplay!!,
-                    isLoadFromCashed,
-                    selectedRegion!!,
-                    selectedstore!!
-                )
-            )
-        } else if(selectedRegion!=null&&selectedstore!=null&&selectedsales!=null) {
-            navigateToFragment(
-                TimelineFragment.newInstanceSales(
-                    this@MainActivity,
-                    dataLogin.response.data.user,
-                    incentivefield,
-                    selectPeriod!!,
-                    startDate!!,
-                    endDate!!,
-                    periodId,
-                    moduleType!!,
-                    tableDisplay!!,
-                    isLoadFromCashed,
-                    selectedRegion!!,
-                    selectedstore!!, selectedsales!!
-                )
-            )
-        }else if(selectedRegion!=null&&selectedstore==null&&selectedsales!=null) {
-            navigateToFragment(
-                TimelineFragment.newInstanceSalesByRegion(
-                    this@MainActivity,
-                    dataLogin.response.data.user,
-                    incentivefield,
-                    selectPeriod!!,
-                    startDate!!,
-                    endDate!!,
-                    periodId,
-                    moduleType!!,
-                    tableDisplay!!,
-                    isLoadFromCashed,
-                    selectedRegion!!,
-                    selectedsales!!
-                )
-            )
-        }
-    }else{
-        lay_filter_executive.visibility = View.GONE
-        if(startDate!=null) {
-            navigateToFragment(
-                TimelineFragment.newInstance(
-                    this@MainActivity,
-                    dataLogin.response.data.user,
-                    incentivefield,
-                    selectPeriod!!,
-                    startDate!!,
-                    endDate!!,
-                    periodId,
-                    moduleType!!,
-                    tableDisplay!!,
-                    isLoadFromCashed,
-                )
-            )
-        } else{
-            navigateToFragment(NoDataFragment.newInstance("", ""))
 
-        }
+
+
+
+
+        txt_leaderboard.setTextColor(Color.parseColor("#000000"))
+        txt_info_us.setTextColor(Color.parseColor("#ffffff"))
+        txt_contact_us.setTextColor(Color.parseColor("#ffffff"))
+        txt_timeline.setTextColor(Color.parseColor("#ffffff"))
+
+        img_timeline.setImageResource(R.drawable.dashbord_select)
+        img_leaderboard.setImageResource(R.drawable.leaderbord_unselect)
+        img_info_us.setImageResource(R.drawable.info_selectn)
+        img_contact_us.setImageResource(R.drawable.contactus_selectn)
+
     }
+    fun callInfo(){
 
-    txt_leaderboard.setTextColor(Color.parseColor("#ffffff"))
-   txt_info_us.setTextColor(Color.parseColor("#ffffff"))
-   txt_contact_us.setTextColor(Color.parseColor("#ffffff"))
-   txt_timeline.setTextColor(Color.parseColor("#000000"))
+        selectedTab=2
+        executive_headder.visibility = View.GONE
 
-
-    img_timeline.setImageResource(R.drawable.dashbord_unselect)
-    img_leaderboard.setImageResource(R.drawable.leaderbord_selectn)
-    img_info_us.setImageResource(R.drawable.info_selectn)
-    img_contact_us.setImageResource(R.drawable.contactus_selectn)
-
-}
-
-fun callContact(){
-
-    selectedTab=3
-    loadtab = 2
-    executive_headder.visibility = View.GONE
-
-    executive_search.visibility = View.GONE
-   img_home.setBackgroundResource(R.drawable.sendbutton)
-   txt_page_heading.text="Contact Us"
-   top_main_menu.visibility=View.GONE
-   lay_filter_second.visibility=View.GONE
-   navigateToFragment(ContactUsFragment.newInstance("", ""))
-
-   txt_leaderboard.setTextColor(Color.parseColor("#ffffff"))
-   txt_info_us.setTextColor(Color.parseColor("#ffffff"))
-   txt_contact_us.setTextColor(Color.parseColor("#000000"))
-   txt_timeline.setTextColor(Color.parseColor("#ffffff"))
-
-    img_timeline.setImageResource(R.drawable.dashbord_select)
-    img_leaderboard.setImageResource(R.drawable.leaderbord_selectn)
-    img_info_us.setImageResource(R.drawable.info_selectn)
-    img_contact_us.setImageResource(R.drawable.contactus_unselect)
-}
-
-
-
-fun callLeaderboard(){
-
-    val data = homeVM.getLoginData()
-    val gson = Gson()
-    val type = object : TypeToken<LoginUserMainResponse>() {}.type
-    val dataLogin=gson.fromJson<LoginUserMainResponse>(data, type)
-
-    selectedTab=1
-   img_home.setBackgroundResource(R.drawable.user)
-   txt_page_heading.text="Leaderboard"
-   top_main_menu.visibility=View.VISIBLE
-   lay_filter_second.visibility=View.VISIBLE
-
-
-    if(dataLogin.response.data.user.userRole=="HEAD_OFFICE") {
-        lay_filter_executive.visibility=View.VISIBLE
-
-
-        if (startDate != null && selectedRegion == null && selectedstore == null && selectedsales == null) {
-
-            if (executiveTab == 0) {
-                navigateToFragment(
-                    LeaderboardFragment.byAllRegion(
-                        this@MainActivity,
-                        dataLogin.response.data.user,
-                        incentivefield,
-                        selectPeriod!!,
-                        startDate!!,
-                        endDate!!,
-                        periodId,
-                        moduleType!!,
-                        false,
-                        isLoadFromCashed
-                    )
-                )
-            }else if(executiveTab == 3){
-                navigateToFragment(
-                    LeaderboardFragment.byAllUser(
-                        this@MainActivity,
-                        dataLogin.response.data.user,
-                        incentivefield,
-                        selectPeriod!!,
-                        startDate!!,
-                        endDate!!,
-                        periodId,
-                        moduleType!!,
-                        false,
-                        isLoadFromCashed
-                    )
-                )
-            }
-
-
-        } else if (selectedRegion != null && selectedstore == null && selectedsales == null) {
-
-Log.d("3398", "Region by")
-            if (executiveTab == 1) {
-                navigateToFragment(
-                    LeaderboardFragment.newInstanceByRegionAllUser(
-                        this@MainActivity,
-                        dataLogin.response.data.user,
-                        incentivefield,
-                        selectPeriod!!,
-                        startDate!!,
-                        endDate!!,
-                        periodId,
-                        moduleType!!,
-                        false,
-                        isLoadFromCashed,
-                        selectedRegion!!
-                    )
-                )
-            }
-        else if (executiveTab == 3){
-                Log.d("3398", "Region by all user")
-            navigateToFragment(
-                LeaderboardFragment.newInstanceByRegionAllStoreAllUser(
-                    this@MainActivity,
-                    dataLogin.response.data.user,
-                    incentivefield,
-                    selectPeriod!!,
-                    startDate!!,
-                    endDate!!,
-                    periodId,
-                    moduleType!!,
-                    false,
-                    isLoadFromCashed,
-                    selectedRegion!!
-                )
-            )
-        }
-
-        }
-        else if(selectedRegion!=null&&selectedstore!=null&&selectedsales==null) {
-
-
-            if (executiveTab == 2) {
-                navigateToFragment(
-                    LeaderboardFragment.newInstanceByRegionByStoreAllUser(
-                        this@MainActivity,
-                        dataLogin.response.data.user,
-                        incentivefield,
-                        selectPeriod!!,
-                        startDate!!,
-                        endDate!!,
-                        periodId,
-                        moduleType!!,
-                        false,
-                        isLoadFromCashed,
-                        selectedRegion!!,
-                        selectedstore!!
-
-                    )
-                )
-
-
-            }else  if (executiveTab == 3) {
-
-                navigateToFragment(
-                    LeaderboardFragment.newInstanceByRegionByStoreWithAllUser(
-                        this@MainActivity,
-                        dataLogin.response.data.user,
-                        incentivefield,
-                        selectPeriod!!,
-                        startDate!!,
-                        endDate!!,
-                        periodId,
-                        moduleType!!,
-                        false,
-                        isLoadFromCashed,
-                        selectedRegion!!,
-                        selectedstore!!
-
-                    )
-                )
-            }
-
-
-
-
-        } else if(selectedRegion!=null&&selectedstore!=null&&selectedsales!=null) {
-            Log.d("1267", "region by user and store");
-            navigateToFragment(
-                LeaderboardFragment.byRegionbyStorebyUser(
-                    this@MainActivity,
-                    dataLogin.response.data.user,
-                    incentivefield,
-                    selectPeriod!!,
-                    startDate!!,
-                    endDate!!,
-                    periodId,
-                    moduleType!!,
-                    false,
-                    isLoadFromCashed,
-                    selectedRegion!!,
-                    selectedstore!!,
-                    selectedsales!!
-                )
-            )
-        }else if(selectedRegion!=null&&selectedstore==null&&selectedsales!=null) {
-            Log.d("1267", "region by user");
-            navigateToFragment(
-                LeaderboardFragment.byRegionbyAllbyUser(
-                    this@MainActivity,
-                    dataLogin.response.data.user,
-                    incentivefield,
-                    selectPeriod!!,
-                    startDate!!,
-                    endDate!!,
-                    periodId,
-                    moduleType!!,
-                    false,
-                    isLoadFromCashed,
-                    selectedRegion!!,
-                    selectedsales!!
-                )
-            )
-        }
-
-
-
-    }else{
+        executive_search.visibility = View.GONE
+        txt_page_heading.text="Info"
+        img_home.setBackgroundResource(R.drawable.user)
+        top_main_menu.visibility=View.VISIBLE
+        lay_filter_second.visibility=View.GONE
         lay_filter_executive.visibility=View.GONE
-        if(startDate!=null){
-            navigateToFragment(
-                LeaderboardFragment.newInstance(
-                    this@MainActivity,
-                    dataLogin.response.data.user,
-                    incentivefield,
-                    selectPeriod!!,
-                    startDate!!,
-                    endDate!!,
-                    periodId,
-                    moduleType!!,
-                    false,
-                    isLoadFromCashed
-                )
-            )
-        }else{
-            navigateToFragment(NoDataFragment.newInstance("", ""))
 
-        }
+        navigateToFragment(InfoFragment.newInstance(webURL, documentType, documentData))
+
+        txt_leaderboard.setTextColor(Color.parseColor("#ffffff"))
+        txt_info_us.setTextColor(Color.parseColor("#000000"))
+        txt_contact_us.setTextColor(Color.parseColor("#ffffff"))
+        txt_timeline.setTextColor(Color.parseColor("#ffffff"))
+
+        img_timeline.setImageResource(R.drawable.dashbord_select)
+        img_leaderboard.setImageResource(R.drawable.leaderbord_selectn)
+        img_info_us.setImageResource(R.drawable.info_unselect)
+        img_contact_us.setImageResource(R.drawable.contactus_selectn)
+
+    }
+    private fun navigateToFragment(fragmentToNavigate: Fragment) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.content_frame, fragmentToNavigate)
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 
+    private fun updateDropDowns(peridesList: List<Periods>, position: Int){
+
+        periodArray=peridesList
+
+        val spinnerAdapter1 = CompanyAdapter(this, peridesList)
+        spinner?.adapter = spinnerAdapter1
+        spinner?.setSelection(position,true);
+
+        if(peridesList[0].timePeriodArr.isNotEmpty() ){
+            timePeriodArr=peridesList[0].timePeriodArr
+            dateTimeArrray= peridesList[0].timePeriodArr[0].dropDownList
 
 
+            incentivefield=periodArray?.get(0)!!.incentiveId
 
+            selectPeriod=timePeriodArr?.get(0)!!.name
 
+            startDate = dateTimeArrray?.get(0)!!.startDate
+            endDate = dateTimeArrray?.get(0)!!.endDate
+            periodId = dateTimeArrray?.get(0)!!.id
 
+            val fromActivity:String = intent.getStringExtra("fromActivity")
 
+            if(fromActivity=="contact"){
+                callContact()
 
-
-   txt_leaderboard.setTextColor(Color.parseColor("#000000"))
-   txt_info_us.setTextColor(Color.parseColor("#ffffff"))
-   txt_contact_us.setTextColor(Color.parseColor("#ffffff"))
-   txt_timeline.setTextColor(Color.parseColor("#ffffff"))
-
-    img_timeline.setImageResource(R.drawable.dashbord_select)
-    img_leaderboard.setImageResource(R.drawable.leaderbord_unselect)
-    img_info_us.setImageResource(R.drawable.info_selectn)
-    img_contact_us.setImageResource(R.drawable.contactus_selectn)
-
-}
-fun callInfo(){
-
-    selectedTab=2
-    executive_headder.visibility = View.GONE
-
-    executive_search.visibility = View.GONE
-   txt_page_heading.text="Info"
-   img_home.setBackgroundResource(R.drawable.user)
-   top_main_menu.visibility=View.VISIBLE
-   lay_filter_second.visibility=View.GONE
-    lay_filter_executive.visibility=View.GONE
-
-  navigateToFragment(InfoFragment.newInstance(webURL, documentType, documentData))
-
-   txt_leaderboard.setTextColor(Color.parseColor("#ffffff"))
-   txt_info_us.setTextColor(Color.parseColor("#000000"))
-   txt_contact_us.setTextColor(Color.parseColor("#ffffff"))
-   txt_timeline.setTextColor(Color.parseColor("#ffffff"))
-
-    img_timeline.setImageResource(R.drawable.dashbord_select)
-    img_leaderboard.setImageResource(R.drawable.leaderbord_selectn)
-    img_info_us.setImageResource(R.drawable.info_unselect)
-    img_contact_us.setImageResource(R.drawable.contactus_selectn)
-
-}
-private fun navigateToFragment(fragmentToNavigate: Fragment) {
-   val fragmentTransaction = supportFragmentManager.beginTransaction()
-   fragmentTransaction.replace(R.id.content_frame, fragmentToNavigate)
-   fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-   fragmentTransaction.addToBackStack(null)
-   fragmentTransaction.commit()
-}
-
-private fun updateDropDowns(peridesList: List<Periods>, position: Int){
-
-   periodArray=peridesList
-
-   val spinnerAdapter1 = CompanyAdapter(this, peridesList)
-   spinner?.adapter = spinnerAdapter1
-    spinner?.setSelection(position,true);
-
-    if(peridesList[0].timePeriodArr.isNotEmpty() ){
-        timePeriodArr=peridesList[0].timePeriodArr
-        dateTimeArrray= peridesList[0].timePeriodArr[0].dropDownList
-
-
-        incentivefield=periodArray?.get(0)!!.incentiveId
-
-        selectPeriod=timePeriodArr?.get(0)!!.name
-
-        startDate = dateTimeArrray?.get(0)!!.startDate
-        endDate = dateTimeArrray?.get(0)!!.endDate
-        periodId = dateTimeArrray?.get(0)!!.id
-
-        val fromActivity:String = intent.getStringExtra("fromActivity")
-
-        if(fromActivity=="contact"){
-            callContact()
-
-        }else{
-            callTimeline()
+            }else{
+                callTimeline()
+            }
         }
     }
-}
 
 
 
@@ -1883,51 +1912,51 @@ private fun updateDropDowns(peridesList: List<Periods>, position: Int){
 
 
 
-private fun getAppFilters() {
+    private fun getAppFilters() {
 
-   subscription.add(homeVM.getAppFilters().subscribeOn(
-       Schedulers.io()
-   )
-       .observeOn(AndroidSchedulers.mainThread())
-       .doOnSubscribe { mainprogressBar.visibility = View.GONE }
-       .doOnTerminate { mainprogressBar.visibility = View.GONE }
-       .doOnError { mainprogressBar.visibility = View.GONE }
-       .subscribe({
-           if (it.isSuccess) {
+        subscription.add(homeVM.getAppFilters().subscribeOn(
+            Schedulers.io()
+        )
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { mainprogressBar.visibility = View.GONE }
+            .doOnTerminate { mainprogressBar.visibility = View.GONE }
+            .doOnError { mainprogressBar.visibility = View.GONE }
+            .subscribe({
+                if (it.isSuccess) {
 
-               val res: HomeMainResponse = homeVM.dataObj!!
-               if (res.response.code == 200) {
+                    val res: HomeMainResponse = homeVM.dataObj!!
+                    if (res.response.code == 200) {
 
-                   val mainList = res.response.periods
-                   periodsList = mainList;
-                   webURL = mainList[0].url
-                   documentType = mainList[0].documentType
-                   documentData = mainList[0].documentData
-                   updateDropDowns(mainList, defaultIncentiveId)
+                        val mainList = res.response.periods
+                        periodsList = mainList;
+                        webURL = mainList[0].url
+                        documentType = mainList[0].documentType
+                        documentData = mainList[0].documentData
+                        updateDropDowns(mainList, defaultIncentiveId)
 
-               } else {
-                   val dialogBuilder = AlertDialog.Builder(this)
-                   dialogBuilder.setMessage("No incentives to display")
-                   val alert = dialogBuilder.create()
+                    } else {
+                        val dialogBuilder = AlertDialog.Builder(this)
+                        dialogBuilder.setMessage("No incentives to display")
+                        val alert = dialogBuilder.create()
 
-                   alert.setTitle("Sorry")
+                        alert.setTitle("Sorry")
 
-                   alert.show()
-               }
-
-
-           } else {
+                        alert.show()
+                    }
 
 
-           }
-       }, {
+                } else {
 
-           mainprogressBar.visibility = View.GONE
 
-       })
+                }
+            }, {
 
-   )
-}
+                mainprogressBar.visibility = View.GONE
+
+            })
+
+        )
+    }
 
 
 
@@ -1955,9 +1984,9 @@ private fun getAppFilters() {
 
                         var i = 0;
                         for(region in periodsList!!){
-                           if(region.incentiveId == thirdSplitArray[0].toInt()){
-                               defaultIncentiveId = i;
-                           }
+                            if(region.incentiveId == thirdSplitArray[0].toInt()){
+                                defaultIncentiveId = i;
+                            }
                             i = i+1;
                         }
                     }
@@ -1981,12 +2010,12 @@ private fun getAppFilters() {
         if (keyCode == KeyEvent.KEYCODE_DEL) {
             Log.d("ddddd", "dddd")
         }else{
-                    if(loadtab == 0 || loadtab == 1 || loadtab == 2 || loadtab == 3){
-            val startMain = Intent(Intent.ACTION_MAIN);
-            startMain.addCategory(Intent.CATEGORY_HOME);
-            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(startMain);
-        }
+            if(loadtab == 0 || loadtab == 1 || loadtab == 2 || loadtab == 3){
+                val startMain = Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+            }
         }
 
 
