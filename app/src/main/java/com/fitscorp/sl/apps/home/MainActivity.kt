@@ -1079,7 +1079,7 @@ private fun setupBottomMenu() {
         isStoreEnable=true;
         isSalsesIDTabSelected = false;
            selectedRegion = allRegionArr!![0];
-
+        executive_headder_name.text = selectedRegion!!.regionName;
 
         if(selectedTab == 1 ){
 
@@ -1109,7 +1109,7 @@ private fun setupBottomMenu() {
             spinner_executive_store.visibility = View.VISIBLE
             spinner_executive_store.performClick();
             isSalesEnable = true;
-
+            executive_headder_name.text = selectedstore!!.storeName;
             if(selectedTab == 1 ){
 
 
