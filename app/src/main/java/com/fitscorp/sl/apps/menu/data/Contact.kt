@@ -4,6 +4,6 @@ package com.fitscorp.sl.apps.menu.data
 class Contact{
 
     var message:String?=null
-    var tittle:String?=null
+    var subject:String?=null
     var isFromDashboard:Boolean?=null
 }
