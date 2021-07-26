@@ -300,7 +300,14 @@ override fun onCreate(savedInstanceState: Bundle?) {
     spinner_executive_store.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
-            selectedstore = storeArr!![position];
+//            if(storeArr != null){
+//                selectedstore = storeArr!![position];
+//            }else{
+//                selectedstore = selectedRegion!!.storeData[0];
+//            }
+
+            selectedstore = selectedRegion!!.storeData[position];
+
             storeSelectedType = 0;
             updateExecutiveSalesPersion(selectedstore!!, 0);
             executive_headder.visibility = View.VISIBLE
@@ -1066,34 +1073,54 @@ private fun setupBottomMenu() {
         spinner_executive_region.visibility = View.VISIBLE
         all_region_text.visibility = View.GONE
         spinner_executive_region.performClick();
-
+        executive_headder.visibility = View.VISIBLE
         store_meterial_card_store.setCardBackgroundColor(Color.parseColor("#FFBC00"));
         store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#FFBC00"));
         isStoreEnable=true;
         isSalsesIDTabSelected = false;
+           selectedRegion = allRegionArr!![0];
 
-       // selectedRegion = allRegionArr!![0]
-        if(selectedTab == 1 && selectedstore == null){
+
+        if(selectedTab == 1 ){
+
             listView.visibility = View.GONE
             isSalsesIDTabSelected = true;
             callLeaderboard()
-        }else if(selectedTab == 0 && selectedstore == null){
+        }else if(selectedTab == 0 ){
+
             listView.visibility = View.GONE
             isSalsesIDTabSelected = true;
             callTimeline();
         }
+
         storeSelectedType == 1;
+          selectedstore = selectedRegion!!.storeData[0]
     }
 
     store_meterial_card_store.setOnClickListener {
         executiveTab = 2;
-        if(selectedRegion!=null&& storeSelectedType == 1) {
+        Log.d("7866","top")
+        if(selectedRegion!=null) {
+            if(selectedstore == null){
+                selectedstore = selectedRegion!!.storeData[0];
+            }
+            Log.d("7866","inner")
             all_store_text.visibility = View.GONE
             spinner_executive_store.visibility = View.VISIBLE
             spinner_executive_store.performClick();
             isSalesEnable = true;
 
-        }
+            if(selectedTab == 1 ){
+
+
+                callLeaderboard()
+            }else if(selectedTab == 0 ) {
+                callTimeline();
+            }
+                isSalsesIDTabSelected = true;
+
+
+            }
         isSalsesIDTabSelected = false;
     }
 
@@ -1305,8 +1332,8 @@ private fun setupBottomMenu() {
         if(selectedTab==1){
             callLeaderboard()
         }
-        selectedRegion = allRegionArr!![0];
-        selectedstore = selectedRegion!!.storeData[0]
+     //   selectedRegion = allRegionArr!![0];
+     //   selectedstore = selectedRegion!!.storeData[0]
         storeSelectedType = 0;
     }
 
