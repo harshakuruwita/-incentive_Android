@@ -68,7 +68,7 @@ class MainActivity : BaseActivity() {
     var loadtab:Int=0
     var executiveTab:Int = 0
     var defaultIncentiveId:Int = 0
-
+var storeSelectedType :Int = 0
     var gd :GradientDrawable?=null
     var dateTimeArrray:List<DropDownList>?=null
     var periodsList : List<Periods>?=null
@@ -273,7 +273,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     spinner_executive_region.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
-                Log.d("334449", position.toString());
+            storeSelectedType = 1;
                 selectedRegion = allRegionArr!![position];
                 updateExecutiveStore(selectedRegion!!, 0);
                 executive_headder.visibility = View.VISIBLE
@@ -301,6 +301,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
         override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
             selectedstore = storeArr!![position];
+            storeSelectedType = 0;
             updateExecutiveSalesPersion(selectedstore!!, 0);
             executive_headder.visibility = View.VISIBLE
             executive_headder_name.text = selectedstore!!.storeName;
@@ -1071,7 +1072,7 @@ private fun setupBottomMenu() {
         isStoreEnable=true;
         isSalsesIDTabSelected = false;
 
-
+       // selectedRegion = allRegionArr!![0]
         if(selectedTab == 1 && selectedstore == null){
             listView.visibility = View.GONE
             isSalsesIDTabSelected = true;
@@ -1081,11 +1082,12 @@ private fun setupBottomMenu() {
             isSalsesIDTabSelected = true;
             callTimeline();
         }
+        storeSelectedType == 1;
     }
 
     store_meterial_card_store.setOnClickListener {
         executiveTab = 2;
-        if(selectedRegion!=null) {
+        if(selectedRegion!=null&& storeSelectedType == 1) {
             all_store_text.visibility = View.GONE
             spinner_executive_store.visibility = View.VISIBLE
             spinner_executive_store.performClick();
@@ -1280,6 +1282,7 @@ private fun setupBottomMenu() {
         executiveTab = 0;
         all_region_text.visibility=View.VISIBLE
         spinner_executive_region.visibility=View.GONE
+
         store_meterial_card_store.setCardBackgroundColor(Color.parseColor("#000000"));
         isStoreEnable = false;
 
@@ -1302,7 +1305,9 @@ private fun setupBottomMenu() {
         if(selectedTab==1){
             callLeaderboard()
         }
-
+        selectedRegion = allRegionArr!![0];
+        selectedstore = selectedRegion!!.storeData[0]
+        storeSelectedType = 0;
     }
 
     txt_leaderboard.setTextColor(Color.parseColor("#ffffff"))
