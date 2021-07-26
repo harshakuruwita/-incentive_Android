@@ -18,5 +18,6 @@
     <color name="dark">#64656F</color>
     <color name="orange_dark">#dddfed</color>
     <color name="button_gold">#FFBC00</color>
+    <color name="color_jumpbtn">#00B2A9</color>
 
 </resources>

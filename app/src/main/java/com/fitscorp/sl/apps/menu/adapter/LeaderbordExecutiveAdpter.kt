@@ -72,19 +72,27 @@ Log.d("Selected tab id",selectedTab.toString());
             val df = DecimalFormat("#.##")
 
             holder.tvAnimalType?.text = items[position].name.toString()
-            holder.txt_number?.text = items[position].position.toString()
-            holder.txtpoint_bottom?.text = items[position].topData.name
-            holder.txtpoints?.text =   items[position].allPoints.toString()
-            holder.leaderPoint?.text =   items[position].topData.point.toString()
+            holder.txt_number?.text =  items[position].position.toString()
+            holder.txtpoint_bottom?.text =  items[position].topData.name
+            holder.txtpoints?.text =    items[position].allPoints.toString()
+
+            if(items[position].topData.point >0){
+                holder.leaderPoint?.text =   items[position].topData.point.toString()
+            }else{
+                holder.leaderPoint?.text =   ""
+            }
         }else if(selectedTab == 2){
             val df = DecimalFormat("#.##")
-            holder.txtpoint_bottom?.visibility = View.VISIBLE;
-            holder.leaderPoint?.visibility = View.VISIBLE;
-            holder.tvAnimalType?.text = storeName
-            holder.txt_number?.text = items[position].position.toString()
-            holder.txtpoint_bottom?.text = items[position].topData.name
-            holder.txtpoints?.text =   items[position].allPoints.toString()
-            holder.leaderPoint?.text =   ""
+            holder.tvAnimalType?.text = items[position].name.toString()
+            holder.txt_number?.text =  items[position].position.toString()
+            holder.txtpoint_bottom?.text =  items[position].topData.name
+            holder.txtpoints?.text =    items[position].allPoints.toString()
+
+            if(items[position].topData.point >0){
+                holder.leaderPoint?.text =   items[position].topData.point.toString()
+            }else{
+                holder.leaderPoint?.text =   ""
+            }
         }
 
 

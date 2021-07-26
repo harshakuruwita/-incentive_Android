@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bluebloods</string>
+    <string name="app_name">Vodafone UAT</string>
 
     <string name="service_loading_fail"></string>
     <string name="service_loading_fail_invaliduser">Invalid username or password</string>
