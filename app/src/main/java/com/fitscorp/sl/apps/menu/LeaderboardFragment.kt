@@ -13,6 +13,7 @@ import com.fitscorp.sl.apps.App
 import android.util.Log
 import com.fitscorp.sl.apps.R
 import com.fitscorp.sl.apps.home.model.ExecutiveLeaderBordResponse
+
 import com.fitscorp.sl.apps.home.model.RegionData
 import com.fitscorp.sl.apps.home.model.SalesData
 import com.fitscorp.sl.apps.home.model.StoreData
@@ -139,8 +140,8 @@ class LeaderboardFragment : Fragment() {
         }
 
         jumptostore.setOnClickListener {
-        Log.d("SINNNNNNNNNNN",scrolableIndex.toString());
-                leaderboard_recycler.smoothScrollToPosition(scrolableIndex);
+            Log.d("SINNNNNNNNNNN",scrolableIndex.toString());
+            leaderboard_recycler.smoothScrollToPosition(scrolableIndex);
 
         }
         if(userRole=="HEAD_OFFICE") {
@@ -219,21 +220,21 @@ class LeaderboardFragment : Fragment() {
         var  firstPlace_colour = "#f5c242"
         var leaderBoard_colour = "#f5c242"
 
-if(dataObj.count() >0){
-    var cSetting=dataLogin!!.response.incentive.get(0).ColorSettings
+        if(dataObj.count() >0){
+            var cSetting=dataLogin!!.response.incentive.get(0).ColorSettings
 
 
-    var jsonObj: JSONObject? = null
-    try {
-        jsonObj = JSONObject(cSetting)
-    } catch (e: JSONException) {
-        e.printStackTrace()
-    }
+            var jsonObj: JSONObject? = null
+            try {
+                jsonObj = JSONObject(cSetting)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
 
 
-      firstPlace_colour=jsonObj!!.optString("firstPlace").toString()
-      leaderBoard_colour=jsonObj!!.optString("leaderBoard").toString()
-}
+            firstPlace_colour=jsonObj!!.optString("firstPlace").toString()
+            leaderBoard_colour=jsonObj!!.optString("leaderBoard").toString()
+        }
 
 
         if(dataObj!!.isNotEmpty()) {
@@ -324,7 +325,7 @@ if(dataObj.count() >0){
             val mlayoutManager = LinearLayoutManager(context)
             val timelineAapter = LeaderboardAapter(contxt, dataObj as ArrayList<LeaderboardData>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour)
 
-var loopVal = 0;
+            var loopVal = 0;
             for (idArry in dataObj){
 
                 if(salesID==idArry.userId || storePrimaryId== idArry.StorePrimaryId ){
@@ -385,33 +386,33 @@ var loopVal = 0;
 
                     val  firstPlace_colour=leaderboardVM.firstPlace_colour
                     val  leaderBoard_colour=leaderboardVM.leaderBoard_colour
-                   if(dataObj!!.isNotEmpty()) {
-                       img_nodataimg.visibility=View.GONE
-                       val mlayoutManager = LinearLayoutManager(context)
-                      val timelineAapter = LeaderboardAapter(contxt, dataObj as ArrayList<LeaderboardData>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour)
+                    if(dataObj!!.isNotEmpty()) {
+                        img_nodataimg.visibility=View.GONE
+                        val mlayoutManager = LinearLayoutManager(context)
+                        val timelineAapter = LeaderboardAapter(contxt, dataObj as ArrayList<LeaderboardData>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour)
 
-                       var loopVal = 0;
-                       for (idArry in dataObj){
+                        var loopVal = 0;
+                        for (idArry in dataObj){
 
-                           if(salesID==idArry.userId || storePrimaryId== idArry.StorePrimaryId ){
-                               scrolableIndex = loopVal
-                           }
-                           loopVal = loopVal + 1;
+                            if(salesID==idArry.userId || storePrimaryId== idArry.StorePrimaryId ){
+                                scrolableIndex = loopVal
+                            }
+                            loopVal = loopVal + 1;
 
-                       }
-
-
+                        }
 
 
-                       leaderboard_recycler.apply {
-                           layoutManager = mlayoutManager as RecyclerView.LayoutManager?
-                           adapter = timelineAapter
-                       }
 
 
-                   }else{
-                       img_nodataimg.visibility=View.VISIBLE
-                   }}else{
+                        leaderboard_recycler.apply {
+                            layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                            adapter = timelineAapter
+                        }
+
+
+                    }else{
+                        img_nodataimg.visibility=View.VISIBLE
+                    }}else{
                     img_nodataimg.visibility=View.VISIBLE
                 }
             }, {
@@ -498,10 +499,10 @@ var loopVal = 0;
 
                             val  firstPlace_colour = leaderboardVM.firstPlace_colour
                             val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                            if(dataObj!!.isNotEmpty()) {
+                            if(dataObj!!.response.dataArr.isNotEmpty()) {
                                 img_nodataimg.visibility=View.GONE
                                 val mlayoutManager = LinearLayoutManager(context)
-                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
 
 
 
@@ -541,10 +542,10 @@ var loopVal = 0;
 
                             val  firstPlace_colour = leaderboardVM.firstPlace_colour
                             val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                            if(dataObj!!.isNotEmpty()) {
+                            if(dataObj!!.response.dataArr.isNotEmpty()) {
                                 img_nodataimg.visibility=View.GONE
                                 val mlayoutManager = LinearLayoutManager(context)
-                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
 
 
 
@@ -592,10 +593,10 @@ var loopVal = 0;
                             val  dataObj=leaderboardVM.executiveDataObj
                             val  firstPlace_colour = leaderboardVM.firstPlace_colour
                             val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                            if(dataObj!!.isNotEmpty()) {
+                            if(dataObj!!.response.dataArr.isNotEmpty()) {
                                 img_nodataimg.visibility=View.GONE
                                 val mlayoutManager = LinearLayoutManager(context)
-                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
 
 
 
@@ -639,10 +640,10 @@ var loopVal = 0;
                             val  dataObj=leaderboardVM.executiveDataObj
                             val  firstPlace_colour = leaderboardVM.firstPlace_colour
                             val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                            if(dataObj!!.isNotEmpty()) {
+                            if(dataObj!!.response.dataArr.isNotEmpty()) {
                                 img_nodataimg.visibility=View.GONE
                                 val mlayoutManager = LinearLayoutManager(context)
-                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
 
 
 
@@ -695,10 +696,10 @@ var loopVal = 0;
 
                         val  firstPlace_colour = leaderboardVM.firstPlace_colour
                         val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                        if(dataObj!!.isNotEmpty()) {
+                        if(dataObj!!.response.dataArr.isNotEmpty()) {
                             img_nodataimg.visibility=View.GONE
                             val mlayoutManager = LinearLayoutManager(context)
-                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
 
 
 
@@ -725,47 +726,47 @@ var loopVal = 0;
             }else if(selectedTab == 3){
 
                 subscription.add(leaderboardVM.getLeaderBoardByRegionByStoreAlluser(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,region!!.regionId,store!!.storeId).subscribeOn(
-                Schedulers.io()
-            )
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
-                .doOnTerminate { view.progressBar.visibility = View.GONE }
-                .doOnError { view.progressBar.visibility = View.GONE }
-                .subscribe({
-                    if (it.isSuccess) {
+                    Schedulers.io()
+                )
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                    .doOnTerminate { view.progressBar.visibility = View.GONE }
+                    .doOnError { view.progressBar.visibility = View.GONE }
+                    .subscribe({
+                        if (it.isSuccess) {
 
 
-                        val  dataObj=leaderboardVM.executiveDataObj
+                            val  dataObj=leaderboardVM.executiveDataObj
 
-                        val  firstPlace_colour = leaderboardVM.firstPlace_colour
-                        val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                        if(dataObj!!.isNotEmpty()) {
-                            img_nodataimg.visibility=View.GONE
-                            val mlayoutManager = LinearLayoutManager(context)
-                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
-
-
+                            val  firstPlace_colour = leaderboardVM.firstPlace_colour
+                            val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
+                            if(dataObj!!.response.dataArr.isNotEmpty()) {
+                                img_nodataimg.visibility=View.GONE
+                                val mlayoutManager = LinearLayoutManager(context)
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
 
 
 
-                            leaderboard_recycler.apply {
-                                layoutManager = mlayoutManager as RecyclerView.LayoutManager?
-                                adapter = timelineAapter
-                            }
 
 
-                        }else{
+                                leaderboard_recycler.apply {
+                                    layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                    adapter = timelineAapter
+                                }
+
+
+                            }else{
+                                img_nodataimg.visibility=View.VISIBLE
+                            }}else{
                             img_nodataimg.visibility=View.VISIBLE
-                        }}else{
-                        img_nodataimg.visibility=View.VISIBLE
-                    }
-                }, {
+                        }
+                    }, {
 
-                    view.progressBar.visibility = View.GONE
+                        view.progressBar.visibility = View.GONE
 
-                })
+                    })
 
-            )}
+                )}
 
 
 
@@ -787,10 +788,10 @@ var loopVal = 0;
 
                         val  firstPlace_colour = leaderboardVM.firstPlace_colour
                         val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                        if(dataObj!!.isNotEmpty()) {
+                        if(dataObj!!.response.dataArr.isNotEmpty()) {
                             img_nodataimg.visibility=View.GONE
                             val mlayoutManager = LinearLayoutManager(context)
-                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
 
 
 
@@ -831,10 +832,10 @@ var loopVal = 0;
 
                         val  firstPlace_colour = leaderboardVM.firstPlace_colour
                         val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                        if(dataObj!!.isNotEmpty()) {
+                        if(dataObj!!.response.dataArr.isNotEmpty()) {
                             img_nodataimg.visibility=View.GONE
                             val mlayoutManager = LinearLayoutManager(context)
-                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
 
 
 
@@ -930,7 +931,7 @@ var loopVal = 0;
         fun newInstance(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean) =
             LeaderboardFragment().apply {
                 arguments = Bundle().apply {
-    
+
                     salesID=user.salesId
                     userRole=user.userRole
                     incentivefield = incentvefield

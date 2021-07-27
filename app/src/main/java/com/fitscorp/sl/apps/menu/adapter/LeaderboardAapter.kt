@@ -65,7 +65,7 @@ class LeaderboardAapter(
                 holder.mainBg.setBackgroundDrawable(gd)
 
 
-              //  holder.mainBg.setBackgroundResource(R.drawable.leaderboard_yellow_bg);
+                //  holder.mainBg.setBackgroundResource(R.drawable.leaderboard_yellow_bg);
             } else {
                 holder.mainBg.setBackgroundResource(R.drawable.leaderboard_yellow_bg);
             }
@@ -83,7 +83,7 @@ class LeaderboardAapter(
 
             holder.mainBg.setBackgroundDrawable(gd)
 
-           // holder.mainBg.setBackgroundResource(R.drawable.leaderboard_button_bg)
+            // holder.mainBg.setBackgroundResource(R.drawable.leaderboard_button_bg)
         }
 
         val df = DecimalFormat("#.##")

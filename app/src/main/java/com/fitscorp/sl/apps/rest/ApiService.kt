@@ -77,6 +77,19 @@ interface ApiService {
 
     @GET("user/dashboard/store/table?")
     fun getTimeineDataSM(@Header("Authorization") authorization: String,
+                         @Query("incentivefield") incentivefield: Int,
+                         @Query("selectPeriod") selectPeriod: String,
+                         @Query("StartDate") StartDate: String,
+                         @Query("EndDate") EndDate: String,
+                         @Query("PeriodId") PeriodId: Int,
+                         @Query("moduleType") moduleType: String,
+                         @Query("tableDisplay") tableDisplay: Boolean
+
+    ): Flowable<Response<TimelineMainRespone>>
+
+
+    @GET("user/dashboard/salesrep/kpi?")
+    fun getTimeineData(@Header("Authorization") authorization: String,
                        @Query("incentivefield") incentivefield: Int,
                        @Query("selectPeriod") selectPeriod: String,
                        @Query("StartDate") StartDate: String,
@@ -87,51 +100,8 @@ interface ApiService {
 
     ): Flowable<Response<TimelineMainRespone>>
 
-
-    @GET("user/dashboard/salesrep/kpi?")
-    fun getTimeineData(@Header("Authorization") authorization: String,
-                           @Query("incentivefield") incentivefield: Int,
-                           @Query("selectPeriod") selectPeriod: String,
-                           @Query("StartDate") StartDate: String,
-                           @Query("EndDate") EndDate: String,
-                           @Query("PeriodId") PeriodId: Int,
-                       @Query("moduleType") moduleType: String,
-                       @Query("tableDisplay") tableDisplay: Boolean
-
-                       ): Flowable<Response<TimelineMainRespone>>
-
     @GET("user/dashboard/mobile/store/dashboard?")
     fun getTimeineDataExecutiveAllRegion(@Header("Authorization") authorization: String,
-                       @Query("incentivefield") incentivefield: Int,
-                       @Query("selectPeriod") selectPeriod: String,
-                       @Query("StartDate") StartDate: String,
-                       @Query("EndDate") EndDate: String,
-                       @Query("PeriodId") PeriodId: Int,
-                       @Query("moduleType") moduleType: String,
-                       @Query("tableDisplay") tableDisplay: Boolean,
-                       @Query("RegionId") RegionId: String,
-                       @Query("storeId") storeId: String,
-
-
-    ): Flowable<Response<ExecutiveTimelineMainRespone>>
-
-
-    @GET("user/dashboard/mobile/store/dashboard?")
-    fun getTimeineDataExecutiveAllSales(@Header("Authorization") authorization: String,
-                                         @Query("incentivefield") incentivefield: Int,
-                                         @Query("selectPeriod") selectPeriod: String,
-                                         @Query("StartDate") StartDate: String,
-                                         @Query("EndDate") EndDate: String,
-                                         @Query("PeriodId") PeriodId: Int,
-                                         @Query("moduleType") moduleType: String,
-                                         @Query("tableDisplay") tableDisplay: Boolean,
-                                        @Query("userId") userId: String,
-
-
-                                         ): Flowable<Response<ExecutiveTimelineMainRespone>>
-
-    @GET("user/dashboard/mobile/user/dashboard?")
-    fun getTimeineDataExecutiveByUser(@Header("Authorization") authorization: String,
                                          @Query("incentivefield") incentivefield: Int,
                                          @Query("selectPeriod") selectPeriod: String,
                                          @Query("StartDate") StartDate: String,
@@ -141,124 +111,54 @@ interface ApiService {
                                          @Query("tableDisplay") tableDisplay: Boolean,
                                          @Query("RegionId") RegionId: String,
                                          @Query("storeId") storeId: String,
-                                         @Query("userId") userId: String,
+
 
                                          ): Flowable<Response<ExecutiveTimelineMainRespone>>
 
+
+    @GET("user/dashboard/mobile/store/dashboard?")
+    fun getTimeineDataExecutiveAllSales(@Header("Authorization") authorization: String,
+                                        @Query("incentivefield") incentivefield: Int,
+                                        @Query("selectPeriod") selectPeriod: String,
+                                        @Query("StartDate") StartDate: String,
+                                        @Query("EndDate") EndDate: String,
+                                        @Query("PeriodId") PeriodId: Int,
+                                        @Query("moduleType") moduleType: String,
+                                        @Query("tableDisplay") tableDisplay: Boolean,
+                                        @Query("userId") userId: String,
+
+
+                                        ): Flowable<Response<ExecutiveTimelineMainRespone>>
+
+    @GET("user/dashboard/mobile/user/dashboard?")
+    fun getTimeineDataExecutiveByUser(@Header("Authorization") authorization: String,
+                                      @Query("incentivefield") incentivefield: Int,
+                                      @Query("selectPeriod") selectPeriod: String,
+                                      @Query("StartDate") StartDate: String,
+                                      @Query("EndDate") EndDate: String,
+                                      @Query("PeriodId") PeriodId: Int,
+                                      @Query("moduleType") moduleType: String,
+                                      @Query("tableDisplay") tableDisplay: Boolean,
+                                      @Query("RegionId") RegionId: String,
+                                      @Query("storeId") storeId: String,
+                                      @Query("userId") userId: String,
+
+                                      ): Flowable<Response<ExecutiveTimelineMainRespone>>
+
     @GET("user/mobile/slaesrep/leaderboard?")
     fun getLeaderBoardData(@Header("Authorization") authorization: String,
-                       @Query("incentivefield") incentivefield: Int,
-                       @Query("selectPeriod") selectPeriod: String,
-                       @Query("StartDate") StartDate: String,
-                       @Query("EndDate") EndDate: String,
-                       @Query("PeriodId") PeriodId: Int,
-                       @Query("moduleType") moduleType: String,
-                       @Query("tableDisplay") tableDisplay: Boolean
-
-    ): Flowable<Response<Leaderboard>>
-
-    @GET("user/dashboard/mobile/leaderboard?")
-    fun getLeaderBoarByRegiondData(@Header("Authorization") authorization: String,
                            @Query("incentivefield") incentivefield: Int,
                            @Query("selectPeriod") selectPeriod: String,
                            @Query("StartDate") StartDate: String,
                            @Query("EndDate") EndDate: String,
                            @Query("PeriodId") PeriodId: Int,
                            @Query("moduleType") moduleType: String,
-                           @Query("tableDisplay") tableDisplay: Boolean,
-                           @Query("RegionId") RegionId: String,
-                           @Query("storeId") storeId: String,
+                           @Query("tableDisplay") tableDisplay: Boolean
 
-    ): Flowable<Response<ExecutiveLeaderResponse>>
-
+    ): Flowable<Response<Leaderboard>>
 
     @GET("user/dashboard/mobile/leaderboard?")
-    fun getLeaderBoarOnlyRegion(@Header("Authorization") authorization: String,
-                                   @Query("incentivefield") incentivefield: Int,
-                                   @Query("selectPeriod") selectPeriod: String,
-                                   @Query("StartDate") StartDate: String,
-                                   @Query("EndDate") EndDate: String,
-                                   @Query("PeriodId") PeriodId: Int,
-                                   @Query("moduleType") moduleType: String,
-                                   @Query("tableDisplay") tableDisplay: Boolean,
-                                   @Query("RegionId") regionId: String,
-                                   @Query("storeId") storeId: String,
-
-                                   ): Flowable<Response<ExecutiveLeaderResponse>>
-
-    @GET("user/dashboard/mobile/leaderboard?")
-    fun getLeaderBoarAllRegion(@Header("Authorization") authorization: String,
-                                @Query("incentivefield") incentivefield: Int,
-                                @Query("selectPeriod") selectPeriod: String,
-                                @Query("StartDate") StartDate: String,
-                                @Query("EndDate") EndDate: String,
-                                @Query("PeriodId") PeriodId: Int,
-                                @Query("moduleType") moduleType: String,
-                                @Query("tableDisplay") tableDisplay: Boolean,
-                                @Query("RegionId") regionId: String,
-
-                                ): Flowable<Response<ExecutiveLeaderResponse>>
-
-
-
-    @GET("user/dashboard/mobile/leaderboard?")
-    fun getLeaderBoarByRegionByStore(@Header("Authorization") authorization: String,
-                               @Query("incentivefield") incentivefield: Int,
-                               @Query("selectPeriod") selectPeriod: String,
-                               @Query("StartDate") StartDate: String,
-                               @Query("EndDate") EndDate: String,
-                               @Query("PeriodId") PeriodId: Int,
-                               @Query("moduleType") moduleType: String,
-                               @Query("tableDisplay") tableDisplay: Boolean,
-                               @Query("RegionId") regionId: String,
-                                @Query("storeId") storeId: String,
-
-                               ): Flowable<Response<ExecutiveLeaderResponse>>
-
-    @GET("user/dashboard/mobile/leaderboard?")
-    fun getLeaderBoarByRegionByStoreAlluser(@Header("Authorization") authorization: String,
-                                     @Query("incentivefield") incentivefield: Int,
-                                     @Query("selectPeriod") selectPeriod: String,
-                                     @Query("StartDate") StartDate: String,
-                                     @Query("EndDate") EndDate: String,
-                                     @Query("PeriodId") PeriodId: Int,
-                                     @Query("moduleType") moduleType: String,
-                                     @Query("tableDisplay") tableDisplay: Boolean,
-                                     @Query("RegionId") regionId: String,
-                                     @Query("storeId") storeId: String,
-                                     @Query("userId") userId: String,
-
-                                     ): Flowable<Response<ExecutiveLeaderResponse>>
-
-    @GET("user/dashboard/mobile/leaderboard?")
-    fun getLeaderBoarByRegionAllUser(@Header("Authorization") authorization: String,
-                               @Query("incentivefield") incentivefield: Int,
-                               @Query("selectPeriod") selectPeriod: String,
-                               @Query("StartDate") StartDate: String,
-                               @Query("EndDate") EndDate: String,
-                               @Query("PeriodId") PeriodId: Int,
-                               @Query("moduleType") moduleType: String,
-                               @Query("tableDisplay") tableDisplay: Boolean,
-                               @Query("RegionId") regionId: String,
-                               @Query("userId") userId: String,
-
-                               ): Flowable<Response<ExecutiveLeaderResponse>>
-
-    @GET("user/dashboard/mobile/leaderboard?")
-    fun getLeaderBoarAllUser(@Header("Authorization") authorization: String,
-                               @Query("incentivefield") incentivefield: Int,
-                               @Query("selectPeriod") selectPeriod: String,
-                               @Query("StartDate") StartDate: String,
-                               @Query("EndDate") EndDate: String,
-                               @Query("PeriodId") PeriodId: Int,
-                               @Query("moduleType") moduleType: String,
-                               @Query("tableDisplay") tableDisplay: Boolean,
-                               @Query("userId") salesld: String,
-
-                               ): Flowable<Response<ExecutiveLeaderResponse>>
-
-    @GET("user/dashboard/mobile/leaderboard?")
-    fun getLeaderBoarByUserData(@Header("Authorization") authorization: String,
+    fun getLeaderBoarByRegiondData(@Header("Authorization") authorization: String,
                                    @Query("incentivefield") incentivefield: Int,
                                    @Query("selectPeriod") selectPeriod: String,
                                    @Query("StartDate") StartDate: String,
@@ -268,12 +168,97 @@ interface ApiService {
                                    @Query("tableDisplay") tableDisplay: Boolean,
                                    @Query("RegionId") RegionId: String,
                                    @Query("storeId") storeId: String,
-                                   @Query("userId") salesld: String,
 
-                                   ): Flowable<Response<ExecutiveLeaderResponse>>
+                                   ): Flowable<Response<ExecutiveLeaderBordResponse>>
+
 
     @GET("user/dashboard/mobile/leaderboard?")
-    fun getLeaderBoarByRegionByUser(@Header("Authorization") authorization: String,
+    fun getLeaderBoarOnlyRegion(@Header("Authorization") authorization: String,
+                                @Query("incentivefield") incentivefield: Int,
+                                @Query("selectPeriod") selectPeriod: String,
+                                @Query("StartDate") StartDate: String,
+                                @Query("EndDate") EndDate: String,
+                                @Query("PeriodId") PeriodId: Int,
+                                @Query("moduleType") moduleType: String,
+                                @Query("tableDisplay") tableDisplay: Boolean,
+                                @Query("RegionId") regionId: String,
+                                @Query("storeId") storeId: String,
+
+                                ): Flowable<Response<ExecutiveLeaderBordResponse>>
+
+    @GET("user/dashboard/mobile/leaderboard?")
+    fun getLeaderBoarAllRegion(@Header("Authorization") authorization: String,
+                               @Query("incentivefield") incentivefield: Int,
+                               @Query("selectPeriod") selectPeriod: String,
+                               @Query("StartDate") StartDate: String,
+                               @Query("EndDate") EndDate: String,
+                               @Query("PeriodId") PeriodId: Int,
+                               @Query("moduleType") moduleType: String,
+                               @Query("tableDisplay") tableDisplay: Boolean,
+                               @Query("RegionId") regionId: String,
+
+                               ): Flowable<Response<ExecutiveLeaderBordResponse>>
+
+
+
+    @GET("user/dashboard/mobile/leaderboard?")
+    fun getLeaderBoarByRegionByStore(@Header("Authorization") authorization: String,
+                                     @Query("incentivefield") incentivefield: Int,
+                                     @Query("selectPeriod") selectPeriod: String,
+                                     @Query("StartDate") StartDate: String,
+                                     @Query("EndDate") EndDate: String,
+                                     @Query("PeriodId") PeriodId: Int,
+                                     @Query("moduleType") moduleType: String,
+                                     @Query("tableDisplay") tableDisplay: Boolean,
+                                     @Query("RegionId") regionId: String,
+                                     @Query("storeId") storeId: String,
+
+                                     ): Flowable<Response<ExecutiveLeaderBordResponse>>
+
+    @GET("user/dashboard/mobile/leaderboard?")
+    fun getLeaderBoarByRegionByStoreAlluser(@Header("Authorization") authorization: String,
+                                            @Query("incentivefield") incentivefield: Int,
+                                            @Query("selectPeriod") selectPeriod: String,
+                                            @Query("StartDate") StartDate: String,
+                                            @Query("EndDate") EndDate: String,
+                                            @Query("PeriodId") PeriodId: Int,
+                                            @Query("moduleType") moduleType: String,
+                                            @Query("tableDisplay") tableDisplay: Boolean,
+                                            @Query("RegionId") regionId: String,
+                                            @Query("storeId") storeId: String,
+                                            @Query("userId") userId: String,
+
+                                            ): Flowable<Response<ExecutiveLeaderBordResponse>>
+
+    @GET("user/dashboard/mobile/leaderboard?")
+    fun getLeaderBoarByRegionAllUser(@Header("Authorization") authorization: String,
+                                     @Query("incentivefield") incentivefield: Int,
+                                     @Query("selectPeriod") selectPeriod: String,
+                                     @Query("StartDate") StartDate: String,
+                                     @Query("EndDate") EndDate: String,
+                                     @Query("PeriodId") PeriodId: Int,
+                                     @Query("moduleType") moduleType: String,
+                                     @Query("tableDisplay") tableDisplay: Boolean,
+                                     @Query("RegionId") regionId: String,
+                                     @Query("userId") userId: String,
+
+                                     ): Flowable<Response<ExecutiveLeaderBordResponse>>
+
+    @GET("user/dashboard/mobile/leaderboard?")
+    fun getLeaderBoarAllUser(@Header("Authorization") authorization: String,
+                             @Query("incentivefield") incentivefield: Int,
+                             @Query("selectPeriod") selectPeriod: String,
+                             @Query("StartDate") StartDate: String,
+                             @Query("EndDate") EndDate: String,
+                             @Query("PeriodId") PeriodId: Int,
+                             @Query("moduleType") moduleType: String,
+                             @Query("tableDisplay") tableDisplay: Boolean,
+                             @Query("userId") salesld: String,
+
+                             ): Flowable<Response<ExecutiveLeaderBordResponse>>
+
+    @GET("user/dashboard/mobile/leaderboard?")
+    fun getLeaderBoarByUserData(@Header("Authorization") authorization: String,
                                 @Query("incentivefield") incentivefield: Int,
                                 @Query("selectPeriod") selectPeriod: String,
                                 @Query("StartDate") StartDate: String,
@@ -282,19 +267,34 @@ interface ApiService {
                                 @Query("moduleType") moduleType: String,
                                 @Query("tableDisplay") tableDisplay: Boolean,
                                 @Query("RegionId") RegionId: String,
+                                @Query("storeId") storeId: String,
                                 @Query("userId") salesld: String,
 
-                                ): Flowable<Response<ExecutiveLeaderResponse>>
+                                ): Flowable<Response<ExecutiveLeaderBordResponse>>
+
+    @GET("user/dashboard/mobile/leaderboard?")
+    fun getLeaderBoarByRegionByUser(@Header("Authorization") authorization: String,
+                                    @Query("incentivefield") incentivefield: Int,
+                                    @Query("selectPeriod") selectPeriod: String,
+                                    @Query("StartDate") StartDate: String,
+                                    @Query("EndDate") EndDate: String,
+                                    @Query("PeriodId") PeriodId: Int,
+                                    @Query("moduleType") moduleType: String,
+                                    @Query("tableDisplay") tableDisplay: Boolean,
+                                    @Query("RegionId") RegionId: String,
+                                    @Query("userId") salesld: String,
+
+                                    ): Flowable<Response<ExecutiveLeaderBordResponse>>
 
     @GET("user/mobile/store/leaderboard?")
     fun getLeaderBoardSM(@Header("Authorization") authorization: String,
-                           @Query("incentivefield") incentivefield: Int,
-                           @Query("selectPeriod") selectPeriod: String,
-                           @Query("StartDate") StartDate: String,
-                           @Query("EndDate") EndDate: String,
-                           @Query("PeriodId") PeriodId: Int,
-                           @Query("moduleType") moduleType: String,
-                           @Query("tableDisplay") tableDisplay: Boolean
+                         @Query("incentivefield") incentivefield: Int,
+                         @Query("selectPeriod") selectPeriod: String,
+                         @Query("StartDate") StartDate: String,
+                         @Query("EndDate") EndDate: String,
+                         @Query("PeriodId") PeriodId: Int,
+                         @Query("moduleType") moduleType: String,
+                         @Query("tableDisplay") tableDisplay: Boolean
 
     ): Flowable<Response<Leaderboard>>
 
@@ -312,7 +312,7 @@ interface ApiService {
     @POST("merchant/mobile/assets")
     @FormUrlEncoded
     fun getStoreImages(@Header("Authorization") authorization: String,
-                     @Field("merchantId") organizationId: String): Flowable<Response<StoreImagesResponse>>
+                       @Field("merchantId") organizationId: String): Flowable<Response<StoreImagesResponse>>
 
 
     @GET("user/mobile/profile")

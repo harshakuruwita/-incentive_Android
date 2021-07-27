@@ -26,7 +26,7 @@ import java.text.DecimalFormat
 
 class LeaderboardExecutiveAapter(
     val context: Context,
-    val items: ArrayList<ExecutiveLeaderBordResponse>,
+    val items: ExecutiveLeaderBordResponse,
     val salesID: String,
     val StorePrimaryId: Int,
     val firstPlace_colour: String,
@@ -57,62 +57,72 @@ class LeaderboardExecutiveAapter(
 
 
 
-            val greenColorValue1 = Color.parseColor(leaderBoard_colour)
+        val greenColorValue1 = Color.parseColor(leaderBoard_colour)
 
-            val gd = GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT,
-                intArrayOf(greenColorValue1, greenColorValue1)
-            )
-            gd.gradientType = GradientDrawable.LINEAR_GRADIENT
-            gd.cornerRadius = 100f
+        val gd = GradientDrawable(
+            GradientDrawable.Orientation.LEFT_RIGHT,
+            intArrayOf(greenColorValue1, greenColorValue1)
+        )
+        gd.gradientType = GradientDrawable.LINEAR_GRADIENT
+        gd.cornerRadius = 100f
 
-            holder.mainBg.setBackgroundDrawable(gd)
-Log.d("Selected tab id",selectedTab.toString());
+        holder.mainBg.setBackgroundDrawable(gd)
+        Log.d("Selected tab id",selectedTab.toString());
         if(selectedTab == 0 || selectedTab == 1){
             val df = DecimalFormat("#.##")
 
-            holder.tvAnimalType?.text = items[position].name.toString()
-            holder.txt_number?.text =  items[position].position.toString()
-            holder.txtpoint_bottom?.text =  items[position].topData.name
-            holder.txtpoints?.text =    items[position].allPoints.toString()
+            holder.tvAnimalType?.text = items.response.dataArr[position].name.toString()
 
-            if(items[position].topData.point >0){
-                holder.leaderPoint?.text =   items[position].topData.point.toString()
+
+            holder.txt_number?.text =  items.response.dataArr[position].position.toString()
+            holder.txtpoint_bottom?.text =  items.response.dataArr[position].topData.name
+            holder.txtpoints?.text =    items.response.dataArr[position].allPoints.toString()
+
+            if(items.response.dataArr[position].topData.point > 0){
+                holder.leaderPoint?.text =   items.response.dataArr[position].topData.point.toString()
             }else{
                 holder.leaderPoint?.text =   ""
             }
+
+
+
+
+
         }else if(selectedTab == 2){
             val df = DecimalFormat("#.##")
-            holder.tvAnimalType?.text = items[position].name.toString()
-            holder.txt_number?.text =  items[position].position.toString()
-            holder.txtpoint_bottom?.text =  items[position].topData.name
-            holder.txtpoints?.text =    items[position].allPoints.toString()
 
-            if(items[position].topData.point >0){
-                holder.leaderPoint?.text =   items[position].topData.point.toString()
+
+            holder.tvAnimalType?.text = items.response.dataArr[position].name.toString()
+            holder.txt_number?.text =  items.response.dataArr[position].position.toString()
+            holder.txtpoint_bottom?.text =  items.response.dataArr[position].topData.name
+            holder.txtpoints?.text =    items.response.dataArr[position].allPoints.toString()
+
+            if(items.response.dataArr[position].topData.point >0){
+                holder.leaderPoint?.text =   items.response.dataArr[position].topData.point.toString()
             }else{
                 holder.leaderPoint?.text =   ""
             }
+
         }
 
 
 
         else{
-            if(items[position].topData.point > 0){
+            if(items.response.dataArr[position].topData.point > 0){
                 val df = DecimalFormat("#.##")
                 holder.txtpoint_bottom?.visibility = View.VISIBLE;
                 holder.leaderPoint?.visibility = View.VISIBLE;
-                holder.tvAnimalType?.text = items[position].name.toString()
-                holder.txt_number?.text = items[position].position.toString()
-                holder.txtpoint_bottom?.text = items[position].topData.name
-                holder.txtpoints?.text =   items[position].allPoints.toString()
-                holder.leaderPoint?.text =   items[position].topData.point.toString()
+                holder.tvAnimalType?.text = items.response.dataArr[position].name.toString()
+                holder.txt_number?.text = items.response.dataArr[position].position.toString()
+                holder.txtpoint_bottom?.text = items.response.dataArr[position].topData.name
+                holder.txtpoints?.text =   items.response.dataArr[position].allPoints.toString()
+                holder.leaderPoint?.text =   items.response.dataArr[position].topData.point.toString()
             }else{
                 val df = DecimalFormat("#.##")
-                holder.tvAnimalType?.text = items[position].name.toString()
-                holder.txt_number?.text = items[position].position.toString()
+                holder.tvAnimalType?.text = items.response.dataArr[position].name.toString()
+                holder.txt_number?.text = items.response.dataArr[position].position.toString()
                 holder.txtpoint_bottom?.visibility = View.GONE;
-                holder.txtpoints?.text =   items[position].allPoints.toString()
+                holder.txtpoints?.text =   items.response.dataArr[position].allPoints.toString()
                 holder.leaderPoint?.visibility = View.GONE;
             }
         }
@@ -125,7 +135,7 @@ Log.d("Selected tab id",selectedTab.toString());
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return items.response.dataArr.size
     }
 
 }
