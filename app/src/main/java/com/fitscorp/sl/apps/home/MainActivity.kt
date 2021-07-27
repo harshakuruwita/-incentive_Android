@@ -122,7 +122,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     documentType = ""
     documentData = ""
    App.getInstance().appComponent.inject(this)
-    store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#FFBC00"));
+    store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#00B2A9"));
     val intent = intent
     val message = intent.getStringExtra("message")
     if(!message.isNullOrEmpty()) {
@@ -1074,8 +1074,8 @@ private fun setupBottomMenu() {
         all_region_text.visibility = View.GONE
         spinner_executive_region.performClick();
         executive_headder.visibility = View.VISIBLE
-        store_meterial_card_store.setCardBackgroundColor(Color.parseColor("#FFBC00"));
-        store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#FFBC00"));
+        store_meterial_card_store.setCardBackgroundColor(Color.parseColor("#00B2A9"));
+        store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#00B2A9"));
         isStoreEnable=true;
         isSalsesIDTabSelected = false;
            selectedRegion = allRegionArr!![0];

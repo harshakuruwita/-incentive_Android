@@ -22,9 +22,9 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
 
     var dataObjStoreManager :  List<LeaderboardData>?=null
     var dataObj :  List<LeaderboardData>?=null
-    var executiveDataObj :  List<ExecutiveLeaderBordResponse>?=null
-    var leaderBoard_colour = "#208EBE"
-    var firstPlace_colour = "#208EBE"
+    var executiveDataObj :  ExecutiveLeaderBordResponse?=null
+    var leaderBoard_colour = "#00B2A9"
+    var firstPlace_colour = "#00504c"
 
 
 
@@ -106,12 +106,22 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
 
          //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
 
-            executiveDataObj = dataOb!!.response
-            if(dataOb!!.response.count() > 0){
+            executiveDataObj = dataOb!!
+            if(dataOb!!.response.dataArr.count() > 0){
 
 
-               // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
-               // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+                var cSetting=dataOb!!.response.incentive.get(0).ColorSettings
+
+
+                var jsonObj: JSONObject? = null
+                try {
+                    jsonObj = JSONObject(cSetting)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+                leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
 
             }
 
@@ -135,12 +145,21 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
 
             //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
 
-            executiveDataObj = dataOb!!.response
-            if(dataOb!!.response.count() > 0){
+            executiveDataObj = dataOb!!
+            if(dataOb!!.response.dataArr.count() > 0){
+
+                var cSetting=dataOb!!.response.incentive.get(0).ColorSettings
 
 
-                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
-                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+                var jsonObj: JSONObject? = null
+                try {
+                    jsonObj = JSONObject(cSetting)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+                leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
 
             }
 
@@ -163,12 +182,21 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
 
             //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
 
-            executiveDataObj = dataOb!!.response
-            if(dataOb!!.response.count() > 0){
+            executiveDataObj = dataOb!!
+            if(dataOb!!.response.dataArr.count() > 0){
+
+                var cSetting=dataOb!!.response.incentive.get(0).ColorSettings
 
 
-                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
-                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+                var jsonObj: JSONObject? = null
+                try {
+                    jsonObj = JSONObject(cSetting)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+                leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
 
             }
 
@@ -193,12 +221,21 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
 
             //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
 
-            executiveDataObj = dataOb!!.response
-            if(dataOb!!.response.count() > 0){
+            executiveDataObj = dataOb!!
+            if(dataOb!!.response.dataArr.count() > 0){
+
+                var cSetting=dataOb!!.response.incentive.get(0).ColorSettings
 
 
-                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
-                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+                var jsonObj: JSONObject? = null
+                try {
+                    jsonObj = JSONObject(cSetting)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+                leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
 
             }
 
@@ -222,12 +259,21 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
 
             //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
 
-            executiveDataObj = dataOb!!.response
-            if(dataOb!!.response.count() > 0){
+            executiveDataObj = dataOb!!
+            if(dataOb!!.response.dataArr.count() > 0){
+
+                var cSetting=dataOb!!.response.incentive.get(0).ColorSettings
 
 
-                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
-                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+                var jsonObj: JSONObject? = null
+                try {
+                    jsonObj = JSONObject(cSetting)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+                leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
 
             }
 
@@ -250,12 +296,21 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
 
             //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
 
-            executiveDataObj = dataOb!!.response
-            if(dataOb!!.response.count() > 0){
+            executiveDataObj = dataOb!!
+            if(dataOb!!.response.dataArr.count() > 0){
+
+                var cSetting=dataOb!!.response.incentive.get(0).ColorSettings
 
 
-                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
-                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+                var jsonObj: JSONObject? = null
+                try {
+                    jsonObj = JSONObject(cSetting)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+                leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
 
             }
 
@@ -282,12 +337,21 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
 
             //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
 
-            executiveDataObj = dataOb!!.response
-            if(dataOb!!.response.count() > 0){
+            executiveDataObj = dataOb!!
+            if(dataOb!!.response.dataArr.count() > 0){
+
+                var cSetting=dataOb!!.response.incentive.get(0).ColorSettings
 
 
-                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
-                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+                var jsonObj: JSONObject? = null
+                try {
+                    jsonObj = JSONObject(cSetting)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+                leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
 
             }
 
@@ -310,12 +374,21 @@ class LeaderboardVM @Inject constructor(val apiService: ApiService,
 
             //   sharedPref.saveData("leaderboard_data_REP",detailsToJson(dataOb!!))
 
-            executiveDataObj = dataOb!!.response
-            if(dataOb!!.response.count() > 0){
+            executiveDataObj = dataOb!!
+            if(dataOb!!.response.dataArr.count() > 0){
+
+                var cSetting=dataOb!!.response.incentive.get(0).ColorSettings
 
 
-                // leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
-                // firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
+                var jsonObj: JSONObject? = null
+                try {
+                    jsonObj = JSONObject(cSetting)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+                leaderBoard_colour = jsonObj!!.optString("leaderBoard").toString()
+                firstPlace_colour = jsonObj!!.optString("firstPlace").toString()
 
             }
 

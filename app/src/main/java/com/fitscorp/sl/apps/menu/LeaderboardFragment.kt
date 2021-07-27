@@ -13,6 +13,7 @@ import com.fitscorp.sl.apps.App
 import android.util.Log
 import com.fitscorp.sl.apps.R
 import com.fitscorp.sl.apps.home.model.ExecutiveLeaderBordResponse
+
 import com.fitscorp.sl.apps.home.model.RegionData
 import com.fitscorp.sl.apps.home.model.SalesData
 import com.fitscorp.sl.apps.home.model.StoreData
@@ -498,10 +499,10 @@ var loopVal = 0;
 
                             val  firstPlace_colour = leaderboardVM.firstPlace_colour
                             val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                            if(dataObj!!.isNotEmpty()) {
+                            if(dataObj!!.response.dataArr.isNotEmpty()) {
                                 img_nodataimg.visibility=View.GONE
                                 val mlayoutManager = LinearLayoutManager(context)
-                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
 
 
 
@@ -541,10 +542,10 @@ var loopVal = 0;
 
                             val  firstPlace_colour = leaderboardVM.firstPlace_colour
                             val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                            if(dataObj!!.isNotEmpty()) {
+                            if(dataObj!!.response.dataArr.isNotEmpty()) {
                                 img_nodataimg.visibility=View.GONE
                                 val mlayoutManager = LinearLayoutManager(context)
-                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
 
 
 
@@ -592,10 +593,10 @@ var loopVal = 0;
                             val  dataObj=leaderboardVM.executiveDataObj
                             val  firstPlace_colour = leaderboardVM.firstPlace_colour
                             val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                            if(dataObj!!.isNotEmpty()) {
+                            if(dataObj!!.response.dataArr.isNotEmpty()) {
                                 img_nodataimg.visibility=View.GONE
                                 val mlayoutManager = LinearLayoutManager(context)
-                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
 
 
 
@@ -639,10 +640,10 @@ var loopVal = 0;
                             val  dataObj=leaderboardVM.executiveDataObj
                             val  firstPlace_colour = leaderboardVM.firstPlace_colour
                             val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                            if(dataObj!!.isNotEmpty()) {
+                            if(dataObj!!.response.dataArr.isNotEmpty()) {
                                 img_nodataimg.visibility=View.GONE
                                 val mlayoutManager = LinearLayoutManager(context)
-                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+                                val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
 
 
 
@@ -695,10 +696,10 @@ var loopVal = 0;
 
                         val  firstPlace_colour = leaderboardVM.firstPlace_colour
                         val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                        if(dataObj!!.isNotEmpty()) {
+                        if(dataObj!!.response.dataArr.isNotEmpty()) {
                             img_nodataimg.visibility=View.GONE
                             val mlayoutManager = LinearLayoutManager(context)
-                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
 
 
 
@@ -739,10 +740,10 @@ var loopVal = 0;
 
                         val  firstPlace_colour = leaderboardVM.firstPlace_colour
                         val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                        if(dataObj!!.isNotEmpty()) {
+                        if(dataObj!!.response.dataArr.isNotEmpty()) {
                             img_nodataimg.visibility=View.GONE
                             val mlayoutManager = LinearLayoutManager(context)
-                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
 
 
 
@@ -787,10 +788,10 @@ var loopVal = 0;
 
                         val  firstPlace_colour = leaderboardVM.firstPlace_colour
                         val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                        if(dataObj!!.isNotEmpty()) {
+                        if(dataObj!!.response.dataArr.isNotEmpty()) {
                             img_nodataimg.visibility=View.GONE
                             val mlayoutManager = LinearLayoutManager(context)
-                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,store!!.storeName)
 
 
 
@@ -831,10 +832,10 @@ var loopVal = 0;
 
                         val  firstPlace_colour = leaderboardVM.firstPlace_colour
                         val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
-                        if(dataObj!!.isNotEmpty()) {
+                        if(dataObj!!.response.dataArr.isNotEmpty()) {
                             img_nodataimg.visibility=View.GONE
                             val mlayoutManager = LinearLayoutManager(context)
-                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj as ArrayList<ExecutiveLeaderBordResponse>,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
 
 
 

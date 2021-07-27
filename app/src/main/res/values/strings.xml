@@ -18,8 +18,8 @@
     <string name="register">Create User</string>
     <string name="contacts_us">Contacts us</string>
     <string name="register_header">Please provide the following details</string>
-    <string name="user_type_select">Pleas select user type</string>
-    <string name="user_store_select">Pleas select store</string>
+    <string name="user_type_select">Please select user type</string>
+    <string name="user_store_select">Please select store</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

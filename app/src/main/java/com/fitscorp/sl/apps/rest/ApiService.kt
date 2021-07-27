@@ -169,7 +169,7 @@ interface ApiService {
                            @Query("RegionId") RegionId: String,
                            @Query("storeId") storeId: String,
 
-    ): Flowable<Response<ExecutiveLeaderResponse>>
+    ): Flowable<Response<ExecutiveLeaderBordResponse>>
 
 
     @GET("user/dashboard/mobile/leaderboard?")
@@ -184,7 +184,7 @@ interface ApiService {
                                    @Query("RegionId") regionId: String,
                                    @Query("storeId") storeId: String,
 
-                                   ): Flowable<Response<ExecutiveLeaderResponse>>
+                                   ): Flowable<Response<ExecutiveLeaderBordResponse>>
 
     @GET("user/dashboard/mobile/leaderboard?")
     fun getLeaderBoarAllRegion(@Header("Authorization") authorization: String,
@@ -197,7 +197,7 @@ interface ApiService {
                                 @Query("tableDisplay") tableDisplay: Boolean,
                                 @Query("RegionId") regionId: String,
 
-                                ): Flowable<Response<ExecutiveLeaderResponse>>
+                                ): Flowable<Response<ExecutiveLeaderBordResponse>>
 
 
 
@@ -213,7 +213,7 @@ interface ApiService {
                                @Query("RegionId") regionId: String,
                                 @Query("storeId") storeId: String,
 
-                               ): Flowable<Response<ExecutiveLeaderResponse>>
+                               ): Flowable<Response<ExecutiveLeaderBordResponse>>
 
     @GET("user/dashboard/mobile/leaderboard?")
     fun getLeaderBoarByRegionByStoreAlluser(@Header("Authorization") authorization: String,
@@ -228,7 +228,7 @@ interface ApiService {
                                      @Query("storeId") storeId: String,
                                      @Query("userId") userId: String,
 
-                                     ): Flowable<Response<ExecutiveLeaderResponse>>
+                                     ): Flowable<Response<ExecutiveLeaderBordResponse>>
 
     @GET("user/dashboard/mobile/leaderboard?")
     fun getLeaderBoarByRegionAllUser(@Header("Authorization") authorization: String,
@@ -242,7 +242,7 @@ interface ApiService {
                                @Query("RegionId") regionId: String,
                                @Query("userId") userId: String,
 
-                               ): Flowable<Response<ExecutiveLeaderResponse>>
+                               ): Flowable<Response<ExecutiveLeaderBordResponse>>
 
     @GET("user/dashboard/mobile/leaderboard?")
     fun getLeaderBoarAllUser(@Header("Authorization") authorization: String,
@@ -255,7 +255,7 @@ interface ApiService {
                                @Query("tableDisplay") tableDisplay: Boolean,
                                @Query("userId") salesld: String,
 
-                               ): Flowable<Response<ExecutiveLeaderResponse>>
+                               ): Flowable<Response<ExecutiveLeaderBordResponse>>
 
     @GET("user/dashboard/mobile/leaderboard?")
     fun getLeaderBoarByUserData(@Header("Authorization") authorization: String,
@@ -270,7 +270,7 @@ interface ApiService {
                                    @Query("storeId") storeId: String,
                                    @Query("userId") salesld: String,
 
-                                   ): Flowable<Response<ExecutiveLeaderResponse>>
+                                   ): Flowable<Response<ExecutiveLeaderBordResponse>>
 
     @GET("user/dashboard/mobile/leaderboard?")
     fun getLeaderBoarByRegionByUser(@Header("Authorization") authorization: String,
@@ -284,7 +284,7 @@ interface ApiService {
                                 @Query("RegionId") RegionId: String,
                                 @Query("userId") salesld: String,
 
-                                ): Flowable<Response<ExecutiveLeaderResponse>>
+                                ): Flowable<Response<ExecutiveLeaderBordResponse>>
 
     @GET("user/mobile/store/leaderboard?")
     fun getLeaderBoardSM(@Header("Authorization") authorization: String,
