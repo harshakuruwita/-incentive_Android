@@ -606,6 +606,47 @@ class TimelineFragment : Fragment() {
                 })
 
             )
+        }else if(region==null&&store == null&&sales != null){
+            Log.d("2233","All store")
+            subscription.add(timelineVM.getTimeLineExecitiveRegionByUser(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,"All",sales!!.salesId.toString()).subscribeOn(
+                Schedulers.io()
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                .doOnTerminate { view.progressBar.visibility = View.GONE }
+                .doOnError { view.progressBar.visibility = View.GONE }
+                .subscribe({
+                    if (it.isSuccess) {
+                        val  dataObj=timelineVM.executiveDataObj
+                        if(dataObj!!.response.code==200){
+
+                            val dataList=dataObj.response.dataArr[0].dashboardData as ArrayList
+
+                            Log.d("098",dataList.toString())
+                            if(dataList.isEmpty()){
+                                img_nodata.visibility=View.VISIBLE
+                            }else{
+                                img_nodata.visibility=View.INVISIBLE
+                                val mlayoutManager = LinearLayoutManager(context)
+                                val timelineAapter = TimelineAdapter(contxt,dataList,userRole,istargetSelectec)
+                                //  otherPaymentOptionsAdapter.onitemClickListener = contxt
+                                timeline_recycle.apply {
+                                    layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                    adapter = timelineAapter
+                                }}
+
+                        }
+
+                    }else{
+                        img_nodata.visibility=View.VISIBLE
+                    }
+                }, {
+
+                    view.progressBar.visibility = View.GONE
+
+                })
+
+            )
         }
 
 
@@ -809,6 +850,30 @@ class TimelineFragment : Fragment() {
                     isLoadFromCash=isLodFromCash
                     contxt=c
                     region = dataRegion
+                    sales = dataSales
+                    istargetSelectec = true
+
+                }
+            }
+
+
+        @JvmStatic
+        fun newInstancespecifiUser(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean, isLodFromCash:Boolean,dataSales: SalesData) =
+            TimelineFragment().apply {
+                arguments = Bundle().apply {
+
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    contxt=c
                     sales = dataSales
                     istargetSelectec = true
 

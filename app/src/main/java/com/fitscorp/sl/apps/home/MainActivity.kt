@@ -1224,6 +1224,7 @@ class MainActivity : BaseActivity() {
                     id: Long
                 ) {
                     val salesName: String = parent!!.getAdapter().getItem(position) as String
+
                     if (selectedstore != null) {
 
                         for (arryItem in selectedstore!!.salesData) {
@@ -1235,20 +1236,31 @@ class MainActivity : BaseActivity() {
                                 if (selectedTab == 1) {
                                     callLeaderboard()
                                 }
+                            }else{
+                                if (selectedTab == 0) {
+                                    callTimeline()
+                                }
+                                if (selectedTab == 1) {
+                                    callLeaderboard()
+                                }
                             }
                         }
                     } else {
 
                         if (selectedRegion == null) {
+
                             for (region in allRegionArr!!) {
                                 for (store in region!!.storeData) {
                                     for (sales in store.salesData) {
                                         if (salesName == sales.firstName) {
                                             selectedsales = sales;
+
                                             if (selectedTab == 0) {
+                                                Log.d("3344","1244");
                                                 callTimeline()
                                             }
                                             if (selectedTab == 1) {
+                                                Log.d("3344","1245");
                                                 callLeaderboard()
                                             }
                                         }
@@ -1256,10 +1268,18 @@ class MainActivity : BaseActivity() {
                                 }
                             }
                         } else {
+                            Log.d("3345","1235");
                             for (store in selectedRegion!!.storeData) {
                                 for (sales in store.salesData) {
                                     if (salesName == sales.firstName) {
                                         selectedsales = sales;
+                                        if (selectedTab == 0) {
+                                            callTimeline()
+                                        }
+                                        if (selectedTab == 1) {
+                                            callLeaderboard()
+                                        }
+                                    }else{
                                         if (selectedTab == 0) {
                                             callTimeline()
                                         }
@@ -1486,6 +1506,23 @@ class MainActivity : BaseActivity() {
                         selectedsales!!
                     )
                 )
+            }else if(selectedRegion==null&&selectedstore==null&&selectedsales!=null) {
+                navigateToFragment(
+                    TimelineFragment.newInstancespecifiUser(
+                        this@MainActivity,
+                        dataLogin.response.data.user,
+                        incentivefield,
+                        selectPeriod!!,
+                        startDate!!,
+                        endDate!!,
+                        periodId,
+                        moduleType!!,
+                        tableDisplay!!,
+                        isLoadFromCashed,
+
+                        selectedsales!!
+                    )
+                )
             }
         }else{
             lay_filter_executive.visibility = View.GONE
@@ -1566,7 +1603,7 @@ class MainActivity : BaseActivity() {
         if(dataLogin.response.data.user.userRole=="HEAD_OFFICE") {
             lay_filter_executive.visibility=View.VISIBLE
 
-
+Log.d("2233","come here")
             if (startDate != null && selectedRegion == null && selectedstore == null && selectedsales == null) {
 
                 if (executiveTab == 0) {
@@ -1723,6 +1760,23 @@ class MainActivity : BaseActivity() {
                         false,
                         isLoadFromCashed,
                         selectedRegion!!,
+                        selectedsales!!
+                    )
+                )
+            }else if(selectedRegion==null&&selectedstore==null&&selectedsales!=null) {
+                Log.d("1267", "region by user");
+                navigateToFragment(
+                    LeaderboardFragment.byspecificuserUser(
+                        this@MainActivity,
+                        dataLogin.response.data.user,
+                        incentivefield,
+                        selectPeriod!!,
+                        startDate!!,
+                        endDate!!,
+                        periodId,
+                        moduleType!!,
+                        false,
+                       false,
                         selectedsales!!
                     )
                 )
