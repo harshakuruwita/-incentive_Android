@@ -1074,6 +1074,7 @@ class MainActivity : BaseActivity() {
             all_region_text.visibility = View.GONE
             spinner_executive_region.performClick();
             executive_headder.visibility = View.VISIBLE
+            executive_search.visibility = View.GONE
 
             store_meterial_card_store.setCardBackgroundColor(Color.parseColor("#00B2A9"));
             store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#00B2A9"));
@@ -1681,8 +1682,9 @@ Log.d("2233","come here")
             }
             else if(selectedRegion!=null&&selectedstore!=null&&selectedsales==null) {
 
-
+Log.d("5566","00003")
                 if (executiveTab == 2) {
+                    Log.d("5566","00004")
                     navigateToFragment(
                         LeaderboardFragment.newInstanceByRegionByStoreAllUser(
                             this@MainActivity,
@@ -1703,7 +1705,7 @@ Log.d("2233","come here")
 
 
                 }else  if (executiveTab == 3) {
-
+                    Log.d("5566","00005")
                     navigateToFragment(
                         LeaderboardFragment.newInstanceByRegionByStoreWithAllUser(
                             this@MainActivity,
@@ -1721,6 +1723,24 @@ Log.d("2233","come here")
 
                         )
                     )
+                }else  {
+                    Log.d("3398", "Region by all user")
+                    navigateToFragment(
+                        LeaderboardFragment.newInstanceByRegionAllUser(
+                            this@MainActivity,
+                            dataLogin.response.data.user,
+                            incentivefield,
+                            selectPeriod!!,
+                            startDate!!,
+                            endDate!!,
+                            periodId,
+                            moduleType!!,
+                            false,
+                            isLoadFromCashed,
+                            selectedRegion!!
+                        )
+                    )
+
                 }
 
 
