@@ -1485,6 +1485,23 @@ fun callTimeline(){
                     selectedsales!!
                 )
             )
+        }else if(selectedRegion==null&&selectedstore==null&&selectedsales!=null) {
+            navigateToFragment(
+                TimelineFragment.newInstancespecifiUser(
+                    this@MainActivity,
+                    dataLogin.response.data.user,
+                    incentivefield,
+                    selectPeriod!!,
+                    startDate!!,
+                    endDate!!,
+                    periodId,
+                    moduleType!!,
+                    tableDisplay!!,
+                    isLoadFromCashed,
+
+                    selectedsales!!
+                )
+            )
         }
     }else{
         lay_filter_executive.visibility = View.GONE
@@ -1727,7 +1744,24 @@ Log.d("3398", "Region by")
             )
         }
 
-
+        else if(selectedRegion==null&&selectedstore==null&&selectedsales!=null) {
+            Log.d("1267", "region by user");
+            navigateToFragment(
+                LeaderboardFragment.byspecificuserUser(
+                    this@MainActivity,
+                    dataLogin.response.data.user,
+                    incentivefield,
+                    selectPeriod!!,
+                    startDate!!,
+                    endDate!!,
+                    periodId,
+                    moduleType!!,
+                    false,
+                    false,
+                    selectedsales!!
+                )
+            )
+        }
 
     }else{
         lay_filter_executive.visibility=View.GONE

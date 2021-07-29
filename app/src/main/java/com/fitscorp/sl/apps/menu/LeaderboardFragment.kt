@@ -859,6 +859,49 @@ var loopVal = 0;
                 })
 
             )
+        }else if(region == null && store == null && sales != null){
+            subscription.add(leaderboardVM.getLeaderByRegionBoardByUser(incentivefield!!,selectPeriod,StartDate,EndDate,PeriodId!!,moduleType,tableDisplay,"All",sales!!.salesId).subscribeOn(
+                Schedulers.io()
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { view.progressBar.visibility = View.VISIBLE }
+                .doOnTerminate { view.progressBar.visibility = View.GONE }
+                .doOnError { view.progressBar.visibility = View.GONE }
+                .subscribe({
+                    if (it.isSuccess) {
+
+
+                        val  dataObj=leaderboardVM.executiveDataObj
+
+                        val  firstPlace_colour = leaderboardVM.firstPlace_colour
+                        val  leaderBoard_colour = leaderboardVM.leaderBoard_colour
+                        if(dataObj!!.response.dataArr.isNotEmpty()) {
+                            img_nodataimg.visibility=View.GONE
+                            val mlayoutManager = LinearLayoutManager(context)
+                            val timelineAapter = LeaderboardExecutiveAapter(contxt, dataObj ,salesID,storePrimaryId,firstPlace_colour,leaderBoard_colour,selectedTab!!,"")
+
+
+
+
+
+                            leaderboard_recycler.apply {
+                                layoutManager = mlayoutManager as RecyclerView.LayoutManager?
+                                adapter = timelineAapter
+                            }
+
+
+                        }else{
+                            img_nodataimg.visibility=View.VISIBLE
+                        }}else{
+                        img_nodataimg.visibility=View.VISIBLE
+                    }
+                }, {
+
+                    view.progressBar.visibility = View.GONE
+
+                })
+
+            )
         }
 
 
@@ -1169,6 +1212,32 @@ var loopVal = 0;
                     selectedTab =  3;
                 }
             }
+
+
+        @JvmStatic
+        fun byspecificuserUser(c:Context, user: User, incentvefield: Int, selectPerio: String, StartDatee: String, EndDatee: String, PeriodIdd: Int, moduleTypeStr:String, tableDisplaybool:Boolean,isLodFromCash:Boolean,dataSales: SalesData) =
+            LeaderboardFragment().apply {
+                arguments = Bundle().apply {
+
+                    salesID=user.salesId
+                    userRole=user.userRole
+                    incentivefield = incentvefield
+                    selectPeriod = selectPerio
+                    StartDate =  StartDatee
+                    EndDate = EndDatee
+                    PeriodId = PeriodIdd
+                    moduleType = moduleTypeStr
+                    tableDisplay = tableDisplaybool
+                    isLoadFromCash=isLodFromCash
+                    storePrimaryId=user.storeId
+                    contxt=c
+                    region = null
+                    store = null
+                    sales = dataSales
+                    selectedTab =  3;
+                }
+            }
+    }
     }
 
 
@@ -1177,4 +1246,4 @@ var loopVal = 0;
 
 
 
-}
+
