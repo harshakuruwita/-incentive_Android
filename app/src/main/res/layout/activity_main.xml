@@ -37,11 +37,11 @@
 
         <ImageView
                 android:id="@+id/img_home"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="9dp"
                 android:layout_marginBottom="3dp"
                 android:background="@drawable/user" />
 

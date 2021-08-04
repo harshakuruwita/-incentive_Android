@@ -159,7 +159,7 @@ class MainActivity : BaseActivity() {
                 var p: FCMModel = FCMModel()
                 p.deviceType = "android"
                 p.token = token
-
+Log.d("FCM==",token);
 
                 sendDevicetoken(p)
 
@@ -336,6 +336,8 @@ class MainActivity : BaseActivity() {
 
         executive_search.visibility = View.GONE
         executive_headder.visibility = View.GONE
+
+
 
     }
 
@@ -872,7 +874,37 @@ class MainActivity : BaseActivity() {
 
     }
 
+    fun trigerHomecrdtap(){
+        executiveTab = 0;
+        all_region_text.visibility=View.VISIBLE
+        spinner_executive_region.visibility=View.GONE
 
+        store_meterial_card_store.setCardBackgroundColor(Color.parseColor("#000000"));
+        isStoreEnable = false;
+
+        all_store_text.visibility = View.VISIBLE
+        spinner_executive_store.visibility = View.GONE
+        executive_search.visibility = View.GONE
+
+        isSalesEnable = false;
+        // store_meterial_card_sales.setCardBackgroundColor(Color.parseColor("#000000"));
+        executive_headder.visibility = View.GONE
+        all_store_sales.visibility = View.VISIBLE
+        selectedRegion=null
+        storeArr=null
+        selectedstore=null
+        salesArr=null
+        selectedsales=null
+        if(selectedTab==0){
+            callTimeline()
+        }
+        if(selectedTab==1){
+            callLeaderboard()
+        }
+        //   selectedRegion = allRegionArr!![0];
+        //   selectedstore = selectedRegion!!.storeData[0]
+        storeSelectedType = 0;
+    }
 
     private fun setupBottomMenu() {
 
@@ -898,7 +930,7 @@ class MainActivity : BaseActivity() {
             if(loadtab == 0){
 
             }else{
-
+                trigerHomecrdtap();
                 isLoadFromCashed=true
                 callTimeline()
                 loadtab = 0
@@ -910,7 +942,7 @@ class MainActivity : BaseActivity() {
             if(loadtab == 0){
 
             }else{
-
+                trigerHomecrdtap();
                 isLoadFromCashed=true
                 callTimeline()
                 loadtab = 0
@@ -920,7 +952,7 @@ class MainActivity : BaseActivity() {
             if(loadtab == 0){
 
             }else{
-
+                trigerHomecrdtap();
                 isLoadFromCashed=true
                 callTimeline()
                 loadtab = 0
@@ -930,7 +962,7 @@ class MainActivity : BaseActivity() {
             if(loadtab == 0){
 
             }else{
-
+                trigerHomecrdtap();
                 isLoadFromCashed=true
                 callTimeline()
                 loadtab = 0
@@ -944,7 +976,7 @@ class MainActivity : BaseActivity() {
             if(loadtab == 1){
 
             }else{
-
+                trigerHomecrdtap();
                 isLoadFromCashed=true
                 callLeaderboard()
                 loadtab = 1
@@ -957,7 +989,7 @@ class MainActivity : BaseActivity() {
             if(loadtab == 1){
 
             }else{
-
+                trigerHomecrdtap();
                 isLoadFromCashed=true
                 callLeaderboard()
                 loadtab = 1
@@ -967,7 +999,7 @@ class MainActivity : BaseActivity() {
             if(loadtab == 1){
 
             }else{
-
+                trigerHomecrdtap();
                 isLoadFromCashed=true
                 callLeaderboard()
                 loadtab = 1
@@ -977,7 +1009,7 @@ class MainActivity : BaseActivity() {
             if(loadtab == 1){
 
             }else{
-
+                trigerHomecrdtap();
                 isLoadFromCashed=true
                 callLeaderboard()
                 loadtab = 1
