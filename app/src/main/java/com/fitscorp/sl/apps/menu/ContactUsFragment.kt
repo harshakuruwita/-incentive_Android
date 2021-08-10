@@ -106,10 +106,10 @@ class ContactUsFragment : Fragment() {
                     txt_title.clearFocus()
 
                 }
+                var countValue = txt_title?.getText().length.toString();
+                //  var countValue = txt_title!!.length().toString();
 
-                var countValue = count.toString()
-
-                val c = countValue.plus(" ").plus("/40")
+                val c = countValue.plus("").plus("/40")
                 txt_message_text_count.setText(c)
             }
 
@@ -123,8 +123,8 @@ class ContactUsFragment : Fragment() {
 
         txt_message_content.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                var countValue = count.toString()
-
+                // var countValue = count.toString()
+                var countValue = txt_message_content?.getText().length.toString();
                 val c = countValue.plus(" ").plus("/300")
                 txt_message_content_text_count.setText(c)
             }
@@ -140,7 +140,7 @@ class ContactUsFragment : Fragment() {
 
 
 
-            return view
+        return view
     }
 
     private fun showAlert(message: String) {
@@ -178,14 +178,14 @@ class ContactUsFragment : Fragment() {
         if(txt_title.text.isEmpty())
         {
             showAlert("Title is required!")
-           // Toast.makeText(context,"Title is required!",Toast.LENGTH_LONG).show()
+            // Toast.makeText(context,"Title is required!",Toast.LENGTH_LONG).show()
             return
         }
 
         if(txt_message_content.text.isEmpty())
         {
             showAlert("Message is required!")
-           // Toast.makeText(context,"Message is required!",Toast.LENGTH_LONG).show()
+            // Toast.makeText(context,"Message is required!",Toast.LENGTH_LONG).show()
             return
         }
 
@@ -206,10 +206,10 @@ class ContactUsFragment : Fragment() {
             .subscribe({
                 if (it.isSuccess) {
 
-                   txt_title.setText("Incentive app issue")
-                   txt_message_content.setText("")
+                    txt_title.setText("Incentive app issue")
+                    txt_message_content.setText("")
                     showAlert_two("Message successfully sent.")
-                   // Toast.makeText(context,"Message sent to server",Toast.LENGTH_LONG).show()
+                    // Toast.makeText(context,"Message sent to server",Toast.LENGTH_LONG).show()
                 }
             }, {
                 progressBar.visibility = View.GONE

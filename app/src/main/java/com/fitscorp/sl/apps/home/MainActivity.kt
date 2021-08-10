@@ -2115,7 +2115,14 @@ Log.d("5566","00003")
 
         if (keyCode == KeyEvent.KEYCODE_DEL) {
             Log.d("ddddd", "dddd")
-        }else{
+        }else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            Log.d("ddddd", "dddd")
+        }else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            Log.d("ddddd", "dddd")
+        }
+
+
+        else{
             if(loadtab == 0 || loadtab == 1 || loadtab == 2 || loadtab == 3){
                 val startMain = Intent(Intent.ACTION_MAIN);
                 startMain.addCategory(Intent.CATEGORY_HOME);
