@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import com.fitscorp.sl.apps.common.MERCHANT_URL
 import com.fitscorp.sl.apps.di.BaseActivity
+import com.fitscorp.sl.apps.home.model.UserOtpResendModel
 import com.fitscorp.sl.apps.home.model.UserRestModel
 import com.fitscorp.sl.apps.login.FrogotPassword
 import com.fitscorp.sl.apps.login.FrogotPasswordVM
@@ -70,9 +71,10 @@ class Resend_Code : BaseActivity() {
 
 
 
-        var p: UserRestModel = UserRestModel()
+        var p: UserOtpResendModel = UserOtpResendModel()
         p.email = email
         p.domain = domainVAL
+        p.isResendVerification = true
 
         sendResetLink(p)
 
@@ -93,10 +95,10 @@ class Resend_Code : BaseActivity() {
         alert.show()
     }
 
-    private fun sendResetLink(p: UserRestModel) {
+    private fun sendResetLink(p: UserOtpResendModel) {
 
         val domainVAL = MERCHANT_URL
-        subscription.add(frogotpwVM.sendResetLink(p).subscribeOn(
+        subscription.add(frogotpwVM.resendOtp(p).subscribeOn(
             Schedulers.io()
         )
             .observeOn(AndroidSchedulers.mainThread())
