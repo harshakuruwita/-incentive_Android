@@ -40,6 +40,10 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     fun resetUserPassword(@Body post: UserRestModel): Flowable<Response<LoginServiceMainResponse>>
 
+    @POST("auth/reset_password")
+    @Headers("Content-Type: application/json")
+    fun resendOtp(@Body post: UserOtpResendModel): Flowable<Response<LoginServiceMainResponse>>
+
     @POST("merchant/message/mobile_data")
     @Headers("Content-Type: application/json")
     fun sendDeviceToken(@Body post: FCMModel): Flowable<Response<LoginServiceMainResponse>>
