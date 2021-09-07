@@ -38,15 +38,31 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="45" /> <!-- [END fcm_default_channel] -->
-        <activity android:name=".profile.ProfileActivity" />
-        <activity android:name=".splash.WelcomeLoginActivity" />
+        <activity android:name=".profile.ProfileActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            />
+        <activity android:name=".splash.WelcomeLoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            />
         <activity
             android:name=".home.MainActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
-        <activity android:name=".register.RegisterActivity" />
-        <activity android:name=".login.LoginActivity" />
-        <activity android:name=".login.FrogotPassword" />
-        <activity android:name=".home.SplashActivity">
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden" />
+        <activity android:name=".register.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            />
+        <activity android:name=".login.LoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            />
+        <activity android:name=".login.FrogotPassword"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            />
+        <activity android:name=".home.SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
