@@ -50,8 +50,8 @@ class InfoFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("documentType", param2);
-        Log.d("documentData", param3);
+        Log.d("documentType", param2!!);
+        Log.d("documentData", param3!!);
 
 
         if(param2 == "pdf"){
@@ -61,7 +61,7 @@ class InfoFragment : Fragment() {
 
             webview_info!!.webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                    view?.loadUrl(url)
+                    view?.loadUrl(url!!)
                     return true
                 }
             }
@@ -91,11 +91,11 @@ class InfoFragment : Fragment() {
 
             webview_info!!.webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                    view?.loadUrl(url)
+                    view?.loadUrl(url!!)
                     return true
                 }
             }
-            webview_info!!.loadUrl(urlString)
+            webview_info!!.loadUrl(urlString!!)
 
             webview_info.setBackgroundColor(Color.WHITE);
         }else if(param2 == "embed"){
@@ -108,11 +108,11 @@ class InfoFragment : Fragment() {
 
             webview_info!!.webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                    view?.loadUrl(url)
+                    view?.loadUrl(url!!)
                     return true
                 }
             }
-            webview_info!!.loadData(param3, "text/html", "utf-8");
+            webview_info!!.loadData(param3!!, "text/html", "utf-8");
             webview_info!!.getSettings().setJavaScriptEnabled(true)
             webview_info!!.getSettings().setLoadWithOverviewMode(true);
             webview_info!!.getSettings().setUseWideViewPort(true);

@@ -41,6 +41,7 @@
         <activity android:name=".profile.ProfileActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
+
             />
         <activity android:name=".splash.WelcomeLoginActivity"
             android:screenOrientation="portrait"

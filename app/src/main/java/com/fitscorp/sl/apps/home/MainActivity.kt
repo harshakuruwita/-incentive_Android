@@ -155,7 +155,7 @@ class MainActivity : BaseActivity() {
 
                 // Log and toast
                 val msg = getString(R.string.abc_action_bar_home_description, token)
-                Log.d("AAAAA", token)
+                Log.d("AAAAA", token!!)
                 var p: FCMModel = FCMModel()
                 p.deviceType = "android"
                 p.token = token
@@ -1932,7 +1932,7 @@ Log.d("5566","00003")
             endDate = dateTimeArrray?.get(0)!!.endDate
             periodId = dateTimeArrray?.get(0)!!.id
 
-            val fromActivity:String = intent.getStringExtra("fromActivity")
+            val fromActivity:String = intent.getStringExtra("fromActivity")!!
 
             if(fromActivity=="contact"){
                 callContact()
