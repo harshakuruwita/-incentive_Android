@@ -51,7 +51,7 @@ class LoginActivityVM @Inject constructor(val apiService: ApiService,
             State(false, it.code().toString())
         }
     }.onErrorReturn {
-        Log.d("Erro.........",it.message)
+       // Log.d("Erro.........",it.message)
         State(false, MSG_FAILED_REQUEST)
     }
     fun getLoginUser() = apiService.getUserLogin(sharedPref.getAuthToken()).map {

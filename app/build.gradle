@@ -11,17 +11,19 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.fitscorp.bluebloods.degreeapps"
         minSdkVersion 17
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 8
         versionName "7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+
+
     buildTypes {
         release {
             minifyEnabled false
@@ -135,6 +137,6 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'me.srodrigo:androidhintspinner:1.0.0'
-    implementation 'androidx.core:core-ktx:1.0.0'
+    implementation 'androidx.core:core-ktx:1.6.0'
 
 }

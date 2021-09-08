@@ -42,11 +42,11 @@
         <activity android:name=".splash.WelcomeLoginActivity" />
         <activity
             android:name=".home.MainActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
-        <activity android:name=".register.RegisterActivity" />
-        <activity android:name=".login.LoginActivity" />
-        <activity android:name=".login.FrogotPassword" />
-        <activity android:name=".home.SplashActivity">
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".register.RegisterActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".login.LoginActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".login.FrogotPassword" android:screenOrientation="portrait"/>
+        <activity android:name=".home.SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
