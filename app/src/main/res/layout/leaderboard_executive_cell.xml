@@ -46,7 +46,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:paddingLeft="5dp"
                 android:textSize="18sp"
-                android:text="ddddddd"
+                android:text=""
                 android:textColor="@color/white"
                 />
             <TextView
@@ -56,7 +56,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/txt_name"
                 android:paddingLeft="16dp"
                 android:textSize="12sp"
-                android:text="ddddddd"
+                android:text=""
                 android:textColor="@color/white"
                 />
 

@@ -36,7 +36,7 @@
         android:textSize="17sp"
         app:layout_constraintLeft_toRightOf="@+id/txt_number"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="ddddddd"
+        android:text=""
         android:textColor="@color/white"
         />
 

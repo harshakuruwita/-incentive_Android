@@ -94,7 +94,7 @@ class TimelineAdapter(val context: Context, val list: ArrayList<DataArr>, val us
         override fun bind(item: Any) = with(itemView) {
 
            val data= item as DataArr
-            txt_title.text="ddddddd"
+            txt_title.text=""
              if (data.shortName == " "){
                 txt_title.text=data.longName
             } else if(data.shortName.isNotEmpty() ){
